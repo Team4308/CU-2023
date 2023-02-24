@@ -6,22 +6,17 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import bbb.control.JoystickHelper;
-import bbb.control.XBoxWrapper;
-import bbb.math.bbbVector2;
-import bbb.utils.bbbDoubleUtils;
-import bbb.wrapper.LogSubsystem;
+import ca.team4308.absolutelib.control.JoystickHelper;
+import ca.team4308.absolutelib.control.XBoxWrapper;
+import ca.team4308.absolutelib.math.Vector2;
+import ca.team4308.absolutelib.math.DoubleUtils;
+import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.subsystems.DriveSystem;
-import frc.robot.subsystems.ClawSystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
@@ -35,7 +30,6 @@ public class RobotContainer {
 
   public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
   private final DriveSystem m_driveSystem;
-  private final ClawSystem m_clawSystem;
   
   private final DriveCommand driveCommand;
   
@@ -48,8 +42,6 @@ public class RobotContainer {
     
     m_driveSystem = new DriveSystem();
     subsystems.add(m_driveSystem);
-    m_clawSystem = new ClawSystem();
-    subsystems.add(m_clawSystem);
 
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
@@ -71,9 +63,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    stick2.A.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
-    stick2.B.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
-    stick.Y.whileTrue(new DockingCommand(m_driveSystem));
+    stick.Y.whileTrue(new DockingCommand(m_driveSystem, () -> getDockingCommand()));
     stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
   }
 
@@ -84,11 +74,11 @@ public class RobotContainer {
    */
 
    
-   public bbbVector2 getDriveControl() {
-    double throttle = bbbDoubleUtils.normalize(stick.getLeftY());
-    double turn = bbbDoubleUtils.normalize(-stick.getRightX());
+   public Vector2 getDriveControl() {
+    double throttle = DoubleUtils.normalize(stick.getLeftY());
+    double turn = DoubleUtils.normalize(-stick.getRightX());
 
-    bbbVector2 control = new bbbVector2(turn, throttle);
+    Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.scaleStick(control, Constants.Config.Input.Stick.kInputScale);
     control = JoystickHelper.clampStick(control);
@@ -102,7 +92,9 @@ public class RobotContainer {
       // System.out.println(control);
       return control;
     }
-    
+    public Double getDockingCommand() {
+      return null;
+    }
   // public Command getAutonomousCommand() {
 
   //  }

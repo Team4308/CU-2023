@@ -1,6 +1,6 @@
-package bbb.utils;
+package ca.team4308.absolutelib.math;
 
-public class bbbDoubleUtils{
+public class DoubleUtils {
     public static double normalize(double d){
         if(d > 1.0){
             return 1.0;

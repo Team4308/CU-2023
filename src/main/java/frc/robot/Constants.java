@@ -53,10 +53,10 @@ public final class Constants {
         }
         
         public static class PitchControl {
-            public static double kP = 3.00;
+            public static double kP = 0.01;
             public static double kI = 0;
             public static double kD = 0;
-            public static double kTolerance = 0.3;
+            public static double kTolerance = 0.5;
         }
 
         public static class VelocityControl {
