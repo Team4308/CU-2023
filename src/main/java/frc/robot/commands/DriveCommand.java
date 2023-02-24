@@ -46,7 +46,7 @@ public class DriveCommand extends CommandBase {
         double leftTargetUnitsPS = (leftTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
 
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity, leftTargetUnitsPS, rightTargetUnitsPS);
+        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS, rightTargetUnitsPS);
     }
 
     @Override

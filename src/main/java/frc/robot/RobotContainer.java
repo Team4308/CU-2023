@@ -11,18 +11,10 @@ import ca.team4308.absolutelib.control.XBoxWrapper;
 import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a

@@ -2,23 +2,18 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import ca.team4308.absolutelib.wrapper.LogSubsystem;
+import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
-
-import edu.wpi.first.wpilibj.DigitalSource;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.DutyCycle;
-
-public class DriveSystem extends LogSubsystem {
+public class DriveSystem extends TankDriveSubsystem {
     // Master Controllers
     public final TalonFX masterLeft, masterRight;
     // Slave Controllers
@@ -150,7 +145,7 @@ public class DriveSystem extends LogSubsystem {
     /**
      * Misc Stuff
      */
-    public void setMotorOutput(TalonFXControlMode mode, double left, double right) {
+    public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
         masterRight.set(mode, right);
     }
