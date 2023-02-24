@@ -1,25 +1,34 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+
 import java.lang.Math;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
-
-import frc.robot.Constants;
-
+import bbb.wrapper.LogSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.Constants;
+
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.ADIS16448_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class DriveSystem extends TankDriveSubsystem {
+public class DriveSystem extends LogSubsystem {
+
+    private final DigitalSource leftSide;
+    private final DutyCycle distLeft;
 
     // Master Controllers
 
@@ -35,6 +44,8 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Init
     public DriveSystem() {
+        leftSide = new DigitalInput(0);
+        distLeft = new DutyCycle(leftSide);
         // Setup and Add Controllers
         masterLeft = new TalonSRX(Constants.Mapping.Drive.frontLeft);
         controllers.add(masterLeft);
@@ -61,6 +72,11 @@ public class DriveSystem extends TankDriveSubsystem {
         // Change Config For All Controllers
         for (TalonSRX talon : controllers) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
+
+            talon.configOpenloopRamp(Constants.Config.Drive.Power.kOpenLoopRamp, Constants.Generic.timeoutMs);
+            talon.configClosedloopRamp(Constants.Config.Drive.Power.kClosedLoopRamp, Constants.Generic.timeoutMs);
+            // talon.configStatorCurrentLimit(Constants.Config.Drive.Power.kStatorCurrentLimit,
+            //        Constants.Generic.timeoutMs);
             talon.setNeutralMode(NeutralMode.Coast);
             talon.configNeutralDeadband(0.001, Constants.Generic.timeoutMs);
             talon.changeMotionControlFramePeriod(5);
@@ -151,15 +167,21 @@ public class DriveSystem extends TankDriveSubsystem {
      * Misc Stuff
      */
 
-    public static Double getPitch(){
+    public Double getLeftDist(){
+        return (3.0 / 4.0) * ((distLeft.getHighTimeNanoseconds()/1000.0) - 1000);
+    }
+    public int getLeftHighTime(){
+        return distLeft.getHighTimeNanoseconds();
+    }
+    public static Double getRoll(){
         return 180 * Math.atan(gyro.getAccelX()/Math.sqrt(gyro.getAccelY()*gyro.getAccelY() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +1.5;
     }
 
-    public Double getRoll(){
+    public static Double getPitch(){
         return 180 * Math.atan(gyro.getAccelY()/Math.sqrt(gyro.getAccelX()*gyro.getAccelX() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +2.5;
     }
 
-    public void setMotorOutput(ControlMode mode, double left, double right) {
+    public void setMotorOutput(TalonSRXControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
         masterRight.set(mode, right);
     }
@@ -205,14 +227,16 @@ public class DriveSystem extends TankDriveSubsystem {
 
     @Override
     public Sendable log() { 
-        // IMU 
+        //Shuffleboard.getTab("Log").addBoolean("Front of the Shooter?", ()-> checkForFront());
+        Shuffleboard.getTab("Log").addDouble("Front of the Shooter?", ()-> getLeftDist());
+        Shuffleboard.getTab("Log").addInteger("High Time", ()-> getLeftHighTime());
         Shuffleboard.getTab("Log").addDouble("AccelX", ()-> gyro.getAccelX());
         Shuffleboard.getTab("Log").addDouble("AccelY", ()-> gyro.getAccelY());
         Shuffleboard.getTab("Log").addDouble("AccelZ", ()-> gyro.getAccelZ());
         Shuffleboard.getTab("Log").addDouble("Rate", ()-> gyro.getRate());
         Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
-        Shuffleboard.getTab("Log").addDouble("Pitch",()-> getPitch());
-        Shuffleboard.getTab("Log").addDouble("Roll",()-> getRoll());
+        Shuffleboard.getTab("Log").addDouble("Roll",()-> getPitch());
+        Shuffleboard.getTab("Log").addDouble("Pitch",()-> getRoll());
         Shuffleboard.getTab("Log").addDouble("XFilteredAngle",()-> gyro.getXFilteredAccelAngle());
         Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle());
         Shuffleboard.getTab("Log").addDouble("Distance",()-> getDistance());

@@ -2,20 +2,20 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
-import ca.team4308.absolutelib.math.Vector2;
-import ca.team4308.absolutelib.math.DoubleUtils;
+import bbb.math.bbbVector2;
+import bbb.utils.bbbDoubleUtils;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSystem;
 
 public class DriveCommand extends CommandBase {
     private final DriveSystem m_subsystem;
-    private final Supplier<Vector2> control;
+    private final Supplier<bbbVector2> control;
 
     // Init
-    public DriveCommand(DriveSystem subsystem, Supplier<Vector2> control) {
+    public DriveCommand(DriveSystem subsystem, Supplier<bbbVector2> control) {
         m_subsystem = subsystem;
         this.control = control;
 
@@ -32,7 +32,7 @@ public class DriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        Vector2 control = this.control.get();
+        bbbVector2 control = this.control.get();
 
         double leftTargetRPM = -control.y * Constants.DynConfig.Drive.VelocityDriveRPM;
         double rightTargetRPM = -control.y * Constants.DynConfig.Drive.VelocityDriveRPM;
@@ -40,13 +40,13 @@ public class DriveCommand extends CommandBase {
         leftTargetRPM += -control.x * Constants.DynConfig.Drive.VelocityDriveRPM;
         rightTargetRPM += control.x * Constants.DynConfig.Drive.VelocityDriveRPM;
 
-        leftTargetRPM = DoubleUtils.clamp(leftTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
-        rightTargetRPM = DoubleUtils.clamp(rightTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
+        leftTargetRPM = bbbDoubleUtils.clamp(leftTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
+        rightTargetRPM = bbbDoubleUtils.clamp(rightTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
 
         double leftTargetUnitsPS = (leftTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
 
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS, rightTargetUnitsPS);
+        m_subsystem.setMotorOutput(TalonSRXControlMode.Velocity, leftTargetUnitsPS, rightTargetUnitsPS);
     }
 
     @Override

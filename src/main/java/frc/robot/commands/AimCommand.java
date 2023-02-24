@@ -4,7 +4,8 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
-import ca.team4308.absolutelib.math.DoubleUtils;
+import bbb.math.bbbVector2;
+import bbb.utils.bbbDoubleUtils;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -38,9 +39,9 @@ public class AimCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double output = DoubleUtils.clamp(angle_controller.calculate(control.get()), -1.0, 1.0);
+        double output = bbbDoubleUtils.clamp(angle_controller.calculate(control.get()), -1.0, 1.0);
         SmartDashboard.putData("PID Controller", angle_controller);
-        m_subsystem.setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
+        m_subsystem.setMotorOutput(TalonSRXControlMode.PercentOutput, -output, output);
     }
 
     @Override
