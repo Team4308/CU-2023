@@ -35,6 +35,9 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Init
     public DriveSystem() {
+
+        gyro.calibrate();
+
         // Setup and Add Controllers
         masterLeft = new TalonSRX(Constants.Mapping.Drive.frontLeft);
         controllers.add(masterLeft);
@@ -155,7 +158,7 @@ public class DriveSystem extends TankDriveSubsystem {
         return 180 * Math.atan(gyro.getAccelX()/Math.sqrt(gyro.getAccelY()*gyro.getAccelY() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +1.5;
     }
 
-    public Double getRoll(){
+    public static Double getRoll(){
         return 180 * Math.atan(gyro.getAccelY()/Math.sqrt(gyro.getAccelX()*gyro.getAccelX() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +2.5;
     }
 

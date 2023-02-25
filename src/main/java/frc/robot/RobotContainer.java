@@ -63,7 +63,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    stick.Y.whileTrue(new DockingCommand(m_driveSystem, () -> getDockingCommand()));
+    stick.Y.whileTrue(new DockingCommand(m_driveSystem));
     stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
   }
 
@@ -91,9 +91,6 @@ public class RobotContainer {
       double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       // System.out.println(control);
       return control;
-    }
-    public Double getDockingCommand() {
-      return null;
     }
   // public Command getAutonomousCommand() {
 
