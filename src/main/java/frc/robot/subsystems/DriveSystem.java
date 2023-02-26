@@ -15,6 +15,7 @@ import frc.robot.Constants;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -31,12 +32,12 @@ public class DriveSystem extends TankDriveSubsystem {
     private ArrayList<TalonSRX> controllers = new ArrayList<TalonSRX>();
 
     // IMU
-    static ADIS16470_IMU gyro = new ADIS16470_IMU();
+    public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     // Init
     public DriveSystem() {
 
-        gyro.calibrate();
+        gyro.setYawAxis(IMUAxis.kY); // changes the yaw axis; kZ by default
 
         // Setup and Add Controllers
         masterLeft = new TalonSRX(Constants.Mapping.Drive.frontLeft);

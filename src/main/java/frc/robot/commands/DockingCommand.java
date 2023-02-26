@@ -36,7 +36,7 @@ public class DockingCommand extends CommandBase {
     @Override
     public void execute() {
          // 1. get the roll/pitch and read that value in some variable here
-        double roll = frc.robot.subsystems.DriveSystem.getRoll();
+        double roll = DriveSystem.gyro.getAngle();
         double output = DoubleUtils.clamp(pitchController.calculate(roll), -1.0, 1.0);
         m_subsystem.setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, -output);
 
