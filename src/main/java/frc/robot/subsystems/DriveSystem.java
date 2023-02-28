@@ -14,6 +14,11 @@ import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class DriveSystem extends TankDriveSubsystem {
     // Master Controllers
     public final TalonFX masterLeft, masterRight;
@@ -184,6 +189,29 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.setSelectedSensorPosition(0);
     }
 
+    public Double getDistance(){
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry ty = table.getEntry("ty");
+
+        // angle between limelight and target
+        double targetOffsetAngle_Vertical = ty.getDouble(0.0);
+
+        // angle of elevation of limelight
+        double limeLightAngleDegrees = 0.0;
+
+        // vertical height of limelight from ground
+        double limeLightHeightCentimetres = 34.3;
+
+        // veritcal height of april tag from ground
+        double aprilTagHeightCentimetres = 31.1;
+
+        double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
+        double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
+        double distanceCentimetres = (aprilTagHeightCentimetres - limeLightAngleDegrees)/Math.tan(angleToAprilTagRadians);
+
+        return Math.abs(distanceCentimetres);
+    }
+
     @Override
     public Sendable log() {
         Shuffleboard.getTab("Log").addNumber("Left Vel",
@@ -192,6 +220,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 () -> ((getRightSensorVelocity() / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
         Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
+        Shuffleboard.getTab("Log").addDouble("Right Pos", () -> getDistance());
+
         return this;
     }
 }

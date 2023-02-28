@@ -16,6 +16,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.ArmExtendCommand;
+import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
@@ -106,9 +107,8 @@ public class RobotContainer {
 
     stick.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
     stick.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
-
-
     
+    stick2.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
   }
 
   /**
@@ -139,10 +139,6 @@ public class RobotContainer {
       return 0.0;
     }
 
-    
-  
-    
-
     // if the arm doesn't extend it's probably the getAsBoolean
     // when kevin was making the XBoxWrapper file he accidentally switched trigger and bumper methods or something along those lines
     public Double getArmExtendControl() {
@@ -153,6 +149,28 @@ public class RobotContainer {
         return control.y;
     }
   
+    public Double getRangeCommand() {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+
+      // angle between limelight and target
+      double targetOffsetAngle_Vertical = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+      // angle of elevation of limelight
+      double limeLightAngleDegrees = 0.0;
+
+      // vertical height of limelight from ground
+      double limeLightHeightCentimetres = 34.3;
+
+      // veritcal height of april tag from ground
+      double aprilTagHeightCentimetres = 31.1;
+
+      double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
+      double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
+      double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
+
+      return Math.abs(distanceCentimetres);
+    }
+
   // public Command getAutonomousCommand() {
 
   //  }
