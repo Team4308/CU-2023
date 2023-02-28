@@ -14,6 +14,7 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.DockingCommand;
+import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.DriveSystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -65,6 +66,7 @@ public class RobotContainer {
   private void configureBindings() {
     stick.Y.whileTrue(new DockingCommand(m_driveSystem));
     stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
+    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
   }
 
   /**
@@ -91,6 +93,28 @@ public class RobotContainer {
       double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       // System.out.println(control);
       return control;
+    }
+
+    public Double getRangeCommand() {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+
+      // angle between limelight and target
+      double targetOffsetAngle_Vertical = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+      // angle of elevation of limelight
+      double limeLightAngleDegrees = 0.0;
+
+      // vertical height of limelight from ground
+      double limeLightHeightCentimetres = 34.3;
+
+      // veritcal height of april tag from ground
+      double aprilTagHeightCentimetres = 31.1;
+
+      double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
+      double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
+      double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
+
+      return Math.abs(distanceCentimetres);
     }
   // public Command getAutonomousCommand() {
 
