@@ -207,7 +207,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
         double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
         double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
-        double distanceCentimetres = (aprilTagHeightCentimetres - limeLightAngleDegrees)/Math.tan(angleToAprilTagRadians);
+        double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
 
         return Math.abs(distanceCentimetres);
     }
