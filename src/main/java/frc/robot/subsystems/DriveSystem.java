@@ -173,6 +173,10 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.selectProfileSlot(slot, 0);
     }
 
+    public void resetAngle(){
+        gyro.reset();
+    }
+
     public void stopControllers() {
         masterLeft.set(TalonSRXControlMode.PercentOutput, 0.0);
         masterRight.set(TalonSRXControlMode.PercentOutput, 0.0);

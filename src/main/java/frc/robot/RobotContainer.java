@@ -16,6 +16,7 @@ import frc.robot.commands.AimCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.DriveSystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -67,6 +68,7 @@ public class RobotContainer {
     stick.Y.whileTrue(new DockingCommand(m_driveSystem));
     stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
+    stick.B.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
   }
 
   /**
