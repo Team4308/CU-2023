@@ -12,11 +12,15 @@ import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.IntakeSlideSystem;
+import frc.robot.subsystems.IntakeSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,10 +43,14 @@ public class RobotContainer {
   private final DriveSystem m_driveSystem;
   private final ArmRotateSystem m_armSystem;
   private final ArmExtendSystem m_armExtendSystem;
+  private final IntakeSystem m_intakeSystem;
+  private final IntakeSlideSystem m_intakeSlideSystem;
   
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
+  private final IntakeCommand intakeCommand;
+  private final IntakeSlideCommand intakeSlideCommand;
 
   
   public final XBoxWrapper stick = new XBoxWrapper(0);
@@ -56,7 +64,10 @@ public class RobotContainer {
     subsystems.add(m_armSystem);
     m_armExtendSystem = new ArmExtendSystem();
     subsystems.add(m_armExtendSystem);
-
+    m_intakeSystem = new IntakeSystem();
+    subsystems.add(m_intakeSystem);
+    m_intakeSlideSystem = new IntakeSlideSystem();
+    subsystems.add(m_intakeSlideSystem);
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
@@ -66,6 +77,15 @@ public class RobotContainer {
 
     armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
     m_armExtendSystem.setDefaultCommand(armExtendCommand);
+
+    intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
+    m_intakeSystem.setDefaultCommand(intakeCommand);
+
+    intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
+    m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
+
+
+    
 
     configureBindings();
   }
@@ -80,6 +100,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
+    stick.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
+    stick.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
+
+    stick.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
+    stick.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
+
+
+    
   }
 
   /**
@@ -109,6 +138,10 @@ public class RobotContainer {
       }
       return 0.0;
     }
+
+    
+  
+    
 
     // if the arm doesn't extend it's probably the getAsBoolean
     // when kevin was making the XBoxWrapper file he accidentally switched trigger and bumper methods or something along those lines
