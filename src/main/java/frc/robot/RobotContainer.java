@@ -102,13 +102,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
-    stick.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
-    stick.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
+    stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
+    stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
 
-    stick.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
-    stick.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
+    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
+    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
     
-    stick2.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
+    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
   }
 
   /**
@@ -120,7 +120,7 @@ public class RobotContainer {
    
    public Vector2 getDriveControl() {
     double throttle = DoubleUtils.normalize(stick.getLeftY());
-    double turn = DoubleUtils.normalize(-stick.getRightX());
+    double turn = DoubleUtils.normalize(stick.getRightX());
 
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
