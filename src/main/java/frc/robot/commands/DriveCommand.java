@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
@@ -46,7 +46,7 @@ public class DriveCommand extends CommandBase {
         double leftTargetUnitsPS = (leftTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
 
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS, rightTargetUnitsPS);
+        m_subsystem.setMotorOutput(TalonSRXControlMode.Velocity.toControlMode(), leftTargetUnitsPS, rightTargetUnitsPS);
     }
 
     @Override
