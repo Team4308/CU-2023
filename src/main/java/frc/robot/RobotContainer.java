@@ -113,11 +113,15 @@ public class RobotContainer {
     
     stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
     stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
+    stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
+    stick2.RB.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
 
     stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
     stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
+
     
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
+    
   }
 
   /**
