@@ -29,7 +29,7 @@ public class IntakeSlideCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        m_subsystem.slideMotor.set(VictorSPXControlMode.PercentOutput, control * 0.1);
+        m_subsystem.setSlideOutput(VictorSPXControlMode.PercentOutput, control*0.5);
  
     }
 

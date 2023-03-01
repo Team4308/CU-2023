@@ -18,7 +18,7 @@ import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 
 import frc.robot.commands.ArmExtendCommand;
-
+import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
@@ -111,16 +111,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
-    stick.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
-    stick.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
+    stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
+    stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
 
-    stick.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
-    stick.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
-
-    stick2.A.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
-    stick2.B.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
-
+    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
+    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
     
+    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
   }
 
   /**
@@ -132,7 +129,7 @@ public class RobotContainer {
    
    public Vector2 getDriveControl() {
     double throttle = DoubleUtils.normalize(stick.getLeftY());
-    double turn = DoubleUtils.normalize(-stick.getRightX());
+    double turn = DoubleUtils.normalize(stick.getRightX());
 
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
@@ -151,10 +148,6 @@ public class RobotContainer {
       return 0.0;
     }
 
-    
-  
-    
-
     // if the arm doesn't extend it's probably the getAsBoolean
     // when kevin was making the XBoxWrapper file he accidentally switched trigger and bumper methods or something along those lines
     public Double getArmExtendControl() {
@@ -165,6 +158,28 @@ public class RobotContainer {
         return control.y;
     }
   
+    public Double getRangeCommand() {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+
+      // angle between limelight and target
+      double targetOffsetAngle_Vertical = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+      // angle of elevation of limelight
+      double limeLightAngleDegrees = 0.0;
+
+      // vertical height of limelight from ground
+      double limeLightHeightCentimetres = 34.3;
+
+      // veritcal height of april tag from ground
+      double aprilTagHeightCentimetres = 31.1;
+
+      double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
+      double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
+      double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
+
+      return Math.abs(distanceCentimetres);
+    }
+
   // public Command getAutonomousCommand() {
 
   //  }

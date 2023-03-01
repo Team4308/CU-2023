@@ -21,7 +21,7 @@ public class IntakeSystem extends MotoredSubsystem {
         // Setup and Add Controllers
 
         // for rotating arm up and down
-        intakeMotor = new VictorSPX(Constants.Mapping.Arm.motor1);
+        intakeMotor = new VictorSPX(Constants.Mapping.Intake.slideMotor);
 
         // for extending and retracting arm
 

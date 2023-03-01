@@ -29,7 +29,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        m_subsystem.intakeMotor.set(VictorSPXControlMode.PercentOutput, control * 0.1);
+        m_subsystem.setIntakeOutput(VictorSPXControlMode.PercentOutput, control*0.5);
  
     }
 
