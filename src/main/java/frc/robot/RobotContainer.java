@@ -11,16 +11,22 @@ import ca.team4308.absolutelib.control.XBoxWrapper;
 import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
+
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
+
 import frc.robot.commands.ArmExtendCommand;
+
 import frc.robot.subsystems.ArmRotateSystem;
+import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.IntakeSlideSystem;
 import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.clawSystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -45,12 +51,14 @@ public class RobotContainer {
   private final ArmExtendSystem m_armExtendSystem;
   private final IntakeSystem m_intakeSystem;
   private final IntakeSlideSystem m_intakeSlideSystem;
+  private final ClawSystem m_clawSystem;
   
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
   private final IntakeSlideCommand intakeSlideCommand;
+
 
   
   public final XBoxWrapper stick = new XBoxWrapper(0);
@@ -68,6 +76,8 @@ public class RobotContainer {
     subsystems.add(m_intakeSystem);
     m_intakeSlideSystem = new IntakeSlideSystem();
     subsystems.add(m_intakeSlideSystem);
+    m_clawSystem = new ClawSystem();
+    subsystems.add(m_clawSystem);
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
@@ -107,6 +117,8 @@ public class RobotContainer {
     stick.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
     stick.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
 
+    stick2.A.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
+    stick2.B.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
 
     
   }

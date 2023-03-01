@@ -44,6 +44,9 @@ public class Robot extends TimedRobot {
     for (LogSubsystem subsystem : m_robotContainer.subsystems) {
       Shuffleboard.getTab("Log").add(subsystem.log());
     }
+    Compressor compressor = new Compressor(9, PneumaticsModuleType.CTREPCM);
+    compressor.enableDigital();
+    compressor.disable();
 
   }
 
