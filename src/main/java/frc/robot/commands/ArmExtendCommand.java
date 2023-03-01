@@ -29,12 +29,7 @@ public class ArmExtendCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        if(control == 0.0){
-            m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, -0.1);
-        }
-        else{
-            m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control / 4);
-        }
+        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control / 4);
     }
 
     @Override
