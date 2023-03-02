@@ -14,16 +14,12 @@ import frc.robot.Constants;
 
 public class ClawSystem extends LogSubsystem {
     public final DoubleSolenoid solenoid1;
-    public final DoubleSolenoid solenoid2;
     
 
     public ClawSystem() {
        
-        solenoid1 = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 0, 1);
+        solenoid1 = new DoubleSolenoid(8, PneumaticsModuleType.CTREPCM, 0, 1);
         solenoid1.set(Value.kForward);
-
-        solenoid2 = new DoubleSolenoid(1, PneumaticsModuleType.CTREPCM, 0, 1);
-        solenoid2.set(Value.kForward);
 
        
     }
@@ -35,12 +31,10 @@ public class ClawSystem extends LogSubsystem {
    
     public void retract() {
         solenoid1.set(Value.kReverse);
-        solenoid2.set(Value.kReverse);
     }
 
     public void extend() {
         solenoid1.set(Value.kForward);
-        solenoid2.set(Value.kForward);
     }
     
 

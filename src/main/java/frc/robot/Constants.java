@@ -21,7 +21,7 @@ public final class Constants {
             public static int slideMotor = 7;
         }
         public static class Claw {
-            public static int PCM = 9;
+            public static int PCM = 8;
          
         }
     }

@@ -25,7 +25,7 @@ import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.IntakeSlideSystem;
 import frc.robot.subsystems.IntakeSystem;
-import frc.robot.subsystems.clawSystem;
+import frc.robot.subsystems.ClawSystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
