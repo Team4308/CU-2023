@@ -11,30 +11,16 @@ import ca.team4308.absolutelib.control.XBoxWrapper;
 import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
-
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeSlideCommand;
-import frc.robot.commands.ArmRotateCommand;
-
-import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
-import frc.robot.subsystems.IntakeSlideSystem;
-import frc.robot.subsystems.IntakeSystem;
-import frc.robot.subsystems.ClawSystem;
-
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,18 +33,9 @@ public class RobotContainer {
 
   public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
   private final DriveSystem m_driveSystem;
-  private final ArmRotateSystem m_armSystem;
-  private final ArmExtendSystem m_armExtendSystem;
-  private final IntakeSystem m_intakeSystem;
-  private final IntakeSlideSystem m_intakeSlideSystem;
-  private final ClawSystem m_clawSystem;
   
   private final DriveCommand driveCommand;
-  private final ArmRotateCommand armRotateCommand;
-  private final ArmExtendCommand armExtendCommand;
-  private final IntakeCommand intakeCommand;
-  private final IntakeSlideCommand intakeSlideCommand;
-
+  
 
   
   public final XBoxWrapper stick = new XBoxWrapper(0);
@@ -68,34 +45,13 @@ public class RobotContainer {
     
     m_driveSystem = new DriveSystem();
     subsystems.add(m_driveSystem);
-    m_armSystem = new ArmRotateSystem();
-    subsystems.add(m_armSystem);
-    m_armExtendSystem = new ArmExtendSystem();
-    subsystems.add(m_armExtendSystem);
-    m_intakeSystem = new IntakeSystem();
-    subsystems.add(m_intakeSystem);
-    m_intakeSlideSystem = new IntakeSlideSystem();
-    subsystems.add(m_intakeSlideSystem);
-    m_clawSystem = new ClawSystem();
-    subsystems.add(m_clawSystem);
+
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
 
-    armRotateCommand = new ArmRotateCommand(m_armSystem, () -> getArmRotateControl());
-    m_armSystem.setDefaultCommand(armRotateCommand);
-
-    armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
-    m_armExtendSystem.setDefaultCommand(armExtendCommand);
-
-    intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
-    m_intakeSystem.setDefaultCommand(intakeCommand);
-
-    intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
-    m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
 
-    
 
     configureBindings();
   }
@@ -110,18 +66,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
-    stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
-    stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
-    stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
-    stick2.RB.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
-
-    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
-    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
-
-    
+    //stick.Y.whileTrue(new DockingCommand(m_driveSystem));
+    //stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
-    
+    stick.B.onTrue(new InstantCommand(() -> RobotContainer.getPipelineCommand()));
+    //stick.B.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
   }
 
   /**
@@ -133,7 +82,7 @@ public class RobotContainer {
    
    public Vector2 getDriveControl() {
     double throttle = DoubleUtils.normalize(stick.getLeftY());
-    double turn = DoubleUtils.normalize(stick.getRightX());
+    double turn = DoubleUtils.normalize(-stick.getRightX());
 
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
@@ -142,26 +91,15 @@ public class RobotContainer {
 
     return control;
     }
-   
-    public Double getArmRotateControl() {
-      if(stick2.getLeftTrigger() > 0){
-        return stick2.getLeftTrigger()*0.4;
-      }else if(stick2.getRightTrigger() > 0){
-        return -stick2.getRightTrigger()*0.4;
-      }
-      return 0.0;
-    }
 
-    // if the arm doesn't extend it's probably the getAsBoolean
-    // when kevin was making the XBoxWrapper file he accidentally switched trigger and bumper methods or something along those lines
-    public Double getArmExtendControl() {
-        double y = DoubleUtils.normalize(stick2.getLeftY());
-        Vector2 control = new Vector2(0.0, y);
-        control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-        control = JoystickHelper.clampStick(control);
-        return control.y;
+    public Double getAimCommand() {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+      double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      // System.out.println(control);
+      return control;
     }
-  
+    
+
     public Double getRangeCommand() {
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
 
@@ -183,8 +121,23 @@ public class RobotContainer {
 
       return Math.abs(distanceCentimetres);
     }
-
   // public Command getAutonomousCommand() {
 
   //  }
+    
+    public static void getPipelineCommand() {
+      if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0) == 0) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+      }
+      if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0) == 1) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
+      }
+      if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0) == 2) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+      }
+      if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0) == 3) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+      }
+      
+    }
 }
