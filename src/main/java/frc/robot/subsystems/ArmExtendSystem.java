@@ -47,7 +47,11 @@ public class ArmExtendSystem extends MotoredSubsystem {
         motor2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, Constants.Generic.timeoutMs);
 
         // Reset
+        resetSensors();
         stopControllers();
+    }
+    public void resetSensors() {
+        motor2.setSelectedSensorPosition(0);
     }
 
     /**

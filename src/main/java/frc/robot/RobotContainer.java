@@ -118,6 +118,7 @@ public class RobotContainer {
 
     stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
     stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
+    stick2.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(), m_armExtendSystem));
 
     
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));

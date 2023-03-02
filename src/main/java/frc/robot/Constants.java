@@ -45,6 +45,11 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+            public static class ExtensionControl {
+                public static double kP = 0.00001;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+            }
         }
 
         public static class Drive {
