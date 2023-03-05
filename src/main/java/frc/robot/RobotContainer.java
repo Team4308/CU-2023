@@ -16,8 +16,6 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
-import frc.robot.commands.AimCommand;
-import frc.robot.commands.PipelineCommand;
 
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
@@ -60,8 +58,6 @@ public class RobotContainer {
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
   private final IntakeSlideCommand intakeSlideCommand;
-  private final AimCommand aimCommand;
-  private final PipelineCommand pipelineCommand;
 
 
   
@@ -98,9 +94,7 @@ public class RobotContainer {
     intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
     m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
-    pipelineCommand = new PipelineCommand(m_driveSystem, () -> getPipelineCommand());
 
-    aimCommand = new AimCommand(m_driveSystem, () -> getAimCommand());
 
 
     
@@ -131,8 +125,6 @@ public class RobotContainer {
 
     
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
-    stick.B.onTrue(new PipelineCommand(m_driveSystem, () -> getPipelineCommand()));
-    stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
 
     
   }
@@ -203,13 +195,4 @@ public class RobotContainer {
       // System.out.println(control);
       return control;
     }
-
-    public Double getPipelineCommand() {
-      System.out.println("e");
-      return 0.0;
-    }
-
-  // public Command getAutonomousCommand() {
-
-  //  }
 }
