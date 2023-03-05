@@ -47,6 +47,9 @@ public class ArmRotateSystem extends MotoredSubsystem {
         // Reset
         stopControllers();
     }
+    public void resetSensors() {
+        motor1.setSelectedSensorPosition(0);
+    }
 
     /**
      * Getters And Setters
