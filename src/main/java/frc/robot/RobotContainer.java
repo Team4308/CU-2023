@@ -16,9 +16,10 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
-
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
+import frc.robot.commands.AimCommand;
+
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
@@ -89,11 +90,6 @@ public class RobotContainer {
     intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
     m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
-
-
-
-    
-
     configureBindings();
   }
 
@@ -107,19 +103,30 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    // Controller #0
+
+    // Limelight Functions
+    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
+    stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
+
+    // Controller #1
+
+    // Intake 
     stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, ()-> 1.0));
     stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, ()-> -1.0));
+
+    // Intake Slide System
+    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
+    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
+
+    // Pneumatic Claw
     stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
     stick2.RB.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
 
-    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> -1.0));
-    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, ()-> 1.0));
     //stick2.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(), m_armExtendSystem));
     //stick2.Start.onTrue(new InstantCommand(() -> m_armSystem.resetSensors(), m_armSystem));
 
     
-    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
 
     
   }
@@ -187,7 +194,6 @@ public class RobotContainer {
     public Double getAimCommand() {
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
       double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      // System.out.println(control);
       return control;
     }
 }
