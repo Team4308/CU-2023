@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
@@ -42,9 +41,6 @@ public class DriveSystem extends TankDriveSubsystem {
         masterLeft.setInverted(TalonFXInvertType.CounterClockwise);
         masterRight.setInverted(TalonFXInvertType.Clockwise);
 
-        // Set slaves to follow masters
-
-       
 
         // Change Config For All Controllers
         for (TalonFX talon : controllersFX) {

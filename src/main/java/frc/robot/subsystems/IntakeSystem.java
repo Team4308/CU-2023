@@ -19,11 +19,7 @@ public class IntakeSystem extends MotoredSubsystem {
 
     public IntakeSystem() {
         // Setup and Add Controllers
-
-        // for rotating arm up and down
         intakeMotor = new VictorSPX(Constants.Mapping.Intake.slideMotor);
-
-        // for extending and retracting arm
 
         controllersSPX.add(intakeMotor);
 
@@ -67,9 +63,6 @@ public class IntakeSystem extends MotoredSubsystem {
 
     @Override
     public Sendable log() {
-        // Shuffleboard.getTab("Log").addNumber("Intake Pos", () -> (intakeMotor));
-        // Shuffleboard.getTab("Log").addNumber("Arm Extension Pos", () ->
-        // getSensorPosition(slideMotor));
         return this;
     }
 }

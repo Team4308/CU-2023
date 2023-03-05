@@ -25,16 +25,11 @@ import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.IntakeSlideSystem;
 import frc.robot.subsystems.IntakeSystem;
-import frc.robot.subsystems.ClawSystem;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
