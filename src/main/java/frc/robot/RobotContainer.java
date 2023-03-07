@@ -141,7 +141,7 @@ public class RobotContainer {
     stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.onTrue(new DockingCommand(m_driveSystem));
+    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
 
     // Controller #1
