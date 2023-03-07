@@ -21,7 +21,7 @@ public class RangeCommand extends CommandBase {
     public RangeCommand(DriveSystem subsystem, Supplier<Double> control) {
         m_subsystem = subsystem;
         this.control = control;
-        range_controller.setSetpoint(40.0);
+        range_controller.setSetpoint(0.0);
         range_controller.setTolerance(Constants.Config.Drive.RangeControl.kTolerance);
 
         addRequirements(m_subsystem);

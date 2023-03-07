@@ -195,6 +195,10 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
         Shuffleboard.getTab("Log").addDouble("Distance", () -> getDistance());
+        
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        double ty = table.getEntry("ty").getDouble(0.0);
+        Shuffleboard.getTab("Log").addDouble("ty", () -> ty);
 
         return this;
     }
