@@ -12,19 +12,25 @@ public class ClawSystem extends LogSubsystem {
 
     public ClawSystem() {
         solenoid1 = new DoubleSolenoid(8, PneumaticsModuleType.CTREPCM, 1, 2);
+        solenoid1.set(Value.kForward);
     }
 
     /**
      * Getters And Setters
      */
 
-    public void retract() {
-        solenoid1.set(Value.kReverse);
+    public void toggle() {
+        Value state = solenoid1.get();
+        if(state==Value.kForward){
+            solenoid1.set(Value.kReverse);
+        }
+        else{
+            solenoid1.set(Value.kForward);
+        }
+        
     }
 
-    public void extend() {
-        solenoid1.set(Value.kForward);
-    }
+    
 
     @Override
     public Sendable log() {

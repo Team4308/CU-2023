@@ -12,6 +12,10 @@ import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
@@ -50,7 +54,7 @@ public class RobotContainer {
   // Subsystems
   public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
   private final DriveSystem m_driveSystem;
-  private final ArmRotateSystem m_armSystem;
+  private final ArmRotateSystem m_armRotateSystem;
   private final ArmExtendSystem m_armExtendSystem;
   private final IntakeSystem m_intakeSystem;
   private final IntakeSlideSystem m_intakeSlideSystem;
@@ -78,8 +82,8 @@ public class RobotContainer {
 
     m_driveSystem = new DriveSystem();
     subsystems.add(m_driveSystem);
-    m_armSystem = new ArmRotateSystem();
-    subsystems.add(m_armSystem);
+    m_armRotateSystem = new ArmRotateSystem();
+    subsystems.add(m_armRotateSystem);
     m_armExtendSystem = new ArmExtendSystem();
     subsystems.add(m_armExtendSystem);
     m_intakeSystem = new IntakeSystem();
@@ -94,8 +98,8 @@ public class RobotContainer {
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
 
-    armRotateCommand = new ArmRotateCommand(m_armSystem, () -> getArmRotateControl());
-    m_armSystem.setDefaultCommand(armRotateCommand);
+    armRotateCommand = new ArmRotateCommand(m_armRotateSystem, () -> getArmRotateControl());
+    m_armRotateSystem.setDefaultCommand(armRotateCommand);
 
     armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
     m_armExtendSystem.setDefaultCommand(armExtendCommand);
@@ -103,7 +107,7 @@ public class RobotContainer {
     intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
     m_intakeSystem.setDefaultCommand(intakeCommand);
 
-    intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
+    intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> getIntakeSlideControl());
     m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
     // Auto
@@ -145,13 +149,16 @@ public class RobotContainer {
     stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, () -> 1.0));
     stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, () -> -1.0));
 
-    // Intake Slide System
-    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> -1.0));
-    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> 1.0));
-
     // Pneumatic Claw
-    stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.extend(), m_clawSystem));
-    stick2.RB.onTrue(new InstantCommand(() -> m_clawSystem.retract(), m_clawSystem));
+    stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
+  
+
+    //Arm Auto-Position
+
+    //High Node
+    stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new ArmRotateCommand(m_armRotateSystem, () -> 0.0),  new ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    //Middle Node
+    stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new ArmRotateCommand(m_armRotateSystem, () -> 0.0),  new ArmExtendCommand(m_armExtendSystem, ()->0.0)));
 
     // stick2.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(),
     // m_armExtendSystem));
@@ -178,6 +185,8 @@ public class RobotContainer {
     return control;
   }
 
+
+
   public Double getArmRotateControl() {
     if (stick2.getLeftTrigger() > 0) {
       return stick2.getLeftTrigger() * 0.4;
@@ -195,6 +204,15 @@ public class RobotContainer {
     return control.y;
   }
 
+  public Double getIntakeSlideControl() {
+    double y = DoubleUtils.normalize(stick2.getRightY());
+    Vector2 control = new Vector2(0.0, y);
+    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
+    control = JoystickHelper.clampStick(control);
+    return control.y;
+  }
+
+  
   public Double getRangeCommand() {
     m_limelightSystem.setPipeline(2);
     return m_limelightSystem.getXAngle();
@@ -207,4 +225,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
       return autoCommandChooser.getSelected();
   }
+
+
 }
