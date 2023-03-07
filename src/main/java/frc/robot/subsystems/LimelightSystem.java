@@ -48,9 +48,9 @@ public class LimelightSystem extends LogSubsystem {
 
     public void toggleCamera() {
         double mode = limelight.getEntry("camMode").getDouble(0);
-        mode++;
         if (mode == 0) {
             limelight.getEntry("camMode").setNumber(1);
+            mode++;
         } else {
             mode = 0;
             limelight.getEntry("camMode").setNumber(0);
