@@ -13,6 +13,7 @@ import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 
@@ -31,7 +32,8 @@ public class DriveSystem extends TankDriveSubsystem {
     public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     //Beambreaks
-    
+    public final DigitalInput frontLineBreak;
+    public final DigitalInput backLineBreak;
 
     // Init
     public DriveSystem() {
@@ -40,10 +42,14 @@ public class DriveSystem extends TankDriveSubsystem {
         controllersFX.add(masterLeft);
         masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
         controllersFX.add(masterRight);
+
+        backLineBreak = new DigitalInput(3); // DIO 1
+        frontLineBreak = new DigitalInput(4); // DIO 0
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
         }
+
 
         // Set Invert Mode
         masterLeft.setInverted(TalonFXInvertType.CounterClockwise);
