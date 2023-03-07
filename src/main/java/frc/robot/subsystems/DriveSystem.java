@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 
@@ -24,6 +25,9 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Controllers
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
+
+    // IMU
+    public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     // Init
     public DriveSystem() {

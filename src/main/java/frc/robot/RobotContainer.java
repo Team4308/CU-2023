@@ -18,6 +18,7 @@ import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
+import frc.robot.commands.auto.groups.Balance;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.PipelineCommand;
 
@@ -28,11 +29,12 @@ import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.IntakeSlideSystem;
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.LimelightSystem;
-
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,6 +47,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class RobotContainer {
 
+  // Subsystems
   public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
   private final DriveSystem m_driveSystem;
   private final ArmRotateSystem m_armSystem;
@@ -54,14 +57,22 @@ public class RobotContainer {
   private final ClawSystem m_clawSystem;
   private final LimelightSystem m_limelightSystem;
 
+
+  // Commands
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
   private final IntakeSlideCommand intakeSlideCommand;
 
+  // Controllers
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
+
+  // Auto
+  private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
+
+  private final Balance balance;
 
   public RobotContainer() {
 
@@ -94,6 +105,12 @@ public class RobotContainer {
 
     intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> 0.0);
     m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
+
+    // Auto
+
+    balance = new Balance(m_driveSystem);
+
+    autoCommandChooser.setDefaultOption("Dock Immediately", balance);
 
     configureBindings();
   }
@@ -169,9 +186,6 @@ public class RobotContainer {
     return 0.0;
   }
 
-  // if the arm doesn't extend it's probably the getAsBoolean
-  // when kevin was making the XBoxWrapper file he accidentally switched trigger
-  // and bumper methods or something along those lines
   public Double getArmExtendControl() {
     double y = DoubleUtils.normalize(stick2.getLeftY());
     Vector2 control = new Vector2(0.0, y);
@@ -208,5 +222,9 @@ public class RobotContainer {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
     double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     return control;
+  }
+  
+  public Command getAutonomousCommand() {
+      return autoCommandChooser.getSelected();
   }
 }
