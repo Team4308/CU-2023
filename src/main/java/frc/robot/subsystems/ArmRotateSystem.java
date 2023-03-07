@@ -45,6 +45,7 @@ public class ArmRotateSystem extends MotoredSubsystem {
         motor1.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder, 0, Constants.Generic.timeoutMs);
 
         // Reset
+        resetSensors();
         stopControllers();
     }
     public void resetSensors() {
