@@ -81,7 +81,7 @@ public final class Constants {
                 public static double kP = 0.01;
                 public static double kI = 0.0;
                 public static double kD = 0.0;
-                public static double kTolerance = 1;
+                public static double kTolerance = 1.0;
             }
 
             public static class PitchControl {

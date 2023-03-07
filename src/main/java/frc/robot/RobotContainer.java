@@ -195,12 +195,14 @@ public class RobotContainer {
   }
 
   public Double getRangeCommand() {
-    double control = m_limelightSystem.getXAngle();
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
+    double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     return control;
   }
 
   public Double getAimCommand() {
-    double control = m_limelightSystem.getYAngle();
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
+    double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     return control;
   }
   
