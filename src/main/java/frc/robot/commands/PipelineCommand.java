@@ -17,12 +17,12 @@ public class PipelineCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        isClicked = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        isClicked = false;
         if(!isClicked){
             double pipeline = m_subsystem.getPipeline();
             pipeline++;
@@ -40,5 +40,4 @@ public class PipelineCommand extends CommandBase {
     public void end(boolean interrupted) {
         isClicked = false;
     }
-
 }
