@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 
@@ -155,6 +156,10 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.selectProfileSlot(slot, 0);
     }
 
+    public void resetAngle(){
+        gyro.reset();
+    }
+
     public void stopControllers() {
         masterLeft.set(TalonFXControlMode.PercentOutput, 0.0);
         masterRight.set(TalonFXControlMode.PercentOutput, 0.0);
@@ -198,6 +203,7 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
         Shuffleboard.getTab("Log").addDouble("Distance", () -> getDistance());
+        Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
         return this;
     }
 }
