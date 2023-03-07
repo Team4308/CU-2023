@@ -33,7 +33,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
@@ -195,15 +194,12 @@ public class RobotContainer {
   }
 
   public Double getRangeCommand() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
-    double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    return control;
+    m_limelightSystem.setPipeline(2);
+    return m_limelightSystem.getXAngle();
   }
 
   public Double getAimCommand() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
-    double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    return control;
+    return m_limelightSystem.getXAngle();
   }
   
   public Command getAutonomousCommand() {
