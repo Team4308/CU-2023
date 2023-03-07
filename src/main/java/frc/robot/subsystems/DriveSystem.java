@@ -210,6 +210,7 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
         Shuffleboard.getTab("Log").addDouble("Distance", () -> getDistance());
         Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
+        Shuffleboard.getTab("Log").addDouble("z accel", ()-> gyro.getAccelZ());
         return this;
     }
 }
