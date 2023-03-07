@@ -16,6 +16,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
+import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
 import frc.robot.commands.auto.groups.Balance;
@@ -136,6 +137,7 @@ public class RobotContainer {
     stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.onTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
+    stick.LB.onTrue(new DockingCommand(m_driveSystem));
 
     // Controller #1
 
