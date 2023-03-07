@@ -20,9 +20,16 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import edu.wpi.first.wpilibj.PWM;
+
+
 public class DriveSystem extends TankDriveSubsystem {
 
-    // Master Controllers
+    public final PWM ledR;
+    public final PWM ledG;
+    public final PWM ledB;
+        // Master Controllers
+    
 
     public final TalonSRX masterLeft, masterRight;
     // Slave Controllers
@@ -32,13 +39,19 @@ public class DriveSystem extends TankDriveSubsystem {
     private ArrayList<TalonSRX> controllers = new ArrayList<TalonSRX>();
 
     // IMU
-    public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+    // public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     // Init
     public DriveSystem() {
+        ledR = new PWM(1);
+        ledG = new PWM(2);
+        ledB = new PWM(0);
 
-        gyro.setYawAxis(IMUAxis.kX); // changes the yaw axis; kZ by default
-
+        ledR.setRaw(0);
+        ledG.setRaw(0);
+        ledB.setRaw(0);
+        // gyro.setYawAxis(IMUAxis.kX); // changes the yaw axis; kZ by default
+        
         // Setup and Add Controllers
         masterLeft = new TalonSRX(Constants.Mapping.Drive.frontLeft);
         controllers.add(masterLeft);
@@ -155,14 +168,6 @@ public class DriveSystem extends TankDriveSubsystem {
      * Misc Stuff
      */
 
-    public static Double getPitch(){
-        return 180 * Math.atan(gyro.getAccelX()/Math.sqrt(gyro.getAccelY()*gyro.getAccelY() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +1.5;
-    }
-
-    public static Double getRoll(){
-        return 180 * Math.atan(gyro.getAccelY()/Math.sqrt(gyro.getAccelX()*gyro.getAccelX() + gyro.getAccelZ()*gyro.getAccelZ()))/Math.PI +2.5;
-    }
-
     public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
         masterRight.set(mode, right);
@@ -174,7 +179,7 @@ public class DriveSystem extends TankDriveSubsystem {
     }
 
     public void resetAngle(){
-        gyro.reset();
+        // gyro.reset();
     }
 
     public void stopControllers() {
@@ -214,6 +219,7 @@ public class DriveSystem extends TankDriveSubsystem {
     @Override
     public Sendable log() { 
         // IMU 
+        /* 
         Shuffleboard.getTab("Log").addDouble("AccelX", ()-> gyro.getAccelX());
         Shuffleboard.getTab("Log").addDouble("AccelY", ()-> gyro.getAccelY());
         Shuffleboard.getTab("Log").addDouble("AccelZ", ()-> gyro.getAccelZ());
@@ -222,7 +228,7 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addDouble("Pitch",()-> getPitch());
         Shuffleboard.getTab("Log").addDouble("Roll",()-> getRoll());
         Shuffleboard.getTab("Log").addDouble("XFilteredAngle",()-> gyro.getXFilteredAccelAngle());
-        Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle());
+        Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle()); */
         Shuffleboard.getTab("Log").addDouble("Distance",()-> getDistance());
 
         return this;
