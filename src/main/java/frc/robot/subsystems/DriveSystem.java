@@ -20,14 +20,15 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.DigitalOutput;
 
 
 public class DriveSystem extends TankDriveSubsystem {
 
-    public final PWM ledR;
-    public final PWM ledG;
-    public final PWM ledB;
+    public final DigitalOutput ledR;
+    public final DigitalOutput ledG;
+    public final DigitalOutput ledB;
+    public boolean toggle; 
         // Master Controllers
     
 
@@ -43,13 +44,16 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Init
     public DriveSystem() {
-        ledR = new PWM(1);
-        ledG = new PWM(2);
-        ledB = new PWM(0);
-
-        ledR.setRaw(0);
-        ledG.setRaw(0);
-        ledB.setRaw(0);
+        ledR = new DigitalOutput(1);
+        ledG = new DigitalOutput(2);
+        ledB = new DigitalOutput(0);
+        ledR.setPWMRate(1000);
+        ledG.setPWMRate(1000);
+        ledB.setPWMRate(1000);
+        ledR.enablePWM(0);
+        ledG.enablePWM(0);
+        ledB.enablePWM(0);
+        toggle = false;
         // gyro.setYawAxis(IMUAxis.kX); // changes the yaw axis; kZ by default
         
         // Setup and Add Controllers
@@ -173,6 +177,20 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.set(mode, right);
     }
 
+    public void setLEDoutput(){
+        if(toggle){
+                ledR.updateDutyCycle(0.5);
+                ledG.updateDutyCycle(0.5);
+                ledB.updateDutyCycle(0.5);
+                toggle = false;
+        }else{
+                ledR.updateDutyCycle(0);
+                ledG.updateDutyCycle(0);
+                ledB.updateDutyCycle(0);
+                toggle = true;
+        }
+    }
+
     public void selectProfileSlot(int slot) {
         masterLeft.selectProfileSlot(slot, 0);
         masterRight.selectProfileSlot(slot, 0);
@@ -230,6 +248,7 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addDouble("XFilteredAngle",()-> gyro.getXFilteredAccelAngle());
         Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle()); */
         Shuffleboard.getTab("Log").addDouble("Distance",()-> getDistance());
+        Shuffleboard.getTab("Log").addBoolean("LED",()-> toggle);
 
         return this;
     }
