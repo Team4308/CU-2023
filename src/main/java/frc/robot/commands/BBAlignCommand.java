@@ -24,15 +24,15 @@ public class BBAlignCommand {
 
     // Called every time the scheduler runs while the command is scheduled.
     public void execute() {
-        Boolean frontLineBreak = DriveSystem.frontLineBreak.get();
-        Boolean backLineBreak = DriveSystem.backLineBreak.get();
+        Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
+        Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
 
-        if (!frontLineBreak == true && backLineBreak == true) {
-            if (frontLineBreak == true) {
+        if (!leftLineBreak == true && rightLineBreak == true) {
+            if (leftLineBreak == true) {
                 double output = 0.01;
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), -output, output);
             }
-            if (backLineBreak == true) {
+            if (rightLineBreak == true) {
                 double output = 0.01;
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, -output);
             }

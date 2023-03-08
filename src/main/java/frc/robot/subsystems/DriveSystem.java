@@ -33,13 +33,8 @@ public class DriveSystem extends TankDriveSubsystem {
     public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     //Beambreaks
-<<<<<<< HEAD
-    public static DigitalInput frontLineBreak;
-    public static DigitalInput backLineBreak;
-=======
-    public final DigitalInput rightLineBreak;
-    public final DigitalInput leftLineBreak;
->>>>>>> 87b4f9cde7e90a06f2c9c79a6e2fb40967798953
+    public static DigitalInput leftLineBreak;
+    public static DigitalInput rightLineBreak;
 
     // Init
     public DriveSystem() {
@@ -51,8 +46,8 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
         controllersFX.add(masterRight);
 
-        rightLineBreak = new DigitalInput(3); // DIO 3
-        leftLineBreak = new DigitalInput(4); // DIO 4
+        leftLineBreak = new DigitalInput(0); // DIO 3
+        rightLineBreak = new DigitalInput(1); // DIO 4
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
