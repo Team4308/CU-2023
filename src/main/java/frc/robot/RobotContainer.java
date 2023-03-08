@@ -21,6 +21,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
+import frc.robot.commands.BBAlignCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
 import frc.robot.commands.AimCommand;
@@ -176,6 +177,8 @@ public class RobotContainer {
     // stick2.Start.onTrue(new InstantCommand(() -> m_armSystem.resetSensors(),
     // m_armSystem));
 
+    //Beambreak
+    stick2.RB.whileTrue(new BBAlignCommand(m_driveSystem));
   }
 
   /**

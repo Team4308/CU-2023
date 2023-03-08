@@ -11,9 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -33,8 +33,8 @@ public class DriveSystem extends TankDriveSubsystem {
     public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     //Beambreaks
-    public final DigitalInput frontLineBreak;
-    public final DigitalInput backLineBreak;
+    public static DigitalInput frontLineBreak;
+    public static DigitalInput backLineBreak;
 
     // Init
     public DriveSystem() {
