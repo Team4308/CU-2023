@@ -33,8 +33,13 @@ public class DriveSystem extends TankDriveSubsystem {
     public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
     //Beambreaks
+<<<<<<< HEAD
     public static DigitalInput frontLineBreak;
     public static DigitalInput backLineBreak;
+=======
+    public final DigitalInput rightLineBreak;
+    public final DigitalInput leftLineBreak;
+>>>>>>> 87b4f9cde7e90a06f2c9c79a6e2fb40967798953
 
     // Init
     public DriveSystem() {
@@ -46,8 +51,8 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
         controllersFX.add(masterRight);
 
-        backLineBreak = new DigitalInput(3); // DIO 1
-        frontLineBreak = new DigitalInput(4); // DIO 0
+        rightLineBreak = new DigitalInput(3); // DIO 3
+        leftLineBreak = new DigitalInput(4); // DIO 4
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
@@ -118,7 +123,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterLeft.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
-
+        masterLeft.setNeutralMode(NeutralMode.Coast);
+        masterLeft.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
         masterRight.config_kP(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
         masterRight.config_kI(Constants.Config.Drive.MotionMagic.profileSlot,
@@ -127,6 +133,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterRight.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
+        masterRight.setNeutralMode(NeutralMode.Coast);
+        masterRight.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
 
         // Reset
         stopControllers();
