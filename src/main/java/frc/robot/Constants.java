@@ -95,7 +95,7 @@ public final class Constants {
                 public static int profileSlot = 0;
 
                 public static class Left {
-                    public static double kP = 0.055;
+                    public static double kP = 0.1;
                     public static double kI = 0.0;
                     public static double kD = 1.45;
                     public static double kF = 0.0468;
