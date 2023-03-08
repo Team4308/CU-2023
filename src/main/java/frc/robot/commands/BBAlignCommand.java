@@ -2,9 +2,6 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
-import ca.team4308.absolutelib.math.DoubleUtils;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSystem;
 
@@ -26,14 +23,13 @@ public class BBAlignCommand {
     public void execute() {
         Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
         Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
+        double output = 0.01;
 
-        if (!leftLineBreak == true && rightLineBreak == true) {
-            if (leftLineBreak == true) {
-                double output = 0.01;
+        if (!(!leftLineBreak == true && !rightLineBreak == true)) {
+            if (!leftLineBreak == true) {
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), -output, output);
             }
-            if (rightLineBreak == true) {
-                double output = 0.01;
+            if (!rightLineBreak == true) {
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, -output);
             }
         }
