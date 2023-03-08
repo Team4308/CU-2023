@@ -58,8 +58,8 @@ public final class Constants {
                 public static final double kInchesPerRotation = kWheelDiameter * Math.PI;
                 public static final double kSensorUnitsPerRotation = 2048; // 2048 for talonfx
                 public static final double kEncoderInchesPerCount = kInchesPerRotation / kSensorUnitsPerRotation;
-
-                public static final double kGearRatio = (14.0 * 16.0) / (50.0 * 48.0);
+                    // input, small cluster, / large cluster, output
+                public static final double kGearRatio = (14.0 * 22.0) / (50.0 * 52.0);
             }
 
             public static class Power {
@@ -112,18 +112,18 @@ public final class Constants {
             public static class MotionMagic {
                 public static int profileSlot = 1;
 
-                public static int maxVel = 15000;
-                public static int maxAcc = 6000;
+                public static int maxVel = 5000;
+                public static int maxAcc = 3000;
 
                 public static class Left {
-                    public static double kP = 0.3;
+                    public static double kP = 0.004;
                     public static double kI = 0.0;
                     public static double kD = 0.01;
                     public static double kF = 0.0;
                 }
 
                 public static class Right {
-                    public static double kP = 0.3;
+                    public static double kP = 0.004;
                     public static double kI = 0.0;
                     public static double kD = 0.01;
                     public static double kF = 0.0;
