@@ -37,6 +37,8 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Init
     public DriveSystem() {
+        gyro.setYawAxis(IMUAxis.kX);
+
         // Setup and Add Controllers
         masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
         controllersFX.add(masterLeft);

@@ -35,7 +35,7 @@ public class DockingCommand extends CommandBase {
     public void execute() {
         double roll = DriveSystem.gyro.getAngle();
         double output = DoubleUtils.clamp(pitchController.calculate(roll), -1.0, 1.0);
-        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), -output, -output);
+        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
 
     }
 
