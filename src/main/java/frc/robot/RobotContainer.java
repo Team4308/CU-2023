@@ -23,7 +23,6 @@ import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.RangeCommand;
-import frc.robot.commands.auto.groups.Balance;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.PipelineCommand;
 
@@ -39,6 +38,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.auto.groups.Balance;
+import frc.robot.commands.auto.groups.Basic;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -77,6 +79,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
   private final Balance balance;
+  private final Basic basic;
 
   public RobotContainer() {
 
@@ -114,7 +117,13 @@ public class RobotContainer {
 
     balance = new Balance(m_driveSystem);
 
+    basic = new Basic(m_driveSystem);
+
     autoCommandChooser.setDefaultOption("Dock Immediately", balance);
+
+    autoCommandChooser.addOption("Backwards 0.5m", basic);
+
+    SmartDashboard.putData(autoCommandChooser);
 
     configureBindings();
   }
@@ -141,7 +150,7 @@ public class RobotContainer {
     stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.onTrue(new DockingCommand(m_driveSystem));
+    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
 
     // Controller #1

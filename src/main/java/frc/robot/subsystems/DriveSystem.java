@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -37,6 +38,8 @@ public class DriveSystem extends TankDriveSubsystem {
 
     // Init
     public DriveSystem() {
+        gyro.setYawAxis(IMUAxis.kX);
+
         // Setup and Add Controllers
         masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
         controllersFX.add(masterLeft);
@@ -210,6 +213,7 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
         Shuffleboard.getTab("Log").addDouble("Distance", () -> getDistance());
         Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
+        Shuffleboard.getTab("Log").addDouble("z accel", ()-> gyro.getAccelZ());
         return this;
     }
 }

@@ -77,6 +77,7 @@ public class ArmExtendSystem extends MotoredSubsystem {
     @Override
     public Sendable log() {
         Shuffleboard.getTab("Log").addNumber("Arm Extension Pos", () -> getSensorPosition());
+        Shuffleboard.getTab("Log").addNumber("Arm Extension Current", () -> motor2.getStatorCurrent());
         return this;
     }
 }
