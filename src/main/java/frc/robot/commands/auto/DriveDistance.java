@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import edu.wpi.first.math.util.Units;
@@ -27,6 +28,8 @@ public class DriveDistance extends CommandBase {
         this.m_subsystem.resetSensors();
         this.m_subsystem.masterLeft.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
         this.m_subsystem.masterRight.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
+        m_subsystem.masterLeft.setNeutralMode(NeutralMode.Brake);
+        m_subsystem.masterRight.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -34,14 +37,13 @@ public class DriveDistance extends CommandBase {
         double encoderDistance = (Units.metersToInches(this.meters)
                 / Constants.Config.Drive.Kinematics.kEncoderInchesPerCount);
         encoderDistance /= Constants.Config.Drive.Kinematics.kGearRatio;
-
+ 
         m_subsystem.masterLeft.set(TalonFXControlMode.MotionMagic, encoderDistance);
         m_subsystem.masterRight.set(TalonFXControlMode.MotionMagic, encoderDistance);
-
-        if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistance + 5
-                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 5
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistance + 5
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistance - 5) {
+        if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistance + 1
+                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 1
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistance + 1
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistance -1) {
             withinThresholdLoops += 1;
         } else {
             withinThresholdLoops = 0;
