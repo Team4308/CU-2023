@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice; 
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
@@ -21,19 +21,18 @@ public class ArmExtendSystem extends MotoredSubsystem {
     public ArmExtendSystem() {
         // Setup and Add Controllers
 
-
         // for extending and retracting arm
         motor2 = new TalonFX(Constants.Mapping.Arm.motor2);
 
         controllersFX.add(motor2);
 
         // Reset Config for all
-        for(TalonFX talon : controllersFX) {
+        for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
         }
 
         // Change Config For All Controllers
-       for (TalonFX talon : controllersFX) {
+        for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
             talon.configOpenloopRamp(Constants.Config.Drive.Power.kOpenLoopRamp, Constants.Generic.timeoutMs);
             talon.configClosedloopRamp(Constants.Config.Drive.Power.kClosedLoopRamp, Constants.Generic.timeoutMs);
@@ -50,6 +49,7 @@ public class ArmExtendSystem extends MotoredSubsystem {
         resetSensors();
         stopControllers();
     }
+
     public void resetSensors() {
         motor2.setSelectedSensorPosition(0);
     }

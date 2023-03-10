@@ -12,10 +12,7 @@ import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -175,11 +172,6 @@ public class RobotContainer {
     //Middle Node
     // stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new ArmRotateCommand(m_armRotateSystem, () -> 0.0),  new ArmExtendCommand(m_armExtendSystem, ()->0.0)));
 
-    // stick2.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(),
-    // m_armExtendSystem));
-    // stick2.Start.onTrue(new InstantCommand(() -> m_armSystem.resetSensors(),
-    // m_armSystem));
-
   }
 
   /**
@@ -199,17 +191,6 @@ public class RobotContainer {
 
     return control;
   }
-
-
-
-  // public Double getArmRotateControl() {
-  //   if (stick2.getLeftTrigger() > 0) {
-  //     return stick2.getLeftTrigger() * 0.4;
-  //   } else if (stick2.getRightTrigger() > 0) {
-  //     return -stick2.getRightTrigger() * 0.4;
-  //   }
-  //   return 0.0;
-  // }
 
   public Double getArmExtendControl() {
     double y = DoubleUtils.normalize(stick2.getLeftY());
@@ -235,7 +216,6 @@ public class RobotContainer {
     return control.y;
   }
 
-  
   public Double getRangeCommand() {
     m_limelightSystem.setPipeline(2);
     return m_limelightSystem.getXAngle();
