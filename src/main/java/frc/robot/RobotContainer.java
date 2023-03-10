@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
@@ -35,6 +36,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.groups.Balance;
@@ -67,7 +72,7 @@ public class RobotContainer {
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
-
+  private final LEDCommand ledCommand;
   // private final IntakeSlideCommand intakeSlideCommand;
 
   // Controllers
@@ -110,6 +115,9 @@ public class RobotContainer {
 
     intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
     m_intakeSystem.setDefaultCommand(intakeCommand);
+
+    ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
+    m_ledSystem.setDefaultCommand(ledCommand);
 
     // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
     // getIntakeSlideControl());
@@ -229,6 +237,26 @@ public class RobotContainer {
 
   public Double getAimCommand() {
     return m_limelightSystem.getXAngle();
+  }
+
+  public Integer getLEDCommand(){
+    Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
+    Boolean armExtended = m_armExtendSystem.checkIfExtend();
+    Boolean armRetracted = m_armExtendSystem.checkIfRetracted();
+
+    if(RobotController.getBatteryVoltage() <= 10.00) return 7; // low voltage
+
+    if(!armExtended && !armRetracted){
+      if(clawState == Value.kForward) return 1;
+      else return 2;
+    }else if(armExtended){
+      if(clawState == Value.kForward) return 3;
+      else return 4;
+    } else if(armRetracted){
+      if(clawState == Value.kForward) return 5;
+      else return 6;
+    }
+    return 8;
   }
 
   public Command getAutonomousCommand() {

@@ -16,7 +16,7 @@ public class ClawSystem extends LogSubsystem {
 
     public ClawSystem() {
         solenoid1 = new DoubleSolenoid(8, PneumaticsModuleType.CTREPCM, 1, 2);
-        solenoid1.set(Value.kForward);
+        solenoid1.set(Value.kForward); // in
 
         clawLineBreak = new DigitalInput(3);
     }
