@@ -35,7 +35,7 @@ public final class Constants {
             public static double kInputDeadband = 0.14;
 
             public static class Stick {
-                public static double kInputScale = 2;
+                public static double kInputScale = 2.0;
             }
         }
 
@@ -134,7 +134,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 2000;
+            public static double VelocityDriveRPM = 3000;
         }
     }
 }

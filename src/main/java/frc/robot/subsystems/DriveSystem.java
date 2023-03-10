@@ -46,8 +46,8 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
         controllersFX.add(masterRight);
 
-        leftLineBreak = new DigitalInput(0); // DIO 3
-        rightLineBreak = new DigitalInput(1); // DIO 4
+        leftLineBreak = new DigitalInput(4); // DIO 3
+        rightLineBreak = new DigitalInput(5); // DIO 4
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
@@ -160,7 +160,7 @@ public class DriveSystem extends TankDriveSubsystem {
      */
     public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
-        masterRight.set(mode, right);
+        // masterRight.set(mode, right);
     }
 
     public void selectProfileSlot(int slot) {
