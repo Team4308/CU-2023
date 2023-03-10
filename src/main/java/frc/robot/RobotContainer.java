@@ -20,7 +20,6 @@ import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
-import frc.robot.commands.RangeCommand;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.PipelineCommand;
 
@@ -60,7 +59,6 @@ public class RobotContainer {
   private final IntakeSlideSystem m_intakeSlideSystem;
   private final ClawSystem m_clawSystem;
   private final LimelightSystem m_limelightSystem;
-
 
   // Commands
   private final DriveCommand driveCommand;
@@ -108,7 +106,8 @@ public class RobotContainer {
     intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
     m_intakeSystem.setDefaultCommand(intakeCommand);
 
-    // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () -> getIntakeSlideControl());
+    // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
+    // getIntakeSlideControl());
     // m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
     // Auto
@@ -144,7 +143,6 @@ public class RobotContainer {
     // Controller #0
 
     // Limelight Functions
-    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
     stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
@@ -163,14 +161,17 @@ public class RobotContainer {
     // Pneumatic Claw
     stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
     stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
-  
 
-    //Arm Auto-Position
+    // Arm Auto-Position
 
-    //High Node
-    // stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new ArmRotateCommand(m_armRotateSystem, () -> 0.0),  new ArmExtendCommand(m_armExtendSystem, ()->0.0)));
-    //Middle Node
-    // stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new ArmRotateCommand(m_armRotateSystem, () -> 0.0),  new ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    // High Node
+    // stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
+    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
+    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    // Middle Node
+    // stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
+    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
+    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
 
   }
 
@@ -201,7 +202,7 @@ public class RobotContainer {
   }
 
   public Double getArmRotateControl() {
-    double y = (DoubleUtils.normalize(stick2.getRightY()))*-0.45;
+    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.45;
     Vector2 control = new Vector2(0.0, y);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.clampStick(control);
@@ -224,10 +225,9 @@ public class RobotContainer {
   public Double getAimCommand() {
     return m_limelightSystem.getXAngle();
   }
-  
-  public Command getAutonomousCommand() {
-      return autoCommandChooser.getSelected();
-  }
 
+  public Command getAutonomousCommand() {
+    return autoCommandChooser.getSelected();
+  }
 
 }
