@@ -6,9 +6,9 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import ca.team4308.absolutelib.math.DoubleUtils;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmRotateSystem;
-import edu.wpi.first.math.controller.PIDController;
 
 public class ArmRotateCommand extends CommandBase {
     private final ArmRotateSystem m_subsystem;
@@ -17,7 +17,6 @@ public class ArmRotateCommand extends CommandBase {
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
-
 
     // Init
     public ArmRotateCommand(ArmRotateSystem subsystem, Supplier<Double> control) {
@@ -43,7 +42,8 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, initialValue, initialValue + 40000));
+        angle_controller.setSetpoint(
+                DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, initialValue, initialValue + 40000));
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
 
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);

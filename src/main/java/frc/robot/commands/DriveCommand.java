@@ -40,13 +40,18 @@ public class DriveCommand extends CommandBase {
         leftTargetRPM += -control.x * Constants.DynConfig.Drive.VelocityDriveRPM;
         rightTargetRPM += control.x * Constants.DynConfig.Drive.VelocityDriveRPM;
 
-        leftTargetRPM = DoubleUtils.clamp(leftTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
-        rightTargetRPM = DoubleUtils.clamp(rightTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM, Constants.DynConfig.Drive.VelocityDriveRPM);
+        leftTargetRPM = DoubleUtils.clamp(leftTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM,
+                Constants.DynConfig.Drive.VelocityDriveRPM);
+        rightTargetRPM = DoubleUtils.clamp(rightTargetRPM, -Constants.DynConfig.Drive.VelocityDriveRPM,
+                Constants.DynConfig.Drive.VelocityDriveRPM);
 
-        double leftTargetUnitsPS = (leftTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
-        double rightTargetUnitsPS = (rightTargetRPM / 600.0) * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
+        double leftTargetUnitsPS = (leftTargetRPM / 600.0)
+                * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
+        double rightTargetUnitsPS = (rightTargetRPM / 600.0)
+                * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
 
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), -leftTargetUnitsPS, -rightTargetUnitsPS);
+        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), -leftTargetUnitsPS,
+                -rightTargetUnitsPS);
     }
 
     @Override

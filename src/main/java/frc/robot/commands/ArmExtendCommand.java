@@ -15,7 +15,7 @@ public class ArmExtendCommand extends CommandBase {
     private final Supplier<Double> control;
     private Double initialValue;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
-    Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
+            Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
 
     // Init
     public ArmExtendCommand(ArmExtendSystem subsystem, Supplier<Double> control) {
@@ -37,24 +37,20 @@ public class ArmExtendCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        if (control == 0.0){
+        if (control == 0.0) {
             // stop it at current
             extension_controller.setSetpoint(initialValue + 3000);
-            double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0, 1.0);
+            double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0,
+                    1.0);
             m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);
-        }else{
+        } else {
             m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control / 4);
             initialValue = m_subsystem.getSensorPosition();
         }
-/* 
-        extension_controller.setSetpoint(DoubleUtils.clamp(extension_controller.getSetpoint() + control * 1000, initialValue, initialValue + 40000));
-        double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0, 1.0);
- */
     }
 
     @Override
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();
     }
-
 }

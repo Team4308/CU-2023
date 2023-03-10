@@ -34,9 +34,9 @@ public class BBAlignCommand {
             }
         }
     }
-    
+
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();
     }
-    
+
 }

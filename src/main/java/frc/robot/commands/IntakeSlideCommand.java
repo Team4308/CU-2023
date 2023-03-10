@@ -10,7 +10,6 @@ import frc.robot.subsystems.IntakeSlideSystem;
 public class IntakeSlideCommand extends CommandBase {
     private final IntakeSlideSystem m_subsystem;
     private final Supplier<Double> control;
-    
 
     // Init
     public IntakeSlideCommand(IntakeSlideSystem subsystem, Supplier<Double> control) {
@@ -29,8 +28,8 @@ public class IntakeSlideCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        m_subsystem.setSlideOutput(VictorSPXControlMode.PercentOutput, control*0.5);
- 
+        m_subsystem.setSlideOutput(VictorSPXControlMode.PercentOutput, control * 0.5);
+
     }
 
     @Override

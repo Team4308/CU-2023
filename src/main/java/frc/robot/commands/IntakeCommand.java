@@ -10,7 +10,6 @@ import frc.robot.subsystems.IntakeSystem;
 public class IntakeCommand extends CommandBase {
     private final IntakeSystem m_subsystem;
     private final Supplier<Double> control;
-    
 
     // Init
     public IntakeCommand(IntakeSystem subsystem, Supplier<Double> control) {
@@ -29,8 +28,8 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        m_subsystem.setIntakeOutput(VictorSPXControlMode.PercentOutput, control*0.5);
- 
+        m_subsystem.setIntakeOutput(VictorSPXControlMode.PercentOutput, control * 0.5);
+
     }
 
     @Override

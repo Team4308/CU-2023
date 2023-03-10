@@ -22,13 +22,13 @@ public class PipelineCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        while(!isClicked){
+        while (!isClicked) {
             double pipeline = m_subsystem.getPipeline();
             pipeline++;
-            if (pipeline == 6){
+            if (pipeline == 6) {
                 pipeline = 0;
                 m_subsystem.setPipeline(0);
-            }else{
+            } else {
                 m_subsystem.setPipeline(pipeline);
             }
             isClicked = true;
