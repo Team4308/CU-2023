@@ -13,6 +13,7 @@ import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import frc.robot.Constants;
 
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
@@ -42,6 +43,10 @@ public class DriveSystem extends TankDriveSubsystem {
     // IMU
     // public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 
+    //Beambreaks
+    public static DigitalInput leftLineBreak;
+    public static DigitalInput rightLineBreak;
+
     // Init
     public DriveSystem() {
         ledR = new DigitalOutput(1);
@@ -65,6 +70,9 @@ public class DriveSystem extends TankDriveSubsystem {
         controllers.add(slaveLeft);
         slaveRight = new TalonSRX(Constants.Mapping.Drive.backRight);
         controllers.add(slaveRight);
+
+        leftLineBreak = new DigitalInput(4); // DIO 3
+        rightLineBreak = new DigitalInput(5); // DIO 4
 
         // Reset Config for all
         for (TalonSRX talon : controllers) {
@@ -249,6 +257,8 @@ public class DriveSystem extends TankDriveSubsystem {
         Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle()); */
         Shuffleboard.getTab("Log").addDouble("Distance",()-> getDistance());
         Shuffleboard.getTab("Log").addBoolean("LED",()-> toggle);
+        Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", ()-> leftLineBreak.get());
+        Shuffleboard.getTab("Log").addBoolean("RightLineBreak", ()-> rightLineBreak.get());
 
         return this;
     }
