@@ -219,7 +219,7 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.setSelectedSensorPosition(0);
     }
 
-    public Double getDistance(){
+    public Double getDistance() {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry ty = table.getEntry("ty");
 
@@ -245,13 +245,13 @@ public class DriveSystem extends TankDriveSubsystem {
     public void BBAlign(){
         Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
         Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
-        double output = 0.2;
+        final double output = 0.2;
 
         if (!leftLineBreak && rightLineBreak) {
-            setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
         }
         else if (!rightLineBreak && leftLineBreak) {
-            setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
         }
         else {
                 stopControllers();
