@@ -242,6 +242,22 @@ public class DriveSystem extends TankDriveSubsystem {
         return Math.abs(distanceCentimetres);
     }
 
+    public void BBAlign(){
+        Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
+        Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
+        double output = 0.01;
+
+        if (!(!leftLineBreak == true && !rightLineBreak == true)) {
+            
+            if (!leftLineBreak == true) {
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
+            }
+            if (!rightLineBreak == true) {
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
+            }
+        }
+    }
+
     @Override
     public Sendable log() { 
         // IMU 

@@ -69,6 +69,8 @@ public class RobotContainer {
     stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
     stick.B.onTrue(new InstantCommand(() -> m_driveSystem.setLEDoutput(), m_driveSystem));
+
+    stick2.B.whileTrue(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem));
   }
 
   /**

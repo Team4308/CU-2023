@@ -26,6 +26,7 @@ public class BBAlignCommand {
         double output = 0.01;
 
         if (!(!leftLineBreak == true && !rightLineBreak == true)) {
+            
             if (!leftLineBreak == true) {
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), -output, output);
             }
