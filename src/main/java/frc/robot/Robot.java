@@ -5,6 +5,8 @@
 package frc.robot;
 
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,6 +46,8 @@ public class Robot extends TimedRobot {
     for (LogSubsystem subsystem : m_robotContainer.subsystems) {
       Shuffleboard.getTab("Log").add(subsystem.log());
     }
+    Compressor compressor = new Compressor(8, PneumaticsModuleType.CTREPCM);
+    compressor.enableDigital();
 
   }
 
@@ -84,11 +88,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_autonomousCommand.schedule(); 
     }
   }
 

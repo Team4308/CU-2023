@@ -11,46 +11,56 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class DriveSystem extends TankDriveSubsystem {
     // Master Controllers
     public final TalonFX masterLeft, masterRight;
-    // Slave Controllers
-    private final TalonFX slaveLeft, slaveRight;
 
     // Controllers
-    private ArrayList<TalonFX> controllers = new ArrayList<TalonFX>();
+    private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
+
+    // IMU
+    public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+
+    //Beambreaks
+    public static DigitalInput leftLineBreak;
+    public static DigitalInput rightLineBreak;
 
     // Init
     public DriveSystem() {
-        // Setup and Add Controllers
-        masterLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
-        controllers.add(masterLeft);
-        masterRight = new TalonFX(Constants.Mapping.Drive.frontRight);
-        controllers.add(masterRight);
-        slaveLeft = new TalonFX(Constants.Mapping.Drive.backLeft);
-        controllers.add(slaveLeft);
-        slaveRight = new TalonFX(Constants.Mapping.Drive.backRight);
-        controllers.add(slaveRight);
+        gyro.setYawAxis(IMUAxis.kX);
 
+        // Setup and Add Controllers
+        masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
+        controllersFX.add(masterLeft);
+        masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
+        controllersFX.add(masterRight);
+
+        leftLineBreak = new DigitalInput(4); // DIO 3
+        rightLineBreak = new DigitalInput(5); // DIO 4
         // Reset Config for all
-        for (TalonFX talon : controllers) {
+        for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
         }
+
 
         // Set Invert Mode
         masterLeft.setInverted(TalonFXInvertType.CounterClockwise);
         masterRight.setInverted(TalonFXInvertType.Clockwise);
 
-        // Set slaves to follow masters
-        slaveLeft.follow(masterLeft);
-        slaveLeft.setInverted(TalonFXInvertType.FollowMaster);
-        slaveRight.follow(masterRight);
-        slaveRight.setInverted(TalonFXInvertType.FollowMaster);
 
         // Change Config For All Controllers
-        for (TalonFX talon : controllers) {
+        for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
 
             talon.configOpenloopRamp(Constants.Config.Drive.Power.kOpenLoopRamp, Constants.Generic.timeoutMs);
@@ -108,7 +118,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterLeft.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
-
+        masterLeft.setNeutralMode(NeutralMode.Coast);
+        masterLeft.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
         masterRight.config_kP(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
         masterRight.config_kI(Constants.Config.Drive.MotionMagic.profileSlot,
@@ -117,6 +128,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterRight.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
                 Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
+        masterRight.setNeutralMode(NeutralMode.Coast);
+        masterRight.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
 
         // Reset
         stopControllers();
@@ -147,12 +160,16 @@ public class DriveSystem extends TankDriveSubsystem {
      */
     public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
-        masterRight.set(mode, right);
+        // masterRight.set(mode, right);
     }
 
     public void selectProfileSlot(int slot) {
         masterLeft.selectProfileSlot(slot, 0);
         masterRight.selectProfileSlot(slot, 0);
+    }
+
+    public void resetAngle(){
+        gyro.reset();
     }
 
     public void stopControllers() {
@@ -166,6 +183,29 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.setSelectedSensorPosition(0);
     }
 
+    public Double getDistance(){
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry ty = table.getEntry("ty");
+
+        // angle between limelight and target
+        double targetOffsetAngle_Vertical = ty.getDouble(0.0);
+
+        // angle of elevation of limelight
+        double limeLightAngleDegrees = 0.0;
+
+        // vertical height of limelight from ground
+        double limeLightHeightCentimetres = 34.3;
+
+        // veritcal height of april tag from ground
+        double aprilTagHeightCentimetres = 31.1;
+
+        double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
+        double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
+        double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
+
+        return Math.abs(distanceCentimetres);
+    }
+
     @Override
     public Sendable log() {
         Shuffleboard.getTab("Log").addNumber("Left Vel",
@@ -174,6 +214,11 @@ public class DriveSystem extends TankDriveSubsystem {
                 () -> ((getRightSensorVelocity() / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
         Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
+        Shuffleboard.getTab("Log").addDouble("Distance", () -> getDistance());
+        Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
+        Shuffleboard.getTab("Log").addDouble("z accel", ()-> gyro.getAccelZ());
+        Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", ()-> leftLineBreak.get());
+        Shuffleboard.getTab("Log").addBoolean("RightLineBreak", ()-> rightLineBreak.get());
         return this;
     }
 }
