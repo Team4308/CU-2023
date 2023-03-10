@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeSlideCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
@@ -69,7 +70,7 @@ public class RobotContainer {
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
-
+  private final LEDCommand ledCommand;
   // private final IntakeSlideCommand intakeSlideCommand;
 
   // Controllers
@@ -113,8 +114,8 @@ public class RobotContainer {
     intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
     m_intakeSystem.setDefaultCommand(intakeCommand);
 
-    LEDCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand);
-    m_ledSystem.setDefaultCommand(LEDCommand);
+    ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
+    m_ledSystem.setDefaultCommand(ledCommand);
 
     // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
     // getIntakeSlideControl());
@@ -238,8 +239,8 @@ public class RobotContainer {
 
   public Integer getLEDCommand(){
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
-    bool armExtended = m_armExtendSystem.checkIfExtend();
-    bool armRetracted = m_armExtendSystem.checkIfRetracted();
+    Boolean armExtended = m_armExtendSystem.checkIfExtend();
+    Boolean armRetracted = m_armExtendSystem.checkIfRetracted();
 
     if(RobotController.getBatteryVoltage() <= 10.00) return 7; // low voltage
 

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.LEDSystem;
 
 public class LEDCommand extends CommandBase {
     private final LEDSystem m_subsystem;
