@@ -245,7 +245,7 @@ public class DriveSystem extends TankDriveSubsystem {
     public void BBAlign(){
         Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
         Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
-        double output = 0.3;
+        double output = 0.2;
 
         if (!leftLineBreak && rightLineBreak) {
             setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
@@ -253,7 +253,10 @@ public class DriveSystem extends TankDriveSubsystem {
         else if (!rightLineBreak && leftLineBreak) {
             setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
         }
-        else stopControllers();
+        else {
+                stopControllers();
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, output);
+        }
     }
 
     @Override
