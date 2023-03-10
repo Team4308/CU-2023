@@ -245,17 +245,15 @@ public class DriveSystem extends TankDriveSubsystem {
     public void BBAlign(){
         Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
         Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
-        double output = 0.01;
+        double output = 0.3;
 
-        if (!(!leftLineBreak == true && !rightLineBreak == true)) {
-            
-            if (!leftLineBreak == true) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
-            }
-            if (!rightLineBreak == true) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
-            }
+        if (!leftLineBreak && rightLineBreak) {
+            setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
         }
+        else if (!rightLineBreak && leftLineBreak) {
+            setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
+        }
+        else stopControllers();
     }
 
     @Override
