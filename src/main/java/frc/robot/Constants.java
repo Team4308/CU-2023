@@ -20,9 +20,10 @@ public final class Constants {
             public static int intakeMotor = 6;
             public static int slideMotor = 7;
         }
+
         public static class Claw {
             public static int PCM = 8;
-         
+
         }
     }
 
@@ -45,6 +46,7 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+
             public static class ExtensionControl {
                 public static double kP = 0.00001;
                 public static double kI = 0.0;
@@ -58,7 +60,7 @@ public final class Constants {
                 public static final double kInchesPerRotation = kWheelDiameter * Math.PI;
                 public static final double kSensorUnitsPerRotation = 2048; // 2048 for talonfx
                 public static final double kEncoderInchesPerCount = kInchesPerRotation / kSensorUnitsPerRotation;
-                    // input, small cluster, / large cluster, output
+                // input, small cluster, / large cluster, output
                 public static final double kGearRatio = (14.0 * 22.0) / (50.0 * 52.0);
             }
 

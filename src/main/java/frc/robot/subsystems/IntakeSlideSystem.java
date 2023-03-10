@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
 import edu.wpi.first.util.sendable.Sendable;
+
 import frc.robot.Constants;
 
 public class IntakeSlideSystem extends MotoredSubsystem {
@@ -19,8 +20,7 @@ public class IntakeSlideSystem extends MotoredSubsystem {
     public IntakeSlideSystem() {
         // Setup and Add Controllers
 
-        slideMotor = new VictorSPX(Constants.Mapping.Intake.intakeMotor);
-        // for extending and retracting arm
+        slideMotor = new VictorSPX(Constants.Mapping.Intake.slideMotor);
 
         controllersSPX.add(slideMotor);
 
@@ -41,7 +41,6 @@ public class IntakeSlideSystem extends MotoredSubsystem {
             SPX.enableVoltageCompensation(true);
         }
 
-        // Reset
         stopControllers();
     }
 

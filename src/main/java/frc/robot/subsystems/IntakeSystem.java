@@ -19,7 +19,7 @@ public class IntakeSystem extends MotoredSubsystem {
 
     public IntakeSystem() {
         // Setup and Add Controllers
-        intakeMotor = new VictorSPX(Constants.Mapping.Intake.slideMotor);
+        intakeMotor = new VictorSPX(Constants.Mapping.Intake.intakeMotor);
 
         controllersSPX.add(intakeMotor);
 

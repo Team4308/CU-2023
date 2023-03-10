@@ -11,14 +11,14 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 public class ClawSystem extends LogSubsystem {
     public final DoubleSolenoid solenoid1;
 
-    //Beambreak
+    // Beambreak
     public static DigitalInput clawLineBreak;
 
     public ClawSystem() {
         solenoid1 = new DoubleSolenoid(8, PneumaticsModuleType.CTREPCM, 1, 2);
         solenoid1.set(Value.kForward);
 
-        clawLineBreak = new DigitalInput(3); 
+        clawLineBreak = new DigitalInput(3);
     }
 
     /**
@@ -26,33 +26,23 @@ public class ClawSystem extends LogSubsystem {
      */
 
     public void toggle() {
-        Value state = solenoid1.get();
-        if(state==Value.kForward){
+        if (solenoid1.get() == Value.kForward) {
             solenoid1.set(Value.kReverse);
-        }
-        else{
+        } else {
             solenoid1.set(Value.kForward);
         }
-        
+
     }
 
     public boolean checkForObject() {
         return !clawLineBreak.get();
     }
 
-    public void BBclose(){
-        Value state = solenoid1.get();
-        if(state==Value.kReverse && checkForObject()){
+    public void BBclose() {
+        if (solenoid1.get() == Value.kReverse && checkForObject()) {
             solenoid1.set(Value.kForward);
         }
-        
     }
-
-    
-
-
-
-    
 
     @Override
     public Sendable log() {
