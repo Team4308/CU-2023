@@ -193,6 +193,23 @@ public class DriveSystem extends TankDriveSubsystem {
                 masterRight.setSelectedSensorPosition(0);
         }
 
+        public void BBAlign(){
+                Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
+                Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
+                final double output = 0.2;
+        
+                if (!leftLineBreak && rightLineBreak) {
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), -output, output);
+                }
+                else if (!rightLineBreak && leftLineBreak) {
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, -output);
+                }
+                else {
+                        stopControllers();
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
+                }
+            }
+
         @Override
         public Sendable log() {
                 Shuffleboard.getTab("Log").addNumber("Left Vel",
