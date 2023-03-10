@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
-
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
@@ -31,7 +31,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // IMU
         public static ADIS16470_IMU gyro = new ADIS16470_IMU();
-
+        public static DifferentialDriveOdometry odometry;
         // Beambreaks
         public static DigitalInput leftLineBreak;
         public static DigitalInput rightLineBreak;
