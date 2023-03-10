@@ -26,6 +26,9 @@ public class DriveSystem extends TankDriveSubsystem {
     // Master Controllers
     public final TalonFX masterLeft, masterRight;
 
+    // Slave Controllers
+    private final TalonFX slaveLeft, slaveRight;
+
     // Controllers
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
@@ -45,9 +48,13 @@ public class DriveSystem extends TankDriveSubsystem {
         controllersFX.add(masterLeft);
         masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
         controllersFX.add(masterRight);
+        slaveLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
+        controllersFX.add(slaveLeft);
+        slaveRight = new TalonFX(Constants.Mapping.Drive.backLeft);
+        controllersFX.add(slaveRight);
 
-        leftLineBreak = new DigitalInput(4); // DIO 3
-        rightLineBreak = new DigitalInput(5); // DIO 4
+        leftLineBreak = new DigitalInput(0); // DIO 3
+        rightLineBreak = new DigitalInput(1); // DIO 4
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
@@ -57,6 +64,11 @@ public class DriveSystem extends TankDriveSubsystem {
         // Set Invert Mode
         masterLeft.setInverted(TalonFXInvertType.CounterClockwise);
         masterRight.setInverted(TalonFXInvertType.Clockwise);
+        slaveLeft.follow(masterLeft);
+        slaveLeft.setInverted(TalonFXInvertType.FollowMaster);
+        slaveRight.follow(masterRight);
+        slaveRight.setInverted(TalonFXInvertType.FollowMaster);
+
 
 
         // Change Config For All Controllers
@@ -160,7 +172,7 @@ public class DriveSystem extends TankDriveSubsystem {
      */
     public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
-        // masterRight.set(mode, right);
+        masterRight.set(mode, right);
     }
 
     public void selectProfileSlot(int slot) {
