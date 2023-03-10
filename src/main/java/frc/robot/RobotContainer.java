@@ -29,6 +29,7 @@ import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.IntakeSlideSystem;
 import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.LimelightSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -59,12 +60,14 @@ public class RobotContainer {
   private final IntakeSlideSystem m_intakeSlideSystem;
   private final ClawSystem m_clawSystem;
   private final LimelightSystem m_limelightSystem;
+  private final LEDSystem m_ledSystem;
 
   // Commands
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
   private final IntakeCommand intakeCommand;
+
   // private final IntakeSlideCommand intakeSlideCommand;
 
   // Controllers
@@ -93,6 +96,8 @@ public class RobotContainer {
     subsystems.add(m_clawSystem);
     m_limelightSystem = new LimelightSystem();
     subsystems.add(m_limelightSystem);
+    m_ledSystem = new LEDSystem();
+    subsystems.add(m_ledSystem);
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
