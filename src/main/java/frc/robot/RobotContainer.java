@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.groups.Balance;
@@ -105,6 +107,9 @@ public class RobotContainer {
 
     intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
     m_intakeSystem.setDefaultCommand(intakeCommand);
+
+    LEDCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand);
+    m_ledSystem.setDefaultCommand(LEDCommand);
 
     // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
     // getIntakeSlideControl());
@@ -224,6 +229,26 @@ public class RobotContainer {
 
   public Double getAimCommand() {
     return m_limelightSystem.getXAngle();
+  }
+
+  public Integer getLEDCommand(){
+    Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
+    bool armExtended = m_armExtendSystem.checkIfExtend();
+    bool armRetracted = m_armExtendSystem.checkIfRetracted();
+
+    if(RobotController.getBatteryVoltage() <= 10.00) return 7; // low voltage
+
+    if(!armExtended && !armRetracted){
+      if(clawState == Value.kForward) return 1;
+      else return 2;
+    }else if(armExtended){
+      if(clawState == Value.kForward) return 3;
+      else return 4;
+    } else if(armRetracted){
+      if(clawState == Value.kForward) return 5;
+      else return 6;
+    }
+    return 8;
   }
 
   public Command getAutonomousCommand() {
