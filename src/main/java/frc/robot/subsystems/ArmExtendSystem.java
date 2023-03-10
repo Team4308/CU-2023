@@ -11,10 +11,14 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
 public class ArmExtendSystem extends MotoredSubsystem {
     public final TalonFX motor2;
+
+    // Beambreak
+    public static DigitalInput extendLineBreak;
 
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
@@ -25,6 +29,8 @@ public class ArmExtendSystem extends MotoredSubsystem {
         motor2 = new TalonFX(Constants.Mapping.Arm.motor2);
 
         controllersFX.add(motor2);
+
+        extendLineBreak = new DigitalInput(5);
 
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
@@ -72,6 +78,10 @@ public class ArmExtendSystem extends MotoredSubsystem {
 
     public void stopControllers() {
         motor2.set(TalonFXControlMode.PercentOutput, 0.0);
+    }
+
+    public boolean checkIfExtend() {
+        return !extendLineBreak.get();
     }
 
     @Override
