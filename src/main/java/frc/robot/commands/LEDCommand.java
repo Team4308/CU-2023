@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDSystem;
 
