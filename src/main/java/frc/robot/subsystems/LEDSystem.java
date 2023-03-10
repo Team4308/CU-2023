@@ -37,7 +37,6 @@ public class LEDSystem extends LogSubsystem {
 
     @Override
     public Sendable log() {
-        // TODO Auto-generated method stub
         return null;
     }
 }

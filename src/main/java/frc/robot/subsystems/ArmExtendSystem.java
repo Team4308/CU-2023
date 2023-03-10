@@ -18,7 +18,8 @@ public class ArmExtendSystem extends MotoredSubsystem {
     public final TalonFX motor2;
 
     // Beambreak
-    public static DigitalInput extendLineBreak;
+    public static DigitalInput extendSensor;
+    public static DigitalInput retractSensor;
 
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
@@ -30,7 +31,8 @@ public class ArmExtendSystem extends MotoredSubsystem {
 
         controllersFX.add(motor2);
 
-        extendLineBreak = new DigitalInput(5);
+        extendSensor = new DigitalInput(5);
+        retractSensor = new DigitalInput(6);
 
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
@@ -81,9 +83,12 @@ public class ArmExtendSystem extends MotoredSubsystem {
     }
 
     public boolean checkIfExtend() {
-        return !extendLineBreak.get();
+        return extendSensor.get();
     }
 
+    public boolean checkIfRetracted() {
+        return !retractSensor.get();
+    }
     @Override
     public Sendable log() {
         Shuffleboard.getTab("Log").addNumber("Arm Extension Pos", () -> getSensorPosition());
