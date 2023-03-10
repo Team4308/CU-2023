@@ -37,6 +37,10 @@ public class ArmExtendCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
+        if (m_subsystem.checkIfExtend()){
+            m_subsystem.resetSensors();
+            initialValue = (double)0;
+        }
         if (control == 0.0) {
             // stop it at current
             extension_controller.setSetpoint(initialValue + 3000);
