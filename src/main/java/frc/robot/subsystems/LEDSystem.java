@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
+import ca.team4308.absolutelib.wrapper.LogSubsystem;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
-public class LEDSystem {
+public class LEDSystem extends LogSubsystem {
 
     //INIT
     public final DigitalOutput ledR;
@@ -31,5 +33,11 @@ public class LEDSystem {
         ledG.updateDutyCycle(mapG);
         ledB.updateDutyCycle(mapB);
                 
+    }
+
+    @Override
+    public Sendable log() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
