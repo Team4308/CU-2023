@@ -141,6 +141,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Controller #0
+    
+    stick.A.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
 
     // Limelight Functions
     stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
