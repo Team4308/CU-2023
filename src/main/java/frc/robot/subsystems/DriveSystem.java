@@ -205,7 +205,7 @@ public class DriveSystem extends TankDriveSubsystem {
                         setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, -output);
                 }
                 else {
-                        stopControllers();
+                        //stopControllers();
                         setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
                 }
             }
