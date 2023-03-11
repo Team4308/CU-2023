@@ -12,9 +12,10 @@ public class LEDSystem extends LogSubsystem {
     public final DigitalOutput ledB;
 
     public LEDSystem() {
-        ledR = new DigitalOutput(1);
-        ledG = new DigitalOutput(2);
-        ledB = new DigitalOutput(0);
+        // On the final bot I'm going to put R on 0, G on 1, B on 2
+        ledR = new DigitalOutput(0);
+        ledG = new DigitalOutput(1);
+        ledB = new DigitalOutput(2);
         ledR.setPWMRate(1000);
         ledG.setPWMRate(1000);
         ledB.setPWMRate(1000);
