@@ -13,6 +13,7 @@ public class LimelightSystem extends LogSubsystem {
     // Init
     public LimelightSystem() {
         limelight = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     /**

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSystem;
 
@@ -22,6 +23,7 @@ public class AimCommand extends CommandBase {
         this.control = control;
         angle_controller.setSetpoint(0.0);
         angle_controller.setTolerance(Constants.Config.Drive.AngleControl.kTolerance);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
 
         addRequirements(m_subsystem);
     }
@@ -43,6 +45,7 @@ public class AimCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
 }
