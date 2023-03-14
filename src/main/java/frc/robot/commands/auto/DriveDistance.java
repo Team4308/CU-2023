@@ -11,9 +11,9 @@ import frc.robot.subsystems.DriveSystem;
 
 public class DriveDistance extends CommandBase {
     private DriveSystem m_subsystem;
-    private double meters = 0.0;
+    private double meters;
 
-    int withinThresholdLoops = 0;
+    int withinThresholdLoops;
 
     public DriveDistance(double meters, DriveSystem subsystem) {
         this.meters = meters;
@@ -26,9 +26,10 @@ public class DriveDistance extends CommandBase {
 
     @Override
     public void initialize() {
-        this.m_subsystem.resetSensors();
-        this.m_subsystem.masterLeft.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
-        this.m_subsystem.masterRight.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
+        m_subsystem.resetSensors();
+        m_subsystem.stopControllers();
+        m_subsystem.masterLeft.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
+        m_subsystem.masterRight.selectProfileSlot(Constants.Config.Drive.MotionMagic.profileSlot, 0);
         m_subsystem.masterLeft.setNeutralMode(NeutralMode.Brake);
         m_subsystem.masterRight.setNeutralMode(NeutralMode.Brake);
     }
@@ -45,7 +46,7 @@ public class DriveDistance extends CommandBase {
                 && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 1
                 && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistance + 1
                 && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistance - 1) {
-            withinThresholdLoops += 1;
+            withinThresholdLoops++;
         } else {
             withinThresholdLoops = 0;
         }

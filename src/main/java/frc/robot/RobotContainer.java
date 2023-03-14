@@ -40,7 +40,9 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.groups.Balance;
+import frc.robot.commands.auto.groups.Balance1;
+import frc.robot.commands.auto.groups.Balance2;
+import frc.robot.commands.auto.groups.NoBalance;
 import frc.robot.commands.auto.groups.Basic;
 
 /**
@@ -80,7 +82,9 @@ public class RobotContainer {
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
-  private final Balance balance;
+  private final Balance1 balance1;
+  private final Balance2 balance2;
+  private final NoBalance noBalance;
   private final Basic basic;
 
   public RobotContainer() {
@@ -123,13 +127,18 @@ public class RobotContainer {
 
     // Auto
 
-    balance = new Balance(m_driveSystem);
-
+    balance1 = new Balance1(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    balance2 = new Balance2(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     basic = new Basic(m_driveSystem);
 
-    autoCommandChooser.setDefaultOption("Dock Immediately", balance);
+    autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
-    autoCommandChooser.addOption("Backwards 0.5m", basic);
+    autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
+
+    autoCommandChooser.addOption("Pre-Load only", noBalance);
+
+    autoCommandChooser.addOption("2m", basic);
 
     SmartDashboard.putData(autoCommandChooser);
 
