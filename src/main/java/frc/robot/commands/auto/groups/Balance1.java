@@ -23,17 +23,18 @@ public class Balance1 extends SequentialCommandGroup {
             //places game piece then immediately docks
 
             //game piece
-            new ArmExtend(-10000, armExtendSystem),
-            new ArmRotate(7500, armRotateSystem),
-            new ArmExtend(15000, armExtendSystem),
-            new InstantCommand(() -> clawSystem.toggle(), clawSystem),
-            new ArmExtend(-15000, armExtendSystem),
-            new ArmRotate(-7500, armRotateSystem),
+            new SequentialCommandGroup(
+                new ArmExtend(-10000, armExtendSystem),
+                new ArmRotate(7500, armRotateSystem),
+                new ArmExtend(15000, armExtendSystem),
+                new InstantCommand(() -> clawSystem.toggle(), clawSystem),
+                new ArmExtend(-15000, armExtendSystem),
+                new ArmRotate(-7500, armRotateSystem)
+            ),
 
             //docking/mobility line
             new ParallelDeadlineGroup(new WaitCommand(3), new DriveDistance(-0.5, driveSystem)),
             new ParallelDeadlineGroup(new WaitCommand(2), new DockingCommand(driveSystem))
-            
         );
     }
 }

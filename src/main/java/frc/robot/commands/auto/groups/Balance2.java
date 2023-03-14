@@ -23,12 +23,14 @@ public class Balance2 extends SequentialCommandGroup {
             //places game piece, crosses mobility bonus line, then docks
             
             //game piece
-            new ArmExtend(-10000, armExtendSystem),
-            new ArmRotate(7500, armRotateSystem),
-            new ArmExtend(15000, armExtendSystem),
-            new InstantCommand(() -> clawSystem.toggle(), clawSystem),
-            new ArmExtend(-15000, armExtendSystem),
-            new ArmRotate(-7500, armRotateSystem),
+            new SequentialCommandGroup(
+                new ArmExtend(-10000, armExtendSystem),
+                new ArmRotate(7500, armRotateSystem),
+                new ArmExtend(15000, armExtendSystem),
+                new InstantCommand(() -> clawSystem.toggle(), clawSystem),
+                new ArmExtend(-15000, armExtendSystem),
+                new ArmRotate(-7500, armRotateSystem)
+            ),
 
             //docking/mobility line
             new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(-2, driveSystem)),

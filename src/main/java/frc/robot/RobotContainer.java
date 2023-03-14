@@ -132,11 +132,13 @@ public class RobotContainer {
     noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     basic = new Basic(m_driveSystem);
 
-    autoCommandChooser.setDefaultOption("Dock Immediately", balance1);
+    autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
-    autoCommandChooser.addOption("Mobilit Bonus Then Dock", balance2);
+    autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
 
-    autoCommandChooser.addOption("Backwards 0.5m", basic);
+    autoCommandChooser.addOption("Pre-Load only", noBalance);
+
+    autoCommandChooser.addOption("2m", basic);
 
     SmartDashboard.putData(autoCommandChooser);
 
