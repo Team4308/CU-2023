@@ -27,30 +27,34 @@ public class LEDCommand extends CommandBase {
         int control = this.control.get();
         switch (control){
             case 1: // claw is closed, arm is in some other state
-                m_subsystem.setRGB(0, 0, 255);
+                m_subsystem.setRGB(0, 0, 255); // blue
                 break;
             case 2: // claw is open, arm is in some other state
-                m_subsystem.setRGB(0, 255, 0);
+                m_subsystem.setRGB(0, 255, 0); // green
                 break;
             case 3: // claw is closed and arm is fully extended
-                m_subsystem.setRGB(0, 255, 255);
+                m_subsystem.setRGB(0, 255, 255); // cyan
                 break;
             case 4: // claw is open and fully extended
-                m_subsystem.setRGB(255, 0, 255);
+                m_subsystem.setRGB(255, 0, 255); // purple
                 break;
             case 5: // claw is closed and arm is fully back
-                m_subsystem.setRGB(255, 255, 0);
+                m_subsystem.setRGB(255, 255, 0); // yellow
                 break;
             case 6: // claw is open and arm is fully back
-                m_subsystem.setRGB(255, 255, 255);
+                m_subsystem.setRGB(255, 255, 255); // white
+                break;
+            case 9: // one of the beambreaks detects something
+                m_subsystem.setRGB(255, 128, 0); // orange
                 break;
             // error/warning states
             case 7: // battery is low voltage
-                m_subsystem.setRGB(255, 0, 0);
+                m_subsystem.setRGB(255, 0, 0); // red
                 break;
             
             case 8: // everything else (theoretically never reaches this state)
-                m_subsystem.setRGB(0,0,0);
+                m_subsystem.setRGB(0,0,0); // black
+
         }
 
     }
