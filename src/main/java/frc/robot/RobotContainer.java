@@ -258,7 +258,8 @@ public class RobotContainer {
     if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
 
     if(!armExtended && !armRetracted){
-      if(clawState == Value.kForward) return 1;
+      if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
+      else if(clawState == Value.kForward) return 1;
       else return 2;
     }else if(armExtended){
       if(clawState == Value.kForward) return 3;
