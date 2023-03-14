@@ -15,8 +15,6 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
@@ -28,8 +26,6 @@ import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
-import frc.robot.subsystems.IntakeSlideSystem;
-import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.LimelightSystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,8 +57,6 @@ public class RobotContainer {
   private final DriveSystem m_driveSystem;
   private final ArmRotateSystem m_armRotateSystem;
   private final ArmExtendSystem m_armExtendSystem;
-  private final IntakeSystem m_intakeSystem;
-  private final IntakeSlideSystem m_intakeSlideSystem;
   private final ClawSystem m_clawSystem;
   private final LimelightSystem m_limelightSystem;
   private final LEDSystem m_ledSystem;
@@ -71,9 +65,7 @@ public class RobotContainer {
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
-  private final IntakeCommand intakeCommand;
   private final LEDCommand ledCommand;
-  // private final IntakeSlideCommand intakeSlideCommand;
 
   // Controllers
   public final XBoxWrapper stick = new XBoxWrapper(0);
@@ -95,10 +87,6 @@ public class RobotContainer {
     subsystems.add(m_armRotateSystem);
     m_armExtendSystem = new ArmExtendSystem();
     subsystems.add(m_armExtendSystem);
-    m_intakeSystem = new IntakeSystem();
-    subsystems.add(m_intakeSystem);
-    m_intakeSlideSystem = new IntakeSlideSystem();
-    subsystems.add(m_intakeSlideSystem);
     m_clawSystem = new ClawSystem();
     subsystems.add(m_clawSystem);
     m_limelightSystem = new LimelightSystem();
@@ -115,15 +103,8 @@ public class RobotContainer {
     armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
     m_armExtendSystem.setDefaultCommand(armExtendCommand);
 
-    intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
-    m_intakeSystem.setDefaultCommand(intakeCommand);
-
     ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
     m_ledSystem.setDefaultCommand(ledCommand);
-
-    // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
-    // getIntakeSlideControl());
-    // m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
 
     // Auto
 
@@ -174,12 +155,6 @@ public class RobotContainer {
 
     // Controller #1
 
-    // Intake
-    stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, () -> 1.0));
-    stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, () -> -1.0));
-    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> 1.0));
-    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> -1.0));
-
     // Pneumatic Claw
     stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
     stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
@@ -225,14 +200,6 @@ public class RobotContainer {
 
   public Double getArmRotateControl() {
     double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.45;
-    Vector2 control = new Vector2(0.0, y);
-    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-    control = JoystickHelper.clampStick(control);
-    return control.y;
-  }
-
-  public Double getIntakeSlideControl() {
-    double y = DoubleUtils.normalize(stick2.getRightY());
     Vector2 control = new Vector2(0.0, y);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.clampStick(control);

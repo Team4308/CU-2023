@@ -16,11 +16,6 @@ public final class Constants {
             public static int motor2 = 5;
         }
 
-        public static class Intake {
-            public static int intakeMotor = 6;
-            public static int slideMotor = 7;
-        }
-
         public static class Claw {
             public static int PCM = 8;
 
