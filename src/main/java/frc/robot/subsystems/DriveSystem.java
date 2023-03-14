@@ -248,10 +248,10 @@ public class DriveSystem extends TankDriveSubsystem {
         final double output = 0.2;
 
         if (!leftLineBreak && rightLineBreak) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), -output, output);
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), 0.1*output, output);
         }
         else if (!rightLineBreak && leftLineBreak) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, -output);
+                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, 0.1*output);
         }
         else {
                 setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, output);
