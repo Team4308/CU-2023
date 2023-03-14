@@ -70,6 +70,7 @@ public class RobotContainer {
   // Controllers
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
+  private boolean displayLowVoltage = true;
 
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
@@ -152,6 +153,7 @@ public class RobotContainer {
     stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
+    stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
 
     // Controller #1
 
@@ -220,7 +222,7 @@ public class RobotContainer {
     Boolean armExtended = m_armExtendSystem.checkIfExtend();
     Boolean armRetracted = m_armExtendSystem.checkIfRetracted();
 
-    if(RobotController.getBatteryVoltage() <= 10.00) return 7; // low voltage
+    if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
 
     if(!armExtended && !armRetracted){
       if(clawState == Value.kForward) return 1;
