@@ -23,12 +23,11 @@ public class NoBalance extends SequentialCommandGroup {
 
             //game piece
             new SequentialCommandGroup(
-                new ArmExtend(-10000, armExtendSystem),
-                new ArmRotate(7500, armRotateSystem),
-                new ArmExtend(15000, armExtendSystem),
+                new ArmRotate(32000, armRotateSystem),
+                new ArmExtend(80000, armExtendSystem),
                 new InstantCommand(() -> clawSystem.toggle(), clawSystem),
-                new ArmExtend(-15000, armExtendSystem),
-                new ArmRotate(-7500, armRotateSystem)
+                new ArmExtend(-80000, armExtendSystem),
+                new ArmRotate(-32000, armRotateSystem)
             ),
 
             //docking/mobility line
