@@ -219,19 +219,20 @@ public class RobotContainer {
 
   public Integer getLEDCommand(){
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
-    Boolean armExtended = m_armExtendSystem.checkIfExtend();
-    Boolean armRetracted = m_armExtendSystem.checkIfRetracted();
+    // Boolean armExtended = m_armExtendSystem.checkIfExtend();
+    Boolean armRetracted = false;
+    if(m_armExtendSystem.getSensorPosition() <= 100) armRetracted = true;
 
     if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
 
-    if(!armExtended && !armRetracted){
+    if(!armRetracted){
       if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
       else if(clawState == Value.kForward) return 1;
       else return 2;
-    }else if(armExtended){
+    }/* else if(armExtended){
       if(clawState == Value.kForward) return 3;
       else return 4;
-    } else if(armRetracted){
+    } */ else if(armRetracted){
       if(clawState == Value.kForward) return 5;
       else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
       else return 6;
