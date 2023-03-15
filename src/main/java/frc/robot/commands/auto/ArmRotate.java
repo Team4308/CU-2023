@@ -1,7 +1,5 @@
 package frc.robot.commands.auto;
 
-import java.util.function.Supplier;
-
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import ca.team4308.absolutelib.math.DoubleUtils;
