@@ -24,11 +24,11 @@ public class Balance2 extends SequentialCommandGroup {
             
             //game piece
             new SequentialCommandGroup(
-                new ArmRotate(32000, armRotateSystem),
+                new ArmRotate(24000, armRotateSystem),
                 new ArmExtend(80000, armExtendSystem),
                 new InstantCommand(() -> clawSystem.toggle(), clawSystem),
                 new ArmExtend(-80000, armExtendSystem),
-                new ArmRotate(-32000, armRotateSystem)
+                new ArmRotate(-24000, armRotateSystem)
             ),
 
             //docking/mobility line
