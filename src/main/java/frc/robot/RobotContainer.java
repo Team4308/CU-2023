@@ -232,6 +232,7 @@ public class RobotContainer {
       else return 4;
     } else if(armRetracted){
       if(clawState == Value.kForward) return 5;
+      else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
       else return 6;
     }
     return 8;
