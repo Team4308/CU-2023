@@ -18,8 +18,9 @@ public class ArmExtendSystem extends MotoredSubsystem {
     public final TalonFX motor2;
 
     // Beambreak
+    /* 
     public static DigitalInput extendSensor;
-    public static DigitalInput retractSensor;
+    public static DigitalInput retractSensor; */
 
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
@@ -30,9 +31,9 @@ public class ArmExtendSystem extends MotoredSubsystem {
         motor2 = new TalonFX(Constants.Mapping.Arm.motor2);
 
         controllersFX.add(motor2);
-
+/* 
         extendSensor = new DigitalInput(5);
-        retractSensor = new DigitalInput(6);
+        retractSensor = new DigitalInput(6); */
 
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
@@ -80,7 +81,7 @@ public class ArmExtendSystem extends MotoredSubsystem {
 
     public void stopControllers() {
         motor2.set(TalonFXControlMode.PercentOutput, 0.0);
-    }
+    }/* 
 
     public boolean checkIfExtend() {
         return extendSensor.get();
@@ -88,7 +89,7 @@ public class ArmExtendSystem extends MotoredSubsystem {
 
     public boolean checkIfRetracted() {
         return !retractSensor.get();
-    }
+    } */
     @Override
     public Sendable log() {
         Shuffleboard.getTab("Log").addNumber("Arm Extension Pos", () -> getSensorPosition());
