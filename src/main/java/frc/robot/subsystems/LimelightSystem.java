@@ -26,17 +26,17 @@ public class LimelightSystem extends LogSubsystem {
 
     public double getXAngle() {
         // horizontal offset
-        return limelight.getEntry("tx").getDouble(0.0);
+        return -limelight.getEntry("tx").getDouble(0.0);
     }
 
     public double getYAngle() {
         // vertical offset
-        return limelight.getEntry("ty").getDouble(0.0);
+        return -limelight.getEntry("ty").getDouble(0.0);
     }
 
     public double getPipeline() {
         // returns a value from 0-9
-        return limelight.getEntry("getpipe").getDouble(0.0);
+        return -limelight.getEntry("getpipe").getDouble(0.0);
     }
 
     public void setPipeline(double num) {
