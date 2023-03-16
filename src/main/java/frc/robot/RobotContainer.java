@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import ca.team4308.absolutelib.control.JoystickHelper;
 import ca.team4308.absolutelib.control.XBoxWrapper;
 import ca.team4308.absolutelib.math.Vector2;
@@ -73,6 +75,7 @@ public class RobotContainer {
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
   private boolean displayLowVoltage = true;
+  private boolean brakeMode = false;
 
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
@@ -147,7 +150,7 @@ public class RobotContainer {
     // Controller #0
     
     stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
-
+    
     // Limelight Functions
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
@@ -156,6 +159,8 @@ public class RobotContainer {
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
+    stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+    stick.LB.onFalse(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
 
@@ -226,7 +231,7 @@ public class RobotContainer {
     if(m_armExtendSystem.getSensorPosition() <= 100) armRetracted = true;
 
     if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
-
+    if (brakeMode) return 2;
     if(DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get()) return 1;
     else return 2;
 
@@ -245,6 +250,18 @@ public class RobotContainer {
       else return 6;
     }
     return 8; */
+  }
+
+  public void toggleBrakeMode(){
+    if(brakeMode == false){
+      brakeMode = true;
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
+    }else{
+      brakeMode = false;
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
+    }
   }
 
   public Command getAutonomousCommand() {
