@@ -13,6 +13,8 @@ import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.LEDCommand;
@@ -164,13 +166,13 @@ public class RobotContainer {
     // Arm Auto-Position
 
     // High Node
-    // stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
-    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
+    ArmRotateCommand(m_armRotateSystem, () -> 0.1), new
+    ArmExtendCommand(m_armExtendSystem, ()->0.1)));
     // Middle Node
-    // stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
-    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
+    ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
+    ArmExtendCommand(m_armExtendSystem, ()->0.0)));
 
   }
 
