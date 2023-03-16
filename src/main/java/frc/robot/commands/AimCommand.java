@@ -23,8 +23,6 @@ public class AimCommand extends CommandBase {
         this.control = control;
         angle_controller.setSetpoint(0.0);
         angle_controller.setTolerance(Constants.Config.Drive.AngleControl.kTolerance);
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
-
         addRequirements(m_subsystem);
     }
 
@@ -32,6 +30,7 @@ public class AimCommand extends CommandBase {
     @Override
     public void initialize() {
         m_subsystem.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
         m_subsystem.stopControllers();
     }
 

@@ -28,11 +28,10 @@ public class LEDSystem extends LogSubsystem {
     public void setRGB(int R, int G, int B){
         double mapR = (1/255)*R;
         double mapG = (1/255)*G;
-        double mapB = (1/255)*B;
-      
+        double mapB = (1/255)*B; 
         ledR.updateDutyCycle(mapR);
         ledG.updateDutyCycle(mapG);
-        ledB.updateDutyCycle(mapB);
+        ledB.updateDutyCycle(mapB); 
                 
     }
 

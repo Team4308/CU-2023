@@ -22,9 +22,8 @@ public class ArmRotateCommand extends CommandBase {
     public ArmRotateCommand(ArmRotateSystem subsystem, Supplier<Double> control) {
         m_subsystem = subsystem;
         this.control = control;
-
         angle_controller.setSetpoint(subsystem.getArmPosition());
-        initialValue = subsystem.getArmPosition();
+        initialValue = m_subsystem.getArmPosition();
 
         addRequirements(m_subsystem);
     }
@@ -32,16 +31,17 @@ public class ArmRotateCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_subsystem.stopControllers();
         angle_controller.setSetpoint(m_subsystem.getArmPosition());
-        initialValue = m_subsystem.getArmPosition();
+        initialValue = 0.0;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         double control = this.control.get();
-
+        if(control == 0.0){
+            angle_controller.setSetpoint(m_subsystem.getArmPosition());
+        }
         if(m_subsystem.getArmPosition() >= 32000 && control > 0){
             angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint(), initialValue, initialValue + 40000));
 

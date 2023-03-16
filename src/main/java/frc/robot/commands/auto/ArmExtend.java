@@ -27,8 +27,6 @@ public class ArmExtend extends CommandBase {
 
     @Override
     public void initialize() {
-        m_subsystem.resetSensors();
-        m_subsystem.stopControllers();
         m_subsystem.motor2.setNeutralMode(NeutralMode.Brake);
     }
 

@@ -41,6 +41,12 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+            public static class AutoAngleControl {
+                public static double kP = 0.003;
+                public static double kI = 0.0001;
+                public static double kD = 0.0;
+            }
+
 
             public static class ExtensionControl {
                 public static double kP = 0.00001;
@@ -70,7 +76,7 @@ public final class Constants {
             public static class AngleControl {
                 public static double kP = 0.005;
                 public static double kI = 0.0;
-                public static double kD = 0.5;
+                public static double kD = 0.0;
                 public static double kTolerance = 0.5;
             }
 
@@ -82,7 +88,7 @@ public final class Constants {
             }
 
             public static class PitchControl {
-                public static double kP = 0.01;
+                public static double kP = 0.007;
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 2.0;
@@ -113,16 +119,16 @@ public final class Constants {
                 public static int maxAcc = 6000;
 
                 public static class Left {
-                    public static double kP = 0.055;
+                    public static double kP = 0.0001;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 0.0;
                     public static double kF = 0.0468;
                 }
 
                 public static class Right {
-                    public static double kP = 0.055;
+                    public static double kP = 0.0001;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 0.0;
                     public static double kF = 0.0468;
                 }
             }
@@ -131,7 +137,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 4500;
+            public static double VelocityDriveRPM = 4000;
         }
     }
 }

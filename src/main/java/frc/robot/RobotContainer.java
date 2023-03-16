@@ -15,6 +15,7 @@ import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -40,6 +41,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.auto.ArmExtend;
+import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.groups.Balance1;
 import frc.robot.commands.auto.groups.Balance2;
 import frc.robot.commands.auto.groups.NoBalance;
@@ -148,19 +151,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Controller #0
-    
+
     stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
-    
+
     // Limelight Functions
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
+    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
-    stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
-    stick.LB.onFalse(new InstantCommand(() -> toggleBrakeMode()));
+    // stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
 
@@ -170,14 +172,10 @@ public class RobotContainer {
 
     // Arm Auto-Position
 
-    // High Node
-    stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    ArmRotateCommand(m_armRotateSystem, () -> 0.1), new
-    ArmExtendCommand(m_armExtendSystem, ()->0.1)));
+    // Set Middle
+    stick2.B.whileTrue(new RepeatCommand(new ArmRotate(16000, m_armRotateSystem)));
     // Middle Node
-    stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
-    ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    stick2.X.whileTrue(new RepeatCommand(new ArmRotate(30000, m_armRotateSystem)));
 
   }
 
@@ -208,7 +206,7 @@ public class RobotContainer {
   }
 
   public Double getArmRotateControl() {
-    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.4;
+    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.35;
     Vector2 control = new Vector2(0.0, y);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.clampStick(control);
@@ -224,40 +222,51 @@ public class RobotContainer {
     return m_limelightSystem.getXAngle();
   }
 
-  public Integer getLEDCommand(){
+  public Integer getLEDCommand() {
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
     // Boolean armExtended = m_armExtendSystem.checkIfExtend();
     Boolean armRetracted = false;
-    if(m_armExtendSystem.getSensorPosition() <= 100) armRetracted = true;
+    if (m_armExtendSystem.getSensorPosition() <= 100)
+      armRetracted = true;
 
-    if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
-    if (brakeMode) return 2;
-    if(DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get()) return 1;
-    else return 2;
-
-/* 
-
-    if(!armRetracted){
-      if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
-      else if(clawState == Value.kForward) return 1;
-      else return 2;
-    } else if(armExtended){
-      if(clawState == Value.kForward) return 3;
-      else return 4;
-    } else if(armRetracted){
-      if(clawState == Value.kForward) return 5;
-      else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
-      else return 6;
+    if (RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage)
+      return 7; // low voltage
+    if (brakeMode){
+      System.out.println("here pt2");
+      return 2;
     }
-    return 8; */
+    if (DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get())
+      return 1;
+    else
+      return 2;
+
+    /*
+     * 
+     * if(!armRetracted){
+     * if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
+     * return 9;
+     * else if(clawState == Value.kForward) return 1;
+     * else return 2;
+     * } else if(armExtended){
+     * if(clawState == Value.kForward) return 3;
+     * else return 4;
+     * } else if(armRetracted){
+     * if(clawState == Value.kForward) return 5;
+     * else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
+     * return 9;
+     * else return 6;
+     * }
+     * return 8;
+     */
   }
 
-  public void toggleBrakeMode(){
-    if(brakeMode == false){
+  public void toggleBrakeMode() {
+    System.out.println(brakeMode);
+    if (brakeMode == false) {
       brakeMode = true;
       m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
       m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
-    }else{
+    } else {
       brakeMode = false;
       m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
       m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);

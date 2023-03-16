@@ -14,7 +14,7 @@ public class ArmRotate extends CommandBase {
     private final ArmRotateSystem m_subsystem;
     private final double encoderDistance;
 
-    private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP, Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
+    private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AutoAngleControl.kP, Constants.Config.Arm.AutoAngleControl.kI, Constants.Config.Arm.AutoAngleControl.kD);
 
     int withinThresholdLoops;
 
@@ -29,8 +29,6 @@ public class ArmRotate extends CommandBase {
 
     @Override
     public void initialize() {
-        m_subsystem.resetSensors();
-        m_subsystem.stopControllers();
         m_subsystem.motor1.setNeutralMode(NeutralMode.Brake);
     }
 
@@ -38,7 +36,7 @@ public class ArmRotate extends CommandBase {
     public void execute() {
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
 
-        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
+        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.3);
         
         if(m_subsystem.getArmPosition() < encoderDistance + 1000 
             && m_subsystem.getArmPosition() > encoderDistance - 1000)withinThresholdLoops++;

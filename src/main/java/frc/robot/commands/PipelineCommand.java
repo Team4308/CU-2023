@@ -25,7 +25,7 @@ public class PipelineCommand extends CommandBase {
         while (!isClicked) {
             double pipeline = m_subsystem.getPipeline();
             pipeline++;
-            if (pipeline == 6) {
+            if (pipeline == 4) {
                 pipeline = 0;
                 m_subsystem.setPipeline(0);
             } else {
