@@ -227,7 +227,7 @@ public class DriveSystem extends TankDriveSubsystem {
                 Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
                 SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());
                 SmartDashboard.putBoolean("RightLineBreak", rightLineBreak.get());
-                SmartDashboard.putNumber("Driver Mode", NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
+                //SmartDashboard.putNumber("Driver Mode", NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
                 return this;
         }
 }
