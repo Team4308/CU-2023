@@ -41,13 +41,13 @@ public class DriveSystem extends TankDriveSubsystem {
                 gyro.setYawAxis(IMUAxis.kX);
 
                 // Setup and Add Controllers
-                masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
+                masterLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
                 controllersFX.add(masterLeft);
-                masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
+                masterRight = new TalonFX(Constants.Mapping.Drive.frontRight);
                 controllersFX.add(masterRight);
-                slaveLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
+                slaveLeft = new TalonFX(Constants.Mapping.Drive.backLeft);
                 controllersFX.add(slaveLeft);
-                slaveRight = new TalonFX(Constants.Mapping.Drive.backLeft);
+                slaveRight = new TalonFX(Constants.Mapping.Drive.backRight);
                 controllersFX.add(slaveRight);
 
                 leftLineBreak = new DigitalInput(4); // DIO 4
@@ -206,7 +206,7 @@ public class DriveSystem extends TankDriveSubsystem {
                 }
                 else {
                         //stopControllers();
-                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.5*output, 0.5*output);
                 }
         }
 

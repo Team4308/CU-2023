@@ -48,7 +48,7 @@ public class ArmExtendCommand extends CommandBase {
                     1.0);
             m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);
         } else {
-            m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control / 4);
+            m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
             initialValue = m_subsystem.getSensorPosition();
         }
     }

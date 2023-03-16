@@ -144,13 +144,13 @@ public class RobotContainer {
   private void configureBindings() {
     // Controller #0
     
-    stick.A.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
+    stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
 
     // Limelight Functions
-    stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
+    stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
+    // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
@@ -201,7 +201,7 @@ public class RobotContainer {
   }
 
   public Double getArmRotateControl() {
-    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.45;
+    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.4;
     Vector2 control = new Vector2(0.0, y);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.clampStick(control);
@@ -225,19 +225,24 @@ public class RobotContainer {
 
     if(RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage) return 7; // low voltage
 
+    if(DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get()) return 1;
+    else return 2;
+
+/* 
+
     if(!armRetracted){
       if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
       else if(clawState == Value.kForward) return 1;
       else return 2;
-    }/* else if(armExtended){
+    } else if(armExtended){
       if(clawState == Value.kForward) return 3;
       else return 4;
-    } */ else if(armRetracted){
+    } else if(armRetracted){
       if(clawState == Value.kForward) return 5;
       else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get()) return 9;
       else return 6;
     }
-    return 8;
+    return 8; */
   }
 
   public Command getAutonomousCommand() {

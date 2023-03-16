@@ -38,6 +38,6 @@ public class LEDSystem extends LogSubsystem {
 
     @Override
     public Sendable log() {
-        return null;
+        return this;
     }
 }
