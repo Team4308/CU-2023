@@ -20,7 +20,7 @@ public class ArmExtend extends CommandBase {
     public ArmExtend(double encoderDistance, ArmExtendSystem subsystem) {
         m_subsystem = subsystem;
         this.encoderDistance = encoderDistance;
-
+        addRequirements(this.m_subsystem);
         extension_controller.setSetpoint(encoderDistance);
         withinThresholdLoops = 0;
     }

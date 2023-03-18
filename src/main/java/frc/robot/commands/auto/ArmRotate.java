@@ -21,7 +21,7 @@ public class ArmRotate extends CommandBase {
     public ArmRotate(double encoderDistance, ArmRotateSystem subsystem) {
         m_subsystem = subsystem;
         this.encoderDistance = encoderDistance;
-
+        addRequirements(this.m_subsystem);
         angle_controller.setSetpoint(encoderDistance);
 
         withinThresholdLoops = 0;
