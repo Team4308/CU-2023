@@ -15,9 +15,6 @@ import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.LEDCommand;
@@ -41,12 +38,12 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.ArmExtend;
 import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.groups.Balance1;
 import frc.robot.commands.auto.groups.Balance2;
 import frc.robot.commands.auto.groups.NoBalance;
 import frc.robot.commands.auto.groups.Basic;
+import frc.robot.commands.auto.groups.DockOnly;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -87,6 +84,7 @@ public class RobotContainer {
   private final Balance2 balance2;
   private final NoBalance noBalance;
   private final Basic basic;
+  private final DockOnly dockOnly;
 
   public RobotContainer() {
 
@@ -121,6 +119,7 @@ public class RobotContainer {
     balance2 = new Balance2(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     basic = new Basic(m_driveSystem);
+    dockOnly = new DockOnly(m_driveSystem);
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
@@ -129,6 +128,7 @@ public class RobotContainer {
     autoCommandChooser.addOption("Pre-Load only", noBalance);
 
     autoCommandChooser.addOption("2m", basic);
+    autoCommandChooser.addOption("Dock Only", dockOnly);
 
     SmartDashboard.putData(autoCommandChooser);
 

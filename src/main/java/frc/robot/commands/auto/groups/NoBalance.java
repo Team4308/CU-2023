@@ -3,6 +3,7 @@ package frc.robot.commands.auto.groups;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.commands.auto.DriveDistance;
@@ -23,15 +24,10 @@ public class NoBalance extends SequentialCommandGroup {
 
             //game piece
             new SequentialCommandGroup(
-                new ArmRotate(24000, armRotateSystem),
-                new ArmExtend(80000, armExtendSystem),
-                new InstantCommand(() -> clawSystem.toggle(), clawSystem),
-                new ArmExtend(-80000, armExtendSystem),
-                new ArmRotate(-24000, armRotateSystem)
-            ),
+                new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
+                new ArmRotate(18000, armRotateSystem)
+            )
 
-            //docking/mobility line
-            new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(-2, driveSystem))
         );
     }
 }

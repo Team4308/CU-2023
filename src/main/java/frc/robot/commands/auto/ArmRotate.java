@@ -30,6 +30,8 @@ public class ArmRotate extends CommandBase {
     @Override
     public void initialize() {
         m_subsystem.motor1.setNeutralMode(NeutralMode.Brake);
+        angle_controller.setSetpoint(encoderDistance);
+
     }
 
     @Override

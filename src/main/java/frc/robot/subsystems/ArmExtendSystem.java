@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
 public class ArmExtendSystem extends MotoredSubsystem {
