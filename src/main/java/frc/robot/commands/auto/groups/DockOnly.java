@@ -20,10 +20,7 @@ public class DockOnly extends SequentialCommandGroup {
 
     public DockOnly(DriveSystem driveSystem) {
         addCommands(
-            new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(3, driveSystem)),
-            new ParallelDeadlineGroup(new WaitCommand(1), new InstantCommand(() -> driveSystem.resetAngle(), driveSystem)),
-            new ParallelDeadlineGroup(new WaitCommand(2), new DriveDistance(0.75, driveSystem)),
-            new ParallelDeadlineGroup(new WaitCommand(2), new DockingCommand(driveSystem))
+            new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }
 }

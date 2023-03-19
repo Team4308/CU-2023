@@ -56,6 +56,8 @@ public class DriveDistance extends CommandBase {
     public void end(boolean interrupted) {
         this.m_subsystem.masterLeft.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
         this.m_subsystem.masterRight.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
+        this.m_subsystem.masterLeft.setNeutralMode(NeutralMode.Coast);
+        this.m_subsystem.masterRight.setNeutralMode(NeutralMode.Coast);
     }
 
     @Override

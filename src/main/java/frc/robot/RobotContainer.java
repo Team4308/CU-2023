@@ -85,6 +85,7 @@ public class RobotContainer {
   private final NoBalance noBalance;
   private final Basic basic;
   private final DockOnly dockOnly;
+  public Boolean armOut=false;
 
   public RobotContainer() {
 
@@ -117,15 +118,15 @@ public class RobotContainer {
 
     balance1 = new Balance1(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     balance2 = new Balance2(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    basic = new Basic(m_driveSystem);
+    noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
     autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
 
-    autoCommandChooser.addOption("Pre-Load only", noBalance);
+    autoCommandChooser.addOption("Pre-Load + Mobility", noBalance);
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
@@ -158,11 +159,11 @@ public class RobotContainer {
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
+    // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
+    stick.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
-    // stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+    stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
 
@@ -173,9 +174,9 @@ public class RobotContainer {
     // Arm Auto-Position
 
     // Set Middle
-    stick2.B.whileTrue(new RepeatCommand(new ArmRotate(16000, m_armRotateSystem)));
+    stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
     // Middle Node
-    stick2.X.whileTrue(new RepeatCommand(new ArmRotate(30000, m_armRotateSystem)));
+    stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
 
   }
 

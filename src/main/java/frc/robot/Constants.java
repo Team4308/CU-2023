@@ -23,7 +23,7 @@ public final class Constants {
     }
 
     public static class Generic {
-        public static int timeoutMs = 1000;
+        public static int timeoutMs = 3000;
     }
 
     public static class Config {
@@ -115,7 +115,7 @@ public final class Constants {
             public static class MotionMagic {
                 public static int profileSlot = 1;
 
-                public static int maxVel = 15000;
+                public static int maxVel = 16000;
                 public static int maxAcc = 6000;
 
                 public static class Left {

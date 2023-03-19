@@ -14,7 +14,6 @@ public class ArmRotateCommand extends CommandBase {
     private final ArmRotateSystem m_subsystem;
     private final Supplier<Double> control;
     private Double initialValue;
-    private Boolean debounce;
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
@@ -44,15 +43,14 @@ public class ArmRotateCommand extends CommandBase {
             angle_controller.setSetpoint(m_subsystem.getArmPosition());
         }
         if(m_subsystem.getArmPosition() >= 32000 && control > 0){
-            angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint(), initialValue, initialValue + 40000));
+            angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint(), -10000, 40000));
 
         }else{
             angle_controller.setSetpoint(
-                    DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, initialValue, initialValue + 40000));
+                    DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 40000));
         }
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
-        debounce = false;
     }
 
     @Override

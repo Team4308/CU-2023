@@ -212,6 +212,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
         @Override
         public Sendable log() {
+                /*
                 Shuffleboard.getTab("Log").addNumber("Left Vel",
                                 () -> ((getLeftSensorVelocity()
                                                 / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
@@ -220,6 +221,7 @@ public class DriveSystem extends TankDriveSubsystem {
                                                 / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
                 Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
                 Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
+                */
                 Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
