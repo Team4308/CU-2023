@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -39,7 +41,7 @@ public class DriveSystem extends TankDriveSubsystem {
         // Init
         public DriveSystem() {
                 gyro.setYawAxis(IMUAxis.kX);
-
+                
                 // Setup and Add Controllers
                 masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
                 controllersFX.add(masterLeft);
@@ -49,6 +51,9 @@ public class DriveSystem extends TankDriveSubsystem {
                 controllersFX.add(slaveLeft);
                 slaveRight = new TalonFX(Constants.Mapping.Drive.backLeft);
                 controllersFX.add(slaveRight);
+
+                odometry= new DifferentialDriveOdometry(new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition(),
+                new Pose2d(0.0, 0.0, new Rotation2d()));
 
                 leftLineBreak = new DigitalInput(0); // DIO 3
                 rightLineBreak = new DigitalInput(1); // DIO 4
@@ -165,14 +170,20 @@ public class DriveSystem extends TankDriveSubsystem {
                 return masterRight.getSelectedSensorVelocity(0);
         }
 
-        /**
-         * Misc Stuff
-         */
+        
         public void setMotorOutput(ControlMode mode, double left, double right) {
                 masterLeft.set(mode, left);
                 masterRight.set(mode, right);
         }
 
+        /**
+         * Misc Stuff
+         */
+
+         public void updateOdometry() {
+                odometry.update(
+                new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition());
+              }
         public void selectProfileSlot(int slot) {
                 masterLeft.selectProfileSlot(slot, 0);
                 masterRight.selectProfileSlot(slot, 0);
