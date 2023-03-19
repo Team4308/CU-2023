@@ -18,12 +18,13 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.LeftHoldInPlace;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.PipelineCommand;
-
+import frc.robot.commands.RightHoldInPlace;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.LimelightSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.RobotController;
@@ -42,6 +44,7 @@ import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.groups.Balance1;
 import frc.robot.commands.auto.groups.Balance2;
 import frc.robot.commands.auto.groups.NoBalance;
+import frc.robot.commands.auto.groups.NoBalanceBump;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
 
@@ -86,6 +89,7 @@ public class RobotContainer {
   private final Basic basic;
   private final DockOnly dockOnly;
   public Boolean armOut=false;
+  private final NoBalanceBump noBalanceBump;
 
   public RobotContainer() {
 
@@ -121,12 +125,14 @@ public class RobotContainer {
     noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
     basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
+    noBalanceBump = new NoBalanceBump(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
     autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
 
     autoCommandChooser.addOption("Pre-Load + Mobility", noBalance);
+    autoCommandChooser.addOption("WITH BUMP - Pre-Load + Mobility", noBalanceBump);
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
@@ -160,10 +166,11 @@ public class RobotContainer {
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
-    stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.Back.onTrue(new InstantCommand(() -> m_armExtendSystem.resetSensors(), m_driveSystem));
+    // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
+    // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
+    // new RightHoldInPlace(m_driveSystem, () -> m_driveSystem.masterRight.getSelectedSensorPosition())));
     stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
-    stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+    // stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
 
@@ -188,8 +195,11 @@ public class RobotContainer {
 
   public Vector2 getDriveControl() {
     double throttle = DoubleUtils.normalize(stick.getLeftY());
+    if(stick.RB.getAsBoolean()){
+      throttle /= 2;
+    }
     double turn = DoubleUtils.normalize(stick.getRightX());
-
+ 
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.scaleStick(control, Constants.Config.Input.Stick.kInputScale);

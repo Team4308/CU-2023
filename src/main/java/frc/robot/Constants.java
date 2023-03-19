@@ -70,7 +70,7 @@ public final class Constants {
                 public static double kClosedLoopRamp = 0.0;
 
                 public static StatorCurrentLimitConfiguration kStatorCurrentLimit = new StatorCurrentLimitConfiguration(
-                        true, 35, 40, 100);
+                        true, 50, 60, 100);
             }
 
             public static class AngleControl {
@@ -92,6 +92,13 @@ public final class Constants {
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 2.0;
+            }
+
+            public static class HoldInPlace {
+                public static double kP = 0.07;
+                public static double kI = 0.03;
+                public static double kD = 0.0;
+                public static double kTolerance = 100.0;
             }
 
             public static class VelocityControl {
@@ -116,7 +123,7 @@ public final class Constants {
                 public static int profileSlot = 1;
 
                 public static int maxVel = 16000;
-                public static int maxAcc = 6000;
+                public static int maxAcc = 8000;
 
                 public static class Left {
                     public static double kP = 0.0001;
@@ -137,7 +144,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 4000;
+            public static double VelocityDriveRPM = 3500;
         }
     }
 }
