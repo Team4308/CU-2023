@@ -33,8 +33,8 @@ public class NoBalance extends SequentialCommandGroup {
             ),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(3),
+                    new ParallelRaceGroup(
+                        new WaitCommand(4),
                         new ArmExtend(-560000, armExtendSystem)
                     ),
                     new ParallelCommandGroup(       
@@ -50,8 +50,9 @@ public class NoBalance extends SequentialCommandGroup {
                 ),
                 new RepeatCommand(new ArmRotate(29000, armRotateSystem))
             ),
+            new ParallelDeadlineGroup(
             new ArmRotate(0, armRotateSystem),
-            new DriveDistance(-5, driveSystem)
+            new DriveDistance(-5, driveSystem))
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }
