@@ -16,11 +16,6 @@ public final class Constants {
             public static int motor2 = 5;
         }
 
-        public static class Intake {
-            public static int intakeMotor = 6;
-            public static int slideMotor = 7;
-        }
-
         public static class Claw {
             public static int PCM = 8;
 
@@ -28,7 +23,7 @@ public final class Constants {
     }
 
     public static class Generic {
-        public static int timeoutMs = 1000;
+        public static int timeoutMs = 3000;
     }
 
     public static class Config {
@@ -46,6 +41,12 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+            public static class AutoAngleControl {
+                public static double kP = 0.003;
+                public static double kI = 0.0001;
+                public static double kD = 0.0;
+            }
+
 
             public static class ExtensionControl {
                 public static double kP = 0.00001;
@@ -61,7 +62,7 @@ public final class Constants {
                 public static final double kSensorUnitsPerRotation = 2048; // 2048 for talonfx
                 public static final double kEncoderInchesPerCount = kInchesPerRotation / kSensorUnitsPerRotation;
                 // input, small cluster, / large cluster, output
-                public static final double kGearRatio = (14.0 * 22.0) / (50.0 * 52.0);
+                public static final double kGearRatio = (14.0 * 24.0) / (50.0 * 50.0);
             }
 
             public static class Power {
@@ -69,13 +70,13 @@ public final class Constants {
                 public static double kClosedLoopRamp = 0.0;
 
                 public static StatorCurrentLimitConfiguration kStatorCurrentLimit = new StatorCurrentLimitConfiguration(
-                        false, 35, 40, 100);
+                        true, 50, 60, 100);
             }
 
             public static class AngleControl {
                 public static double kP = 0.005;
                 public static double kI = 0.0;
-                public static double kD = 0.5;
+                public static double kD = 0.0;
                 public static double kTolerance = 0.5;
             }
 
@@ -87,10 +88,17 @@ public final class Constants {
             }
 
             public static class PitchControl {
-                public static double kP = 0.01;
+                public static double kP = 0.007;
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 2.0;
+            }
+
+            public static class HoldInPlace {
+                public static double kP = 0.07;
+                public static double kI = 0.03;
+                public static double kD = 0.0;
+                public static double kTolerance = 100.0;
             }
 
             public static class VelocityControl {
@@ -114,21 +122,21 @@ public final class Constants {
             public static class MotionMagic {
                 public static int profileSlot = 1;
 
-                public static int maxVel = 5000;
-                public static int maxAcc = 3000;
+                public static int maxVel = 16000;
+                public static int maxAcc = 8000;
 
                 public static class Left {
-                    public static double kP = 0.015;
-                    public static double kI = 0.03;
-                    public static double kD = 0.01;
-                    public static double kF = 0.0;
+                    public static double kP = 0.0001;
+                    public static double kI = 0.0;
+                    public static double kD = 0.0;
+                    public static double kF = 0.0468;
                 }
 
                 public static class Right {
-                    public static double kP = 0.015;
-                    public static double kI = 0.03;
-                    public static double kD = 0.01;
-                    public static double kF = 0.0;
+                    public static double kP = 0.0001;
+                    public static double kI = 0.0;
+                    public static double kD = 0.0;
+                    public static double kF = 0.0468;
                 }
             }
         }
@@ -136,7 +144,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 3000;
+            public static double VelocityDriveRPM = 3500;
         }
     }
 }

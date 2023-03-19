@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class DriveSystem extends TankDriveSubsystem {
@@ -40,23 +40,23 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // Init
         public DriveSystem() {
-                gyro.setYawAxis(IMUAxis.kX);
-                
+                gyro.setYawAxis(IMUAxis.kZ);
+
                 // Setup and Add Controllers
-                masterLeft = new TalonFX(Constants.Mapping.Drive.frontRight);
+                masterLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
                 controllersFX.add(masterLeft);
-                masterRight = new TalonFX(Constants.Mapping.Drive.backRight);
+                masterRight = new TalonFX(Constants.Mapping.Drive.frontRight);
                 controllersFX.add(masterRight);
-                slaveLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
+                slaveLeft = new TalonFX(Constants.Mapping.Drive.backLeft);
                 controllersFX.add(slaveLeft);
-                slaveRight = new TalonFX(Constants.Mapping.Drive.backLeft);
+                slaveRight = new TalonFX(Constants.Mapping.Drive.backRight);
                 controllersFX.add(slaveRight);
 
                 odometry= new DifferentialDriveOdometry(new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition(),
                 new Pose2d(0.0, 0.0, new Rotation2d()));
 
-                leftLineBreak = new DigitalInput(0); // DIO 3
-                rightLineBreak = new DigitalInput(1); // DIO 4
+                leftLineBreak = new DigitalInput(4); // DIO 4
+                rightLineBreak = new DigitalInput(5); // DIO 5
                 // Reset Config for all
                 for (TalonFX talon : controllersFX) {
                         talon.configFactoryDefault(Constants.Generic.timeoutMs);
@@ -204,8 +204,26 @@ public class DriveSystem extends TankDriveSubsystem {
                 masterRight.setSelectedSensorPosition(0);
         }
 
+        public void BBAlign(){
+                Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
+                Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
+                final double output = 0.2;
+        
+                if (!leftLineBreak && rightLineBreak) {
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.05*output, output);
+                }
+                else if (!rightLineBreak && leftLineBreak) {
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, 0.05*output);
+                }
+                else {
+                        //stopControllers();
+                        setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.5*output, 0.5*output);
+                }
+        }
+
         @Override
         public Sendable log() {
+                /*
                 Shuffleboard.getTab("Log").addNumber("Left Vel",
                                 () -> ((getLeftSensorVelocity()
                                                 / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
@@ -214,10 +232,14 @@ public class DriveSystem extends TankDriveSubsystem {
                                                 / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
                 Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
                 Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
+                */
                 Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
                 Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
+                SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());
+                SmartDashboard.putBoolean("RightLineBreak", rightLineBreak.get());
+                //SmartDashboard.putNumber("Driver Mode", NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
                 return this;
         }
 }

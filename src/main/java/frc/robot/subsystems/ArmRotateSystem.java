@@ -34,7 +34,7 @@ public class ArmRotateSystem extends MotoredSubsystem {
         for (TalonSRX talon : controllersSRX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
             talon.configOpenloopRamp(Constants.Config.Drive.Power.kOpenLoopRamp, Constants.Generic.timeoutMs);
-            talon.configClosedloopRamp(Constants.Config.Drive.Power.kClosedLoopRamp, Constants.Generic.timeoutMs);
+            talon.configClosedloopRamp(0.1, Constants.Generic.timeoutMs);
             talon.setNeutralMode(NeutralMode.Brake);
             talon.configNeutralDeadband(0.001, Constants.Generic.timeoutMs);
             talon.changeMotionControlFramePeriod(5);

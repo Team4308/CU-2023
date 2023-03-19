@@ -6,6 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class LimelightSystem extends LogSubsystem {
 
     public static NetworkTable limelight;
@@ -13,6 +15,7 @@ public class LimelightSystem extends LogSubsystem {
     // Init
     public LimelightSystem() {
         limelight = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
     /**
@@ -51,9 +54,11 @@ public class LimelightSystem extends LogSubsystem {
         if (mode == 0) {
             limelight.getEntry("camMode").setNumber(1);
             mode++;
+            SmartDashboard.putString("Camera Mode", "Drive Mode");
         } else {
             mode = 0;
             limelight.getEntry("camMode").setNumber(0);
+            SmartDashboard.putString("Camera Mode", "Normal Mode");
         }
     }
 

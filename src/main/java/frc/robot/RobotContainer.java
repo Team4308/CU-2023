@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import ca.team4308.absolutelib.control.JoystickHelper;
 import ca.team4308.absolutelib.control.XBoxWrapper;
 import ca.team4308.absolutelib.math.Vector2;
@@ -15,35 +17,36 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeSlideCommand;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.LeftHoldInPlace;
 import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.PipelineCommand;
-
+import frc.robot.commands.RightHoldInPlace;
 import frc.robot.subsystems.ArmRotateSystem;
 import frc.robot.subsystems.ClawSystem;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.DriveSystem;
-import frc.robot.subsystems.IntakeSlideSystem;
-import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.LEDSystem;
 import frc.robot.subsystems.LimelightSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.groups.Balance;
+import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.groups.Balance1;
+import frc.robot.commands.auto.groups.Balance2;
+import frc.robot.commands.auto.groups.NoBalance;
+import frc.robot.commands.auto.groups.NoBalanceBump;
 import frc.robot.commands.auto.groups.Basic;
+import frc.robot.commands.auto.groups.DockOnly;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -61,8 +64,6 @@ public class RobotContainer {
   private final DriveSystem m_driveSystem;
   private final ArmRotateSystem m_armRotateSystem;
   private final ArmExtendSystem m_armExtendSystem;
-  private final IntakeSystem m_intakeSystem;
-  private final IntakeSlideSystem m_intakeSlideSystem;
   private final ClawSystem m_clawSystem;
   private final LimelightSystem m_limelightSystem;
   private final LEDSystem m_ledSystem;
@@ -71,19 +72,24 @@ public class RobotContainer {
   private final DriveCommand driveCommand;
   private final ArmRotateCommand armRotateCommand;
   private final ArmExtendCommand armExtendCommand;
-  private final IntakeCommand intakeCommand;
   private final LEDCommand ledCommand;
-  // private final IntakeSlideCommand intakeSlideCommand;
 
   // Controllers
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
+  private boolean displayLowVoltage = true;
+  private boolean brakeMode = false;
 
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
-  private final Balance balance;
+  private final Balance1 balance1;
+  private final Balance2 balance2;
+  private final NoBalance noBalance;
   private final Basic basic;
+  private final DockOnly dockOnly;
+  public Boolean armOut=false;
+  private final NoBalanceBump noBalanceBump;
 
   public RobotContainer() {
 
@@ -93,10 +99,6 @@ public class RobotContainer {
     subsystems.add(m_armRotateSystem);
     m_armExtendSystem = new ArmExtendSystem();
     subsystems.add(m_armExtendSystem);
-    m_intakeSystem = new IntakeSystem();
-    subsystems.add(m_intakeSystem);
-    m_intakeSlideSystem = new IntakeSlideSystem();
-    subsystems.add(m_intakeSlideSystem);
     m_clawSystem = new ClawSystem();
     subsystems.add(m_clawSystem);
     m_limelightSystem = new LimelightSystem();
@@ -113,25 +115,27 @@ public class RobotContainer {
     armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
     m_armExtendSystem.setDefaultCommand(armExtendCommand);
 
-    intakeCommand = new IntakeCommand(m_intakeSystem, () -> 0.0);
-    m_intakeSystem.setDefaultCommand(intakeCommand);
-
     ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
     m_ledSystem.setDefaultCommand(ledCommand);
 
-    // intakeSlideCommand = new IntakeSlideCommand(m_intakeSlideSystem, () ->
-    // getIntakeSlideControl());
-    // m_intakeSlideSystem.setDefaultCommand(intakeSlideCommand);
-
     // Auto
 
-    balance = new Balance(m_driveSystem);
+    balance1 = new Balance1(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    balance2 = new Balance2(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    basic = new Basic(m_driveSystem, m_clawSystem);
+    dockOnly = new DockOnly(m_driveSystem);
+    noBalanceBump = new NoBalanceBump(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
 
-    basic = new Basic(m_driveSystem);
+    autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
-    autoCommandChooser.setDefaultOption("Dock Immediately", balance);
+    autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
 
-    autoCommandChooser.addOption("Backwards 0.5m", basic);
+    autoCommandChooser.addOption("Pre-Load + Mobility", noBalance);
+    autoCommandChooser.addOption("WITH BUMP - Pre-Load + Mobility", noBalanceBump);
+
+    autoCommandChooser.addOption("2m", basic);
+    autoCommandChooser.addOption("Dock Only", dockOnly);
 
     SmartDashboard.putData(autoCommandChooser);
 
@@ -155,21 +159,20 @@ public class RobotContainer {
   private void configureBindings() {
     // Controller #0
 
+    stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
+
     // Limelight Functions
-    stick.B.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
+    stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.whileTrue(new DockingCommand(m_driveSystem));
-    stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.Back.onTrue(new InstantCommand(() -> m_driveSystem.resetSensors(), m_driveSystem));
+    // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
+    // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
+    // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
+    // new RightHoldInPlace(m_driveSystem, () -> m_driveSystem.masterRight.getSelectedSensorPosition())));
+    stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
+    // stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
-
-    // Intake
-    stick2.Y.whileTrue(new IntakeCommand(m_intakeSystem, () -> 1.0));
-    stick2.A.whileTrue(new IntakeCommand(m_intakeSystem, () -> -1.0));
-    stick2.B.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> 1.0));
-    stick2.X.whileTrue(new IntakeSlideCommand(m_intakeSlideSystem, () -> -1.0));
 
     // Pneumatic Claw
     stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
@@ -177,14 +180,10 @@ public class RobotContainer {
 
     // Arm Auto-Position
 
-    // High Node
-    // stick2.B.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
-    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    // Set Middle
+    stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
     // Middle Node
-    // stick2.X.onTrue(new ParallelDeadlineGroup(new WaitCommand(2), new
-    // ArmRotateCommand(m_armRotateSystem, () -> 0.0), new
-    // ArmExtendCommand(m_armExtendSystem, ()->0.0)));
+    stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
 
   }
 
@@ -196,8 +195,11 @@ public class RobotContainer {
 
   public Vector2 getDriveControl() {
     double throttle = DoubleUtils.normalize(stick.getLeftY());
+    if(stick.RB.getAsBoolean()){
+      throttle /= 2;
+    }
     double turn = DoubleUtils.normalize(stick.getRightX());
-
+ 
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.scaleStick(control, Constants.Config.Input.Stick.kInputScale);
@@ -215,15 +217,7 @@ public class RobotContainer {
   }
 
   public Double getArmRotateControl() {
-    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.45;
-    Vector2 control = new Vector2(0.0, y);
-    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-    control = JoystickHelper.clampStick(control);
-    return control.y;
-  }
-
-  public Double getIntakeSlideControl() {
-    double y = DoubleUtils.normalize(stick2.getRightY());
+    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.35;
     Vector2 control = new Vector2(0.0, y);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
     control = JoystickHelper.clampStick(control);
@@ -239,24 +233,55 @@ public class RobotContainer {
     return m_limelightSystem.getXAngle();
   }
 
-  public Integer getLEDCommand(){
+  public Integer getLEDCommand() {
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
-    Boolean armExtended = m_armExtendSystem.checkIfExtend();
-    Boolean armRetracted = m_armExtendSystem.checkIfRetracted();
+    // Boolean armExtended = m_armExtendSystem.checkIfExtend();
+    Boolean armRetracted = false;
+    if (m_armExtendSystem.getSensorPosition() <= 100)
+      armRetracted = true;
 
-    if(RobotController.getBatteryVoltage() <= 10.00) return 7; // low voltage
-
-    if(!armExtended && !armRetracted){
-      if(clawState == Value.kForward) return 1;
-      else return 2;
-    }else if(armExtended){
-      if(clawState == Value.kForward) return 3;
-      else return 4;
-    } else if(armRetracted){
-      if(clawState == Value.kForward) return 5;
-      else return 6;
+    if (RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage)
+      return 7; // low voltage
+    if (brakeMode){
+      System.out.println("here pt2");
+      return 2;
     }
-    return 8;
+    if (DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get())
+      return 1;
+    else
+      return 2;
+
+    /*
+     * 
+     * if(!armRetracted){
+     * if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
+     * return 9;
+     * else if(clawState == Value.kForward) return 1;
+     * else return 2;
+     * } else if(armExtended){
+     * if(clawState == Value.kForward) return 3;
+     * else return 4;
+     * } else if(armRetracted){
+     * if(clawState == Value.kForward) return 5;
+     * else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
+     * return 9;
+     * else return 6;
+     * }
+     * return 8;
+     */
+  }
+
+  public void toggleBrakeMode() {
+    System.out.println(brakeMode);
+    if (brakeMode == false) {
+      brakeMode = true;
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
+    } else {
+      brakeMode = false;
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
+    }
   }
 
   public Command getAutonomousCommand() {

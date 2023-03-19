@@ -39,8 +39,8 @@ public class ClawSystem extends LogSubsystem {
     }
 
     public void BBclose() {
-        if (solenoid1.get() == Value.kReverse && checkForObject()) {
-            solenoid1.set(Value.kForward);
+        if (solenoid1.get() == Value.kForward && checkForObject()) {
+            solenoid1.set(Value.kReverse);
         }
     }
 

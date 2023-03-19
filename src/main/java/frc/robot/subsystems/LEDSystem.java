@@ -12,9 +12,10 @@ public class LEDSystem extends LogSubsystem {
     public final DigitalOutput ledB;
 
     public LEDSystem() {
-        ledR = new DigitalOutput(1);
-        ledG = new DigitalOutput(2);
-        ledB = new DigitalOutput(0);
+        // On the final bot I'm going to put R on 0, G on 1, B on 2
+        ledR = new DigitalOutput(0);
+        ledG = new DigitalOutput(1);
+        ledB = new DigitalOutput(2);
         ledR.setPWMRate(1000);
         ledG.setPWMRate(1000);
         ledB.setPWMRate(1000);
@@ -25,19 +26,16 @@ public class LEDSystem extends LogSubsystem {
 
     //Helper function, takes in rgb and maps 0-255 to 0-1
     public void setRGB(int R, int G, int B){
-        double mapR = (1/255)*R;
-        double mapG = (1/255)*G;
-        double mapB = (1/255)*B;
-      
+        double mapR = 1.0-(1/255)*R;
+        double mapG = 1.0-(1/255)*G;
+        double mapB = 1.0-(1/255)*B; 
         ledR.updateDutyCycle(mapR);
         ledG.updateDutyCycle(mapG);
-        ledB.updateDutyCycle(mapB);
-                
+        ledB.updateDutyCycle(mapB); 
     }
 
     @Override
     public Sendable log() {
-        // TODO Auto-generated method stub
-        return null;
+        return this;
     }
 }
