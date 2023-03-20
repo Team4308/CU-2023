@@ -47,6 +47,7 @@ import frc.robot.commands.auto.groups.NoBalance;
 import frc.robot.commands.auto.groups.NoBalanceBump;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
+import frc.robot.commands.auto.groups.HighRow;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -90,6 +91,7 @@ public class RobotContainer {
   private final DockOnly dockOnly;
   public Boolean armOut=false;
   private final NoBalanceBump noBalanceBump;
+  private final HighRow highRow;
 
   public RobotContainer() {
 
@@ -126,6 +128,7 @@ public class RobotContainer {
     basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
     noBalanceBump = new NoBalanceBump(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    highRow = new HighRow(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
@@ -136,6 +139,8 @@ public class RobotContainer {
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
+
+    autoCommandChooser.addOption("High Row + Mobility", highRow);
 
     SmartDashboard.putData(autoCommandChooser);
 
