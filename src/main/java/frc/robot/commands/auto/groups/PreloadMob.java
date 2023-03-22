@@ -35,7 +35,7 @@ public class PreloadMob extends SequentialCommandGroup {
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
                         new WaitCommand(4),
-                        new ArmExtend(-560000, armExtendSystem)
+                        new ArmExtend(-280000, armExtendSystem)
                     ),
                     new ParallelCommandGroup(       
                         new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)

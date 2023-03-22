@@ -185,6 +185,8 @@ public class RobotContainer {
     stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
     // Middle Node
     stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
+    // Human Player Lineup
+    stick2.A.whileTrue(new ArmRotate(250000, m_armRotateSystem));
 
   }
 
