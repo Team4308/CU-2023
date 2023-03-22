@@ -19,9 +19,9 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class NoBalanceBump extends SequentialCommandGroup {
+public class PreloadMob extends SequentialCommandGroup {
 
-    public NoBalanceBump(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem, Boolean armOut) {
+    public PreloadMob(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem, Boolean armOut) {
         addCommands(
             //places game piece, skips docking, then passes mobility bonus line
 

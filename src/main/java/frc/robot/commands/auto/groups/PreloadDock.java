@@ -16,9 +16,9 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class Balance1 extends SequentialCommandGroup {
+public class PreloadDock extends SequentialCommandGroup {
 
-    public Balance1(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
+    public PreloadDock(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         addCommands(
             //places game piece then immediately docks
 

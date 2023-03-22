@@ -41,10 +41,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.ArmRotate;
-import frc.robot.commands.auto.groups.Balance1;
-import frc.robot.commands.auto.groups.Balance2;
-import frc.robot.commands.auto.groups.NoBalance;
-import frc.robot.commands.auto.groups.NoBalanceBump;
+import frc.robot.commands.auto.groups.PreloadDock;
+import frc.robot.commands.auto.groups.PreloadMobDock;
+import frc.robot.commands.auto.groups.PreloadMob;
+import frc.robot.commands.auto.groups.PreloadMob;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
 
@@ -83,13 +83,13 @@ public class RobotContainer {
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
-  private final Balance1 balance1;
-  private final Balance2 balance2;
-  private final NoBalance noBalance;
+  private final PreloadDock balance1;
+  private final PreloadMobDock balance2;
+  private final PreloadMob noBalance;
   private final Basic basic;
   private final DockOnly dockOnly;
   public Boolean armOut=false;
-  private final NoBalanceBump noBalanceBump;
+
 
   public RobotContainer() {
 
@@ -120,19 +120,19 @@ public class RobotContainer {
 
     // Auto
 
-    balance1 = new Balance1(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    balance2 = new Balance2(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    noBalance = new NoBalance(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    balance1 = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    balance2 = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    noBalance = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
     basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
-    noBalanceBump = new NoBalanceBump(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+  
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
 
     autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
 
     autoCommandChooser.addOption("Pre-Load + Mobility", noBalance);
-    autoCommandChooser.addOption("WITH BUMP - Pre-Load + Mobility", noBalanceBump);
+    
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
@@ -165,6 +165,7 @@ public class RobotContainer {
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
+    stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
@@ -179,7 +180,7 @@ public class RobotContainer {
     stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
 
     // Arm Auto-Position
-
+    
     // Set Middle
     stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
     // Middle Node

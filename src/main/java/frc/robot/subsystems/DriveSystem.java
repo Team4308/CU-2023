@@ -38,6 +38,9 @@ public class DriveSystem extends TankDriveSubsystem {
         public static DigitalInput leftLineBreak;
         public static DigitalInput rightLineBreak;
 
+        //
+        public static Boolean brakeMode = false;
+
         // Init
         public DriveSystem() {
                 gyro.setYawAxis(IMUAxis.kZ);
@@ -202,6 +205,20 @@ public class DriveSystem extends TankDriveSubsystem {
         public void resetSensors() {
                 masterLeft.setSelectedSensorPosition(0);
                 masterRight.setSelectedSensorPosition(0);
+        }
+
+        public void toggleBrake() {
+                if(brakeMode){
+                        masterLeft.setNeutralMode(NeutralMode.Brake);
+                        masterRight.setNeutralMode(NeutralMode.Brake);
+                        brakeMode = true;
+                }else{
+                        masterLeft.setNeutralMode(NeutralMode.Coast);
+                        masterRight.setNeutralMode(NeutralMode.Coast);
+                        brakeMode = false;
+                }
+               
+               
         }
 
         public void BBAlign(){
