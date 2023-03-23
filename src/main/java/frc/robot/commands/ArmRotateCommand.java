@@ -18,8 +18,8 @@ public class ArmRotateCommand extends CommandBase {
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
-            
-    public static DigitalInput armLineBreak;
+
+    public static DigitalInput armRotateBreak;
 
     // Init
     public ArmRotateCommand(ArmRotateSystem subsystem, Supplier<Double> control) {
@@ -27,7 +27,7 @@ public class ArmRotateCommand extends CommandBase {
         this.control = control;
         angle_controller.setSetpoint(subsystem.getArmPosition());
         initialValue = m_subsystem.getArmPosition();
-        armLineBreak = new DigitalInput(5); // DIO 5
+        armRotateBreak = new DigitalInput(5); // DIO 5
 
         addRequirements(m_subsystem);
     }
@@ -44,18 +44,19 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if(!armLineBreak.get()) m_subsystem.motor1.setSelectedSensorPosition(32000);
+        if (!armRotateBreak.get())
+            m_subsystem.motor1.setSelectedSensorPosition(32000);
 
-        if(control == 0.0){
+        if (control == 0.0) {
             angle_controller.setSetpoint(m_subsystem.getArmPosition());
         }
-        if(m_subsystem.getArmPosition() >= 32000 && control > 0){
+        if (m_subsystem.getArmPosition() >= 32000 && control > 0) {
             angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint(), -10000, 40000));
 
-        }else{
+        } else {
             angle_controller.setSetpoint(
                     DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 40000));
-        }   
+        }
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
     }
