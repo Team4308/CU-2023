@@ -26,17 +26,17 @@ public class LEDCommand extends CommandBase {
     public void execute() {
         int control = this.control.get();
         switch (control){
-            case 1: // claw is closed, arm is in some other state
+            case 1: // claw is closed
                 m_subsystem.setRGB(0, 0, 255); // blue
                 break;
-            case 2: // claw is open, arm is in some other state
+            case 2: // brake mode
                 m_subsystem.setRGB(0, 255, 0); // green
                 break;
-            case 3: // claw is closed and arm is fully extended
-                m_subsystem.setRGB(0, 255, 255); // cyan
+            case 3: // cone
+                m_subsystem.setRGB(255, 204, 0); // cyan
                 break;
-            case 4: // claw is open and fully extended
-                m_subsystem.setRGB(255, 0, 255); // purple
+            case 4: // cube
+                m_subsystem.setRGB(153, 51, 255); // purple
                 break;
             case 5: // claw is closed and arm is fully back
                 m_subsystem.setRGB(255, 255, 0); // yellow
@@ -52,7 +52,7 @@ public class LEDCommand extends CommandBase {
                 m_subsystem.setRGB(255, 0, 0); // red
                 break;
             
-            case 8: // everything else (theoretically never reaches this state)
+            case 8: // default (to save voltage)
                 m_subsystem.setRGB(0,0,0); // black
 
         }

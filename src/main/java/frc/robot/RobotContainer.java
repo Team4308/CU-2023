@@ -77,7 +77,7 @@ public class RobotContainer {
   // Controllers
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
-  private boolean displayLowVoltage = true;
+  private Integer humanMode = 0;
   private boolean brakeMode = false;
 
   // Auto
@@ -165,12 +165,12 @@ public class RobotContainer {
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.LB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+    stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
     // new RightHoldInPlace(m_driveSystem, () -> m_driveSystem.masterRight.getSelectedSensorPosition())));
-    stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
+    // stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
     // stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
@@ -187,6 +187,8 @@ public class RobotContainer {
     stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
     // Human Player Lineup
     stick2.A.whileTrue(new ArmRotate(250000, m_armRotateSystem));
+
+    stick2.Start.onTrue(new InstantCommand(() -> playerWantMode()));
 
   }
 
@@ -239,21 +241,21 @@ public class RobotContainer {
   public Integer getLEDCommand() {
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
     // Boolean armExtended = m_armExtendSystem.checkIfExtend();
-    Boolean armRetracted = false;
-    if (m_armExtendSystem.getSensorPosition() <= 100)
-      armRetracted = true;
-
-    if (RobotController.getBatteryVoltage() <= 10.00 && displayLowVoltage)
+    if (RobotController.getBatteryVoltage() <= 10.00)
       return 7; // low voltage
     if (brakeMode){
-      System.out.println("here pt2");
       return 2;
     }
-    if (DriveSystem.leftLineBreak.get() && DriveSystem.rightLineBreak.get())
-      return 1;
-    else
-      return 2;
+    if(humanMode == 1){
+      return 3;
+    }
+    if(humanMode == 2){
+      return 4;
+    }
 
+    if (clawState == Value.kReverse)
+      return 1;
+    return 8;
     /*
      * 
      * if(!armRetracted){
@@ -284,6 +286,13 @@ public class RobotContainer {
       brakeMode = false;
       m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
       m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
+    }
+  }
+
+  public void playerWantMode(){
+    humanMode++;
+    if(humanMode == 3){
+      humanMode = 0;
     }
   }
 
