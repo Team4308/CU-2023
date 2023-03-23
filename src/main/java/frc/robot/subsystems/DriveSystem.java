@@ -59,7 +59,6 @@ public class DriveSystem extends TankDriveSubsystem {
                 new Pose2d(0.0, 0.0, new Rotation2d()));
 
                 leftLineBreak = new DigitalInput(4); // DIO 4
-                rightLineBreak = new DigitalInput(5); // DIO 5
                 // Reset Config for all
                 for (TalonFX talon : controllersFX) {
                         talon.configFactoryDefault(Constants.Generic.timeoutMs);
