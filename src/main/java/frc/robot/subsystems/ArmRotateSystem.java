@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
 public class ArmRotateSystem extends MotoredSubsystem {
@@ -18,11 +17,7 @@ public class ArmRotateSystem extends MotoredSubsystem {
 
     private ArrayList<TalonSRX> controllersSRX = new ArrayList<TalonSRX>();
 
-    public static DigitalInput armLineBreak;
-
     public ArmRotateSystem() {
-        armLineBreak = new DigitalInput(5); // DIO 5
-
         // Setup and Add Controllers
 
         // for rotating arm up and down
@@ -67,12 +62,7 @@ public class ArmRotateSystem extends MotoredSubsystem {
      */
 
     public double getArmPosition() {
-        Boolean armLineBreak = ArmRotateSystem.armLineBreak.get();
-        if (armLineBreak) {
-            return 32000;
-        } else {
-            return motor1.getSelectedSensorPosition(0);
-        }
+        return motor1.getSelectedSensorPosition(0);
     }
 
     public void setArmOutput(TalonSRXControlMode mode, double val) {
