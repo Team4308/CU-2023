@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmExtendSystem;
@@ -16,6 +17,7 @@ public class ArmExtendCommand extends CommandBase {
     private Double initialValue;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
             Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
+    public static DigitalInput armExtendBreak;
 
     // Init
     public ArmExtendCommand(ArmExtendSystem subsystem, Supplier<Double> control) {
@@ -25,6 +27,7 @@ public class ArmExtendCommand extends CommandBase {
 
         extension_controller.setSetpoint(subsystem.getSensorPosition());
         initialValue = subsystem.getSensorPosition();
+        armExtendBreak = new DigitalInput(6); // DIO 6
     }
 
     // Called when the command is initially scheduled.
@@ -37,6 +40,10 @@ public class ArmExtendCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
+
+        if (!armExtendBreak.get())
+            m_subsystem.motor2.setSelectedSensorPosition(0);
+
         if (control == 0.0) {
             // stop it at current
             extension_controller.setSetpoint(initialValue + 3000);
