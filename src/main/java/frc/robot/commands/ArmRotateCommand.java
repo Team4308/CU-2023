@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import ca.team4308.absolutelib.math.DoubleUtils;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
@@ -17,6 +18,8 @@ public class ArmRotateCommand extends CommandBase {
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
+            
+    public static DigitalInput armLineBreak;
 
     // Init
     public ArmRotateCommand(ArmRotateSystem subsystem, Supplier<Double> control) {
@@ -24,6 +27,7 @@ public class ArmRotateCommand extends CommandBase {
         this.control = control;
         angle_controller.setSetpoint(subsystem.getArmPosition());
         initialValue = m_subsystem.getArmPosition();
+        armLineBreak = new DigitalInput(5); // DIO 5
 
         addRequirements(m_subsystem);
     }
@@ -39,6 +43,9 @@ public class ArmRotateCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
+
+        if(!armLineBreak.get()) m_subsystem.motor1.setSelectedSensorPosition(32000);
+
         if(control == 0.0){
             angle_controller.setSetpoint(m_subsystem.getArmPosition());
         }
