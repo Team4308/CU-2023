@@ -44,7 +44,7 @@ import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.groups.PreloadDock;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
-import frc.robot.commands.auto.groups.PreloadMob;
+import frc.robot.commands.auto.groups.PreloadMobHigh;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
 
@@ -88,6 +88,7 @@ public class RobotContainer {
   private final PreloadMob noBalance;
   private final Basic basic;
   private final DockOnly dockOnly;
+  private final PreloadMobHigh noBalanceHigh;
   public Boolean armOut=false;
 
 
@@ -125,6 +126,7 @@ public class RobotContainer {
     noBalance = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
     basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
+    noBalanceHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
   
 
     autoCommandChooser.setDefaultOption("Score & Dock", balance1);
@@ -136,6 +138,8 @@ public class RobotContainer {
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
+
+    autoCommandChooser.addOption("Pre-load + Mobility (High)", noBalanceHigh);
 
     SmartDashboard.putData(autoCommandChooser);
 

@@ -19,41 +19,36 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class PreloadMob extends SequentialCommandGroup {
+public class PreloadMobHigh extends SequentialCommandGroup {
 
-    public PreloadMob(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem, Boolean armOut) {
+    public PreloadMobHigh(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         addCommands(
             //places game piece, skips docking, then passes mobility bonus line
 
             //game piece
             new SequentialCommandGroup(
                 new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
-                new WaitCommand(0.5),
-                new ArmRotate(29000, armRotateSystem)
+                new WaitCommand(0.25),
+                new ArmRotate(24000, armRotateSystem),
+                new ParallelRaceGroup(
+                    new WaitCommand(2.5),
+                    new ArmExtend(-460000, armExtendSystem)
+                )
             ),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
-                    new ParallelRaceGroup(
-                        new WaitCommand(2),
-                        new ArmExtend(-280000, armExtendSystem)
-                    ),
-                    //Why put this in a parallel group when theres one command
-                    new ParallelCommandGroup(       
-                        new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
-                    ),
-                    new SequentialCommandGroup(
-                        new WaitCommand(0.5),
-                        new ParallelDeadlineGroup(
-                            new WaitCommand(2),
-                            new ArmExtend(0, armExtendSystem)
-                        )
+                    new DriveDistance(0.5, driveSystem),
+                    new WaitCommand(0.5),
+                    new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(2.5),
+                        new ArmExtend(0, armExtendSystem)
                     )
                 ),
-                new RepeatCommand(new ArmRotate(29000, armRotateSystem))
-            ),
+                new RepeatCommand(new ArmRotate(32000, armRotateSystem))),
             new ParallelDeadlineGroup(
             new ArmRotate(0, armRotateSystem),
-            new DriveDistance(-2, driveSystem))
+            new DriveDistance(-2.5, driveSystem))
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }

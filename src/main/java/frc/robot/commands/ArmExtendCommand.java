@@ -43,10 +43,14 @@ public class ArmExtendCommand extends CommandBase {
 
         if (!armExtendBreak.get())
             m_subsystem.motor2.setSelectedSensorPosition(0);
-
-        if (control == 0.0) {
+            if(control > 0){
+                m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
+                initialValue = m_subsystem.getSensorPosition();
+                
+            }
+        else if (control == 0.0) {
             // stop it at current
-            extension_controller.setSetpoint(initialValue + 3000);
+            extension_controller.setSetpoint(initialValue);
             double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0,
                     1.0);
             m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);

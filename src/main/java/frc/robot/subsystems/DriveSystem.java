@@ -222,7 +222,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
         public void BBAlign(){
                 Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
-                Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
+                Boolean rightLineBreak =  false;
                 final double output = 0.2;
         
                 if (!leftLineBreak && rightLineBreak) {
@@ -252,9 +252,9 @@ public class DriveSystem extends TankDriveSubsystem {
                 Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
-                Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
+                // Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
                 SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());
-                SmartDashboard.putBoolean("RightLineBreak", rightLineBreak.get());
+                // SmartDashboard.putBoolean("RightLineBreak", rightLineBreak.get());
                 //SmartDashboard.putNumber("Driver Mode", NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
                 return this;
         }
