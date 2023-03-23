@@ -10,11 +10,13 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 
 public class ArmExtendSystem extends MotoredSubsystem {
     public final TalonFX motor2;
+    public final DigitalInput armExtendBreak;
 
     // Beambreak
     /* 
@@ -24,6 +26,7 @@ public class ArmExtendSystem extends MotoredSubsystem {
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
     public ArmExtendSystem() {
+        armExtendBreak = new DigitalInput(6); // DIO 6
         // Setup and Add Controllers
 
         // for extending and retracting arm

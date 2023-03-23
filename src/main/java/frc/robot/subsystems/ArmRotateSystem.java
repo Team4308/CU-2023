@@ -9,12 +9,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import ca.team4308.absolutelib.wrapper.MotoredSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 
 public class ArmRotateSystem extends MotoredSubsystem {
     public final TalonSRX motor1;
-
+    public final DigitalInput armRotateBreak;
     private ArrayList<TalonSRX> controllersSRX = new ArrayList<TalonSRX>();
 
     public ArmRotateSystem() {
@@ -22,6 +23,7 @@ public class ArmRotateSystem extends MotoredSubsystem {
 
         // for rotating arm up and down
         motor1 = new TalonSRX(Constants.Mapping.Arm.motor1);
+        armRotateBreak = new DigitalInput(5); // DIO 5
 
         controllersSRX.add(motor1);
 

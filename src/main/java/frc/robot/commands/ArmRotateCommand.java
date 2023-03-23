@@ -27,7 +27,6 @@ public class ArmRotateCommand extends CommandBase {
         this.control = control;
         angle_controller.setSetpoint(subsystem.getArmPosition());
         initialValue = m_subsystem.getArmPosition();
-        armRotateBreak = new DigitalInput(5); // DIO 5
 
         addRequirements(m_subsystem);
     }
@@ -44,7 +43,7 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!armRotateBreak.get())
+        if (!m_subsystem.armRotateBreak.get())
             m_subsystem.motor1.setSelectedSensorPosition(32000);
 
         if (control == 0.0) {

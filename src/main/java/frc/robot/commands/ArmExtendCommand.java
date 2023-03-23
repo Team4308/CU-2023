@@ -17,17 +17,13 @@ public class ArmExtendCommand extends CommandBase {
     private Double initialValue;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
             Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
-    public static DigitalInput armExtendBreak;
-
     // Init
     public ArmExtendCommand(ArmExtendSystem subsystem, Supplier<Double> control) {
         m_subsystem = subsystem;
         this.control = control;
         addRequirements(m_subsystem);
-
         extension_controller.setSetpoint(subsystem.getSensorPosition());
         initialValue = subsystem.getSensorPosition();
-        armExtendBreak = new DigitalInput(6); // DIO 6
     }
 
     // Called when the command is initially scheduled.
@@ -41,7 +37,7 @@ public class ArmExtendCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!armExtendBreak.get())
+        if (!m_subsystem.armExtendBreak.get())
             m_subsystem.motor2.setSelectedSensorPosition(0);
             if(control > 0){
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
