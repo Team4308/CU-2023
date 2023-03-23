@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 import ca.team4308.absolutelib.math.DoubleUtils;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
@@ -18,12 +19,15 @@ public class ArmRotateCommand extends CommandBase {
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
 
+    public static DigitalInput armLineBreak;
+
     // Init
     public ArmRotateCommand(ArmRotateSystem subsystem, Supplier<Double> control) {
         m_subsystem = subsystem;
         this.control = control;
         angle_controller.setSetpoint(subsystem.getArmPosition());
         initialValue = m_subsystem.getArmPosition();
+        armLineBreak = new DigitalInput(5); // DIO 5
 
         addRequirements(m_subsystem);
     }
@@ -39,17 +43,25 @@ public class ArmRotateCommand extends CommandBase {
     @Override
     public void execute() {
         double control = this.control.get();
-        if(control == 0.0){
-            angle_controller.setSetpoint(m_subsystem.getArmPosition());
+        double armPosition;
+
+        if(armLineBreak.get()) {
+            armPosition = m_subsystem.getArmPosition();
+        } else {
+            armPosition = 32000;
         }
-        if(m_subsystem.getArmPosition() >= 32000 && control > 0){
+
+        if(control == 0.0){
+            angle_controller.setSetpoint(armPosition);
+        }
+        if(armPosition >= 32000 && control > 0){
             angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint(), -10000, 40000));
 
         }else{
             angle_controller.setSetpoint(
                     DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 40000));
         }   
-        double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
+        double output = DoubleUtils.clamp(angle_controller.calculate(armPosition), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
     }
 
