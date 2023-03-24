@@ -42,6 +42,7 @@ public class ArmExtend extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, 0);
     }
 
     @Override
