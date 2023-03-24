@@ -56,7 +56,7 @@ public class PreloadDock extends SequentialCommandGroup {
             //Movement and docking (guessed values)
             new SequentialCommandGroup(
                 new WaitCommand(0.5),
-                new TurnDistance(5, -5, driveSystem),
+                new TurnAngle(180, driveSystem),
                 new DriveDistance(5, driveSystem),
                 new ParallelDeadlineGroup(
                         new WaitCommand(4),
