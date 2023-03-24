@@ -29,26 +29,31 @@ public class PreloadMobHigh extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
                 new WaitCommand(0.25),
-                new ArmRotate(24000, armRotateSystem),
+                new ArmRotate(25000, armRotateSystem),
                 new ParallelRaceGroup(
                     new WaitCommand(2.5),
-                    new ArmExtend(-460000, armExtendSystem)
+                    new ArmExtend(-465000, armExtendSystem),
+                    new RepeatCommand(new ArmRotate(26000, armRotateSystem))
                 )
             ),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
-                    new DriveDistance(0.5, driveSystem),
-                    new WaitCommand(0.5),
+                    //new WaitCommand(0.25),
+                    new DriveDistance(0.7, driveSystem),
+                    new WaitCommand(0.25),
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
+                    new WaitCommand(0.5),
                     new ParallelDeadlineGroup(
-                        new WaitCommand(2.5),
-                        new ArmExtend(0, armExtendSystem)
+                        new WaitCommand(2),
+                        new ArmExtend(-150000, armExtendSystem)
                     )
                 ),
-                new RepeatCommand(new ArmRotate(32000, armRotateSystem))),
+                new RepeatCommand(new ArmRotate(30000, armRotateSystem))
+                ),
             new ParallelDeadlineGroup(
-            new ArmRotate(0, armRotateSystem),
-            new DriveDistance(-2.5, driveSystem))
+                new ArmRotate(0, armRotateSystem)
+            )
+            //new DriveDistance(-2.25, driveSystem))
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }
