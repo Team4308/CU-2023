@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.auto.DriveDistance;
+import frc.robot.commands.auto.TurnAngle;
 import frc.robot.commands.auto.TurnDistance;
 import frc.robot.subsystems.DriveSystem;
 
@@ -58,7 +59,7 @@ public class PreloadDock extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(
                     new ArmRotate(3000, armRotateSystem),
                     new DriveDistance(-0.5, driveSystem)),
-                new TurnDistance(0.125, -0.125, driveSystem),
+                new TurnAngle(180, driveSystem),
                 new DriveDistance(5, driveSystem),
                 new ParallelDeadlineGroup(
                         new WaitCommand(4),
