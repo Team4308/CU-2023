@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class LEDSystem extends LogSubsystem {
 
@@ -34,8 +35,9 @@ public class LEDSystem extends LogSubsystem {
         ledB.updateDutyCycle(mapB); 
     }
 
-    @Override
     public Sendable log() {
+        Shuffleboard.getTab("Log").addString("LED Current Command", () -> this.getCurrentCommand().getName());
+        Shuffleboard.getTab("Log").addString("LED Default Command", () -> this.getDefaultCommand().getName());
         return this;
     }
 }

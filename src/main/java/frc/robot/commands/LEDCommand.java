@@ -8,6 +8,7 @@ import frc.robot.subsystems.LEDSystem;
 public class LEDCommand extends CommandBase {
     private final LEDSystem m_subsystem;
     private final Supplier<Integer> control;
+    private int currentControl = 999;
 
     // Init
     public LEDCommand(LEDSystem subsystem, Supplier<Integer> control) {
@@ -25,6 +26,8 @@ public class LEDCommand extends CommandBase {
     @Override
     public void execute() {
         int control = this.control.get();
+        if (currentControl == control) return; // Prevents unnecessary calls to setRGB
+        currentControl = control;
         switch (control){
             case 1: // claw is closed
                 m_subsystem.setRGB(0, 0, 255); // blue

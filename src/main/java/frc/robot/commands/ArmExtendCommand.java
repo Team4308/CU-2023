@@ -37,7 +37,7 @@ public class ArmExtendCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!m_subsystem.armExtendBreak.get())
+        if (!m_subsystem.armExtendBreak.get()) // If arm is backed all the way in
             m_subsystem.motor2.setSelectedSensorPosition(0);
             if(control > 0){
                 m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);

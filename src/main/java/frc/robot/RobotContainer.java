@@ -279,6 +279,17 @@ public class RobotContainer {
      * return 8;
      */
   }
+  public void setBrakeMode(boolean brakeMode) {
+    System.out.println(brakeMode);
+    this.brakeMode = brakeMode;
+    if (brakeMode) {
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
+    } else {
+      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
+      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
+    }
+  }
 
   public void toggleBrakeMode() {
     System.out.println(brakeMode);
