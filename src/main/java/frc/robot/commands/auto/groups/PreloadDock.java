@@ -36,17 +36,17 @@ public class PreloadDock extends SequentialCommandGroup {
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
-                        new WaitCommand(4),
+                        new WaitCommand(1.75),
                         new ArmExtend(-280000, armExtendSystem)
                     ),
                     new ParallelCommandGroup(       
                         new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(1),
+                        new WaitCommand(.25),
                         new ParallelDeadlineGroup(
-                            new WaitCommand(4),
-                            new ArmExtend(-50000, armExtendSystem)
+                            new WaitCommand(1.25),
+                            new ArmExtend(-40000, armExtendSystem)
                         )
                     )
                 ),
@@ -60,7 +60,7 @@ public class PreloadDock extends SequentialCommandGroup {
                     new ArmRotate(3000, armRotateSystem),
                     new DriveDistance(-0.5, driveSystem)),
                 new TurnAngle(180, driveSystem),
-                new DriveDistance(5, driveSystem),
+                new DriveDistance(2.5, driveSystem),
                 new ParallelDeadlineGroup(
                         new WaitCommand(4),
                         new DockingCommand(driveSystem)
