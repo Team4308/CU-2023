@@ -36,8 +36,8 @@ public class LEDSystem extends LogSubsystem {
     }
 
     public Sendable log() {
-        Shuffleboard.getTab("Log").addString("LED Current Command", () -> this.getCurrentCommand().getName());
-        Shuffleboard.getTab("Log").addString("LED Default Command", () -> this.getDefaultCommand().getName());
+        // Shuffleboard.getTab("Log").addString("LED Current Command", () -> this.getCurrentCommand().getName());
+        // Shuffleboard.getTab("Log").addString("LED Default Command", () -> this.getDefaultCommand().getName());
         return this;
     }
 }
