@@ -45,7 +45,7 @@ public class PreloadMob extends SequentialCommandGroup {
                         new WaitCommand(0.5),
                         new ParallelDeadlineGroup(
                             new WaitCommand(2),
-                            new ArmExtend(0, armExtendSystem)
+                            new ArmExtend(-50000, armExtendSystem)
                         )
                     )
                 ),

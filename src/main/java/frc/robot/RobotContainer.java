@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.groups.PreloadDock;
+import frc.robot.commands.auto.groups.PreloadDockHigh;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
 import frc.robot.commands.auto.groups.PreloadMobHigh;
@@ -83,12 +84,13 @@ public class RobotContainer {
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
-  private final PreloadDock balance1;
-  private final PreloadMobDock balance2;
-  private final PreloadMob noBalance;
+  private final PreloadDock preloadDock;
+  private final PreloadMobDock preloadMobDock;
+  private final PreloadMob PreloadMob;
+  private final PreloadDockHigh preloadDockHigh;
   private final Basic basic;
   private final DockOnly dockOnly;
-  private final PreloadMobHigh noBalanceHigh;
+  private final PreloadMobHigh preloadMobHigh;
   public Boolean armOut=false;
 
 
@@ -121,25 +123,26 @@ public class RobotContainer {
 
     // Auto
 
-    balance1 = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    balance2 = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    noBalance = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    PreloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
     basic = new Basic(m_driveSystem, m_clawSystem);
     dockOnly = new DockOnly(m_driveSystem);
-    noBalanceHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
   
 
-    autoCommandChooser.setDefaultOption("Score & Dock", balance1);
+    autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
 
-    autoCommandChooser.addOption("Score, Mobility, Dock", balance2);
+    autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
 
-    autoCommandChooser.addOption("Pre-Load + Mobility", noBalance);
-    
+    autoCommandChooser.addOption("High Pre-Load + dock", preloadDockHigh);
+  
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
 
-    autoCommandChooser.addOption("Pre-load + Mobility (High)", noBalanceHigh);
+    autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
 
     SmartDashboard.putData(autoCommandChooser);
 

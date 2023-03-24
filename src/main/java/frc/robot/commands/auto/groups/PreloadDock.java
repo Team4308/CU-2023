@@ -38,7 +38,6 @@ public class PreloadDock extends SequentialCommandGroup {
                         new WaitCommand(4),
                         new ArmExtend(-280000, armExtendSystem)
                     ),
-                    //Group structure copied from PreloadMob, have questions
                     new ParallelCommandGroup(       
                         new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
                     ),
@@ -46,7 +45,7 @@ public class PreloadDock extends SequentialCommandGroup {
                         new WaitCommand(1),
                         new ParallelDeadlineGroup(
                             new WaitCommand(4),
-                            new ArmExtend(0, armExtendSystem)
+                            new ArmExtend(-50000, armExtendSystem)
                         )
                     )
                 ),
@@ -56,7 +55,10 @@ public class PreloadDock extends SequentialCommandGroup {
             //Movement and docking (guessed values)
             new SequentialCommandGroup(
                 new WaitCommand(0.5),
-                new TurnDistance(5, -5, driveSystem),
+                new ParallelDeadlineGroup(
+                    new ArmRotate(3000, armRotateSystem),
+                    new DriveDistance(-0.5, driveSystem)),
+                new TurnDistance(0.125, -0.125, driveSystem),
                 new DriveDistance(5, driveSystem),
                 new ParallelDeadlineGroup(
                         new WaitCommand(4),
