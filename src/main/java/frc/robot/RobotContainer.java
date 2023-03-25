@@ -17,6 +17,7 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.HoldInPlace;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.LeftHoldInPlace;
 import frc.robot.commands.ArmRotateCommand;
@@ -38,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.ArmRotate;
@@ -171,11 +173,10 @@ public class RobotContainer {
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
     stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+    //stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
-    // new RightHoldInPlace(m_driveSystem, () -> m_driveSystem.masterRight.getSelectedSensorPosition())));
+    stick.RB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
     // stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
 
     // Controller #1
@@ -218,6 +219,11 @@ public class RobotContainer {
     return control;
   }
 
+  public Vector2 getHoldControl(){
+    Vector2 control = new Vector2(m_driveSystem.masterLeft.getSelectedSensorPosition(), m_driveSystem.masterRight.getSelectedSensorPosition());
+    return control;
+  }
+
   public Double getArmExtendControl() {
     double y = DoubleUtils.normalize(stick2.getLeftY());
     Vector2 control = new Vector2(0.0, y);
@@ -246,18 +252,17 @@ public class RobotContainer {
   public Integer getLEDCommand() {
     Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
     // Boolean armExtended = m_armExtendSystem.checkIfExtend();
-    
-    /*if (RobotController.getBatteryVoltage() <= 10.00)
+    if (RobotController.getBatteryVoltage() <= 10.00)
       return 7; // low voltage
     if(humanMode == 1){
       return 3;
     }
     if(humanMode == 2){
       return 4;
-    } */
+    }
+
     if (clawState == Value.kReverse)
       return 1;
-
     return 8;
   }
 
