@@ -52,6 +52,7 @@ public class HoldInPlace extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         m_subsystem.masterLeft.setNeutralMode(NeutralMode.Coast);
+        m_subsystem.masterRight.setNeutralMode(NeutralMode.Coast);
     }
 
 }
