@@ -18,6 +18,9 @@ public class DockingCommand extends CommandBase {
     public DockingCommand(DriveSystem subsystem) {
         subsystem.resetAngle();
         m_subsystem = subsystem;
+        //was 0.0
+        //subsystem.gyro.getAngle()
+        //-1.0
         pitchController.setSetpoint(0.0);
         pitchController.setTolerance(Constants.Config.Drive.PitchControl.kTolerance);
 

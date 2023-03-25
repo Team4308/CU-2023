@@ -18,8 +18,9 @@ public class DockOnly extends SequentialCommandGroup {
         //Starts facing charging station, moves forward and docks
         addCommands(
             new SequentialCommandGroup(
-                new DriveDistance(1, driveSystem),
-                new ParallelDeadlineGroup(new WaitCommand(8), new DockingCommand(driveSystem))
+                new DriveDistance(2.0, driveSystem),
+                new DockingCommand(driveSystem)
+                //new ParallelDeadlineGroup(new WaitCommand(8), new DockingCommand(driveSystem))
             )
             
         );
