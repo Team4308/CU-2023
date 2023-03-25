@@ -14,6 +14,7 @@ import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.auto.ArmExtend;
 import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.ArmRotateHold;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.ArmRotateSystem;
 
@@ -49,7 +50,7 @@ public class PreloadMob extends SequentialCommandGroup {
                         )
                     )
                 ),
-                new RepeatCommand(new ArmRotate(29000, armRotateSystem))
+                new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
             new ParallelDeadlineGroup(
             new ArmRotate(0, armRotateSystem),

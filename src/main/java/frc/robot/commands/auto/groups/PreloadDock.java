@@ -16,6 +16,7 @@ import frc.robot.subsystems.DriveSystem;
 
 import frc.robot.commands.auto.ArmExtend;
 import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.ArmRotateHold;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.ArmRotateSystem;
 
@@ -50,7 +51,7 @@ public class PreloadDock extends SequentialCommandGroup {
                         )
                     )
                 ),
-                new RepeatCommand(new ArmRotate(29000, armRotateSystem))
+                new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
 
             //Movement and docking (guessed values)

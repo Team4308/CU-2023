@@ -14,6 +14,7 @@ import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.auto.ArmExtend;
 import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.ArmRotateHold;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.ArmRotateSystem;
 
@@ -29,11 +30,11 @@ public class PreloadMobHigh extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
                 new WaitCommand(0.25),
-                new ArmRotate(25000, armRotateSystem),
+                new ArmRotate(26000, armRotateSystem),
                 new ParallelRaceGroup(
                     new WaitCommand(2.5),
                     new ArmExtend(-575000, armExtendSystem),
-                    new RepeatCommand(new ArmRotate(26000, armRotateSystem))
+                    new RepeatCommand(new ArmRotateHold(26000, armRotateSystem))
                 )
             ),
             new ParallelRaceGroup(
@@ -46,7 +47,7 @@ public class PreloadMobHigh extends SequentialCommandGroup {
                         new ArmExtend(-50000, armExtendSystem)
                     )
                 ),
-                new RepeatCommand(new ArmRotate(30000, armRotateSystem))
+                new RepeatCommand(new ArmRotateHold(30000, armRotateSystem))
                 ),
             new ParallelDeadlineGroup(
             new ArmRotate(3000, armRotateSystem),

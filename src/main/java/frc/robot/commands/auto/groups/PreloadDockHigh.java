@@ -15,6 +15,7 @@ import frc.robot.commands.ArmRotateCommand;
 import frc.robot.commands.DockingCommand;
 import frc.robot.commands.auto.ArmExtend;
 import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.ArmRotateHold;
 import frc.robot.subsystems.ArmExtendSystem;
 import frc.robot.subsystems.ArmRotateSystem;
 
@@ -47,7 +48,7 @@ public class PreloadDockHigh extends SequentialCommandGroup {
                         new ArmExtend(-50000, armExtendSystem)
                     )
                 ),
-                new RepeatCommand(new ArmRotate(30000, armRotateSystem))
+                new RepeatCommand(new ArmRotateHold(30000, armRotateSystem))
                 ),
     
            //Movement and docking (guessed values)
