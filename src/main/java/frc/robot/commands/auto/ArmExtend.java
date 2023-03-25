@@ -35,8 +35,8 @@ public class ArmExtend extends CommandBase {
         double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0, 1.0);
         m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);
 
-        if(m_subsystem.getSensorPosition() < encoderDistance + 1000 
-            && m_subsystem.getSensorPosition() > encoderDistance - 1000)withinThresholdLoops++;
+        if(m_subsystem.getSensorPosition() < encoderDistance + 5000 
+            && m_subsystem.getSensorPosition() > encoderDistance - 5000) withinThresholdLoops++;
         else withinThresholdLoops = 0;
     }
 

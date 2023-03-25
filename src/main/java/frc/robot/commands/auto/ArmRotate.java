@@ -38,10 +38,10 @@ public class ArmRotate extends CommandBase {
     public void execute() {
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
 
-        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.3);
+        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.6);
         
-        if(m_subsystem.getArmPosition() < encoderDistance + 1000 
-            && m_subsystem.getArmPosition() > encoderDistance - 1000)withinThresholdLoops++;
+        if(m_subsystem.getArmPosition() < encoderDistance + 500 
+            && m_subsystem.getArmPosition() > encoderDistance - 500)withinThresholdLoops++;
         else withinThresholdLoops = 0;
     }
 

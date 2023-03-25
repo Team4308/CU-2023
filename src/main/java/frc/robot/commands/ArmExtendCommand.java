@@ -14,7 +14,6 @@ import ca.team4308.absolutelib.math.DoubleUtils;
 public class ArmExtendCommand extends CommandBase {
     private final ArmExtendSystem m_subsystem;
     private final Supplier<Double> control;
-    private Double initialValue;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
             Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
     // Init
@@ -23,7 +22,6 @@ public class ArmExtendCommand extends CommandBase {
         this.control = control;
         addRequirements(m_subsystem);
         extension_controller.setSetpoint(subsystem.getSensorPosition());
-        initialValue = subsystem.getSensorPosition();
     }
 
     // Called when the command is initially scheduled.
@@ -37,25 +35,29 @@ public class ArmExtendCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!m_subsystem.armExtendBreak.get()) // If arm is backed all the way in
+        if (!m_subsystem.armExtendBreak.get()) { // If arm is backed all the way in
             m_subsystem.motor2.setSelectedSensorPosition(0);
-            if(control > 0){
-                m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
-                initialValue = m_subsystem.getSensorPosition();
-                
-            }
-        else if (control == 0.0) {
-            // stop it at current
             extension_controller.setSetpoint(m_subsystem.getSensorPosition());
+            if(control > 0){
+                return;
+            }
+        }
+        if (control == 0.0) {
+            // stop it at current
             double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0,
                     1.0);
             m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);
-        } else {
-            m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
-            initialValue = m_subsystem.getSensorPosition();
+            return;
         }
+        extension_controller.setSetpoint(m_subsystem.getSensorPosition());
+        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, control);
     }
 
+    @Override
+    public boolean isFinished(){
+        return false;
+    }
+    
     @Override
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();
