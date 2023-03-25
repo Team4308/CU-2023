@@ -61,11 +61,11 @@ public class PreloadDock extends SequentialCommandGroup {
                 //     new ArmRotate(3000, armRotateSystem),
                 //     new DriveDistance(-0.5, driveSystem)),
                 // new TurnAngle(150, driveSystem)//,
-                new TurnDistance(1.0, -1.0, driveSystem)
-                // new DriveDistance(2.5, driveSystem),
+                new TurnDistance(1.2, -1.2, driveSystem),
+                new DriveDistance(2.5, driveSystem),
                 // new ParallelDeadlineGroup(
                 //         new WaitCommand(4),
-                //         new DockingCommand(driveSystem)
+                        new DockingCommand(driveSystem)
                 // )
                 
             )

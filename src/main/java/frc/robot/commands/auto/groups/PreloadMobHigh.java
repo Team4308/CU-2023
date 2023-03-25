@@ -24,7 +24,7 @@ public class PreloadMobHigh extends SequentialCommandGroup {
 
     public PreloadMobHigh(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         addCommands(
-            //places game piece, skips docking, then passes mobility bonus line
+            //places game piece on high node, skips docking, then passes mobility bonus line
 
             //game piece
             new SequentialCommandGroup(
@@ -44,14 +44,22 @@ public class PreloadMobHigh extends SequentialCommandGroup {
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
                     new ParallelDeadlineGroup(
                         new WaitCommand(1.5),
-                        new ArmExtend(-50000, armExtendSystem)
+                        new ArmExtend(-30000, armExtendSystem)
                     )
                 ),
                 new RepeatCommand(new ArmRotateHold(30000, armRotateSystem))
                 ),
-            new ParallelDeadlineGroup(
-            new ArmRotate(3000, armRotateSystem),
-            new DriveDistance(-2.25, driveSystem))
+            
+            new SequentialCommandGroup(
+                new DriveDistance(-0.5, driveSystem),
+                new ParallelDeadlineGroup(
+                new ArmRotate(3000, armRotateSystem),
+                new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem)
+            
+                ),
+            new DriveDistance(-4.0, driveSystem)
+            )
+            
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }
