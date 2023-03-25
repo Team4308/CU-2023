@@ -29,43 +29,44 @@ public class PreloadDock extends SequentialCommandGroup {
             //Places game piece, turns around and docks
 
             //game piece (copied from PreloadMob)
-            new SequentialCommandGroup(
-                new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
-                new WaitCommand(0.5),
-                new ArmRotate(29000, armRotateSystem)
-            ),
-            new ParallelRaceGroup(
-                new SequentialCommandGroup(
-                    new ParallelRaceGroup(
-                        new WaitCommand(1.75),
-                        new ArmExtend(-280000, armExtendSystem)
-                    ),
-                    new ParallelCommandGroup(       
-                        new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
-                    ),
-                    new SequentialCommandGroup(
-                        new WaitCommand(.25),
-                        new ParallelDeadlineGroup(
-                            new WaitCommand(1.25),
-                            new ArmExtend(-40000, armExtendSystem)
-                        )
-                    )
-                ),
-                new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
-            ),
+            // new SequentialCommandGroup(
+            //     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
+            //     new WaitCommand(0.5),
+            //     new ArmRotate(29000, armRotateSystem)
+            // ),
+            // new ParallelRaceGroup(
+            //     new SequentialCommandGroup(
+            //         new ParallelRaceGroup(
+            //             new WaitCommand(1.75),
+            //             new ArmExtend(-280000, armExtendSystem)
+            //         ),
+            //         new ParallelCommandGroup(       
+            //             new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
+            //         ),
+            //         new SequentialCommandGroup(
+            //             new WaitCommand(.25),
+            //             new ParallelDeadlineGroup(
+            //                 new WaitCommand(1.25),
+            //                 new ArmExtend(-40000, armExtendSystem)
+            //             )
+            //         )
+            //     ),
+            //     new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
+            // ),
 
             //Movement and docking (guessed values)
             new SequentialCommandGroup(
-                new WaitCommand(0.5),
-                new ParallelDeadlineGroup(
-                    new ArmRotate(3000, armRotateSystem),
-                    new DriveDistance(-0.5, driveSystem)),
-                new TurnAngle(180, driveSystem),
-                new DriveDistance(2.5, driveSystem),
-                new ParallelDeadlineGroup(
-                        new WaitCommand(4),
-                        new DockingCommand(driveSystem)
-                )
+                // new WaitCommand(0.5),
+                // new ParallelDeadlineGroup(
+                //     new ArmRotate(3000, armRotateSystem),
+                //     new DriveDistance(-0.5, driveSystem)),
+                // new TurnAngle(150, driveSystem)//,
+                new TurnDistance(1.0, -1.0, driveSystem)
+                // new DriveDistance(2.5, driveSystem),
+                // new ParallelDeadlineGroup(
+                //         new WaitCommand(4),
+                //         new DockingCommand(driveSystem)
+                // )
                 
             )
         );

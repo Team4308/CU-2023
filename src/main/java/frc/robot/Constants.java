@@ -42,9 +42,9 @@ public final class Constants {
                 public static double kD = 0.0;
             }
             public static class AutoAngleControl {
-                public static double kP = 0.001;
-                public static double kI = 0.0001;
-                public static double kD = 0.0;
+                public static double kP = 0.0005;
+                public static double kI = 0.000;
+                public static double kD = 0.000;
             }
             public static class AutoAngleControlHold {
                 public static double kP = 0.0002;
