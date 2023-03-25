@@ -155,8 +155,8 @@ public class DriveSystem extends TankDriveSubsystem {
          * Getters And Setters
          */
         public double getLeftSensorPosition() {
-                return masterLeft.getSelectedSensorPosition(0)
-                                * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
+                return masterLeft.getSelectedSensorPosition(0);
+                               // * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
         }
 
         public double getRightSensorPosition() {
@@ -249,6 +249,9 @@ public class DriveSystem extends TankDriveSubsystem {
                 Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
                 Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
                 */
+                Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
+                Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
+
                 Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
