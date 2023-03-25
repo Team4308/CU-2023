@@ -95,8 +95,8 @@ public final class Constants {
             }
 
             public static class HoldInPlace {
-                public static double kP = 0.07;
-                public static double kI = 0.03;
+                public static double kP = 0.003;
+                public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 100.0;
             }
