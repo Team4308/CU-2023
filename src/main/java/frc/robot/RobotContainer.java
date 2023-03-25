@@ -79,7 +79,6 @@ public class RobotContainer {
   public final XBoxWrapper stick = new XBoxWrapper(0);
   public final XBoxWrapper stick2 = new XBoxWrapper(1);
   private Integer humanMode = 0;
-  private boolean brakeMode = false;
 
   // Auto
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
@@ -178,7 +177,6 @@ public class RobotContainer {
     // stick.RB.whileTrue(new ParallelCommandGroup(new LeftHoldInPlace(m_driveSystem, () -> m_driveSystem.masterLeft.getSelectedSensorPosition()), 
     // new RightHoldInPlace(m_driveSystem, () -> m_driveSystem.masterRight.getSelectedSensorPosition())));
     // stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
-    // stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
 
     // Controller #1
 
@@ -251,9 +249,6 @@ public class RobotContainer {
     
     /*if (RobotController.getBatteryVoltage() <= 10.00)
       return 7; // low voltage
-    if (brakeMode){
-      return 2;
-    }
     if(humanMode == 1){
       return 3;
     }
@@ -264,48 +259,6 @@ public class RobotContainer {
       return 1;
 
     return 8;
-    /*
-     * 
-     * if(!armRetracted){
-     * if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
-     * return 9;
-     * else if(clawState == Value.kForward) return 1;
-     * else return 2;
-     * } else if(armExtended){
-     * if(clawState == Value.kForward) return 3;
-     * else return 4;
-     * } else if(armRetracted){
-     * if(clawState == Value.kForward) return 5;
-     * else if(DriveSystem.leftLineBreak.get() || DriveSystem.rightLineBreak.get())
-     * return 9;
-     * else return 6;
-     * }
-     * return 8;
-     */
-  }
-  public void setBrakeMode(boolean brakeMode) {
-    System.out.println(brakeMode);
-    this.brakeMode = brakeMode;
-    if (brakeMode) {
-      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
-      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
-    } else {
-      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
-      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
-    }
-  }
-
-  public void toggleBrakeMode() {
-    System.out.println(brakeMode);
-    if (brakeMode == false) {
-      brakeMode = true;
-      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Brake);
-      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Brake);
-    } else {
-      brakeMode = false;
-      m_driveSystem.masterLeft.setNeutralMode(NeutralMode.Coast);
-      m_driveSystem.masterRight.setNeutralMode(NeutralMode.Coast);
-    }
   }
 
   public void playerWantMode(){
