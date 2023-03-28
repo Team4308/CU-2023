@@ -33,7 +33,7 @@ public class PreloadMobHigh extends SequentialCommandGroup {
                 new ArmRotate(26000, armRotateSystem),
                 new ParallelRaceGroup(
                     new WaitCommand(2.5),
-                    new ArmExtend(-575000, armExtendSystem),
+                    new ArmExtend(-600000, armExtendSystem),
                     new RepeatCommand(new ArmRotateHold(26000, armRotateSystem))
                 )
             ),

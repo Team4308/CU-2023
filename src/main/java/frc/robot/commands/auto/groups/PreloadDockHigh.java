@@ -34,7 +34,7 @@ public class PreloadDockHigh extends SequentialCommandGroup {
                 new ArmRotate(25000, armRotateSystem),
                 new ParallelRaceGroup(
                     new WaitCommand(2.5),
-                    new ArmExtend(-575000, armExtendSystem),
+                    new ArmExtend(-600000, armExtendSystem),
                     new RepeatCommand(new ArmRotate(26000, armRotateSystem))
                 )
             ),
