@@ -176,6 +176,7 @@ public class RobotContainer {
     //stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
+    stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.RB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
     // stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
 
@@ -209,7 +210,17 @@ public class RobotContainer {
     if(stick.RB.getAsBoolean()){
       throttle /= 2;
     }
+
     double turn = DoubleUtils.normalize(stick.getRightX());
+    if(stick.getLeftY()!=0.0){
+        //increase turn in here
+        turn *= 1.4;
+    }
+    else{
+      turn -= throttle*0.4;
+    }
+    
+    
  
     Vector2 control = new Vector2(turn, throttle);
     control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);

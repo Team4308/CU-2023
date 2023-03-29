@@ -16,7 +16,7 @@ public class DockingCommand extends CommandBase {
 
     // Init
     public DockingCommand(DriveSystem subsystem) {
-        subsystem.resetAngle();
+        // subsystem.resetAngle();
         m_subsystem = subsystem;
         //was 0.0
         //subsystem.gyro.getAngle()

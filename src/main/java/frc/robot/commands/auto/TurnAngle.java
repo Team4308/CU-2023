@@ -30,7 +30,7 @@ public class TurnAngle extends CommandBase {
 
     @Override
     public void execute() {
-        double encoderDistance = (30.5*Math.PI
+        double encoderDistance = (105.0*Math.PI
                 / Constants.Config.Drive.Kinematics.kEncoderInchesPerCount);
         encoderDistance /= Constants.Config.Drive.Kinematics.kGearRatio;
         encoderDistance *= this.angle / 360;
