@@ -38,7 +38,7 @@ public class ArmRotateHold extends CommandBase {
     public void execute() {
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
 
-        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.6);
+        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.3);
         
         if(m_subsystem.getArmPosition() < encoderDistance + 500 
             && m_subsystem.getArmPosition() > encoderDistance - 500)withinThresholdLoops++;
@@ -51,6 +51,6 @@ public class ArmRotateHold extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return false;
     }
 }

@@ -43,6 +43,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.ArmRotate;
+import frc.robot.commands.auto.TurnAngle;
+import frc.robot.commands.auto.TurnDistance;
 import frc.robot.commands.auto.groups.PreloadDock;
 import frc.robot.commands.auto.groups.PreloadDockHigh;
 import frc.robot.commands.auto.groups.PreloadMobDock;
@@ -167,18 +169,21 @@ public class RobotContainer {
   private void configureBindings() {
     // Controller #0
 
-    stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
+    //stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
 
     // Limelight Functions
     stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
-    stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
+    //stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
     stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
     //stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.RB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
-    // stick.Start.onTrue(new InstantCommand(() -> this.displayLowVoltage = !displayLowVoltage));
+    
+    //LEFT RIGHT TURNS
+    // stick.X.whileTrue(new TurnDistance(0.5,-0.5, m_driveSystem));
+    // stick.B.whileTrue(new TurnAngle(-90, m_driveSystem));
 
     // Controller #1
 
