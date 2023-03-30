@@ -43,12 +43,12 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!m_subsystem.armRotateBreak.get()){
-            m_subsystem.motor1.setSelectedSensorPosition(32000);
-        } else {
+        // if (!m_subsystem.armRotateBreak.get()){
+        //     m_subsystem.motor1.setSelectedSensorPosition(32000);
+        // } else {
             angle_controller.setSetpoint(
                     DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 35000));
-        }
+        // }
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
     }
