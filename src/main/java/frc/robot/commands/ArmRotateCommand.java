@@ -14,7 +14,6 @@ import frc.robot.subsystems.ArmRotateSystem;
 public class ArmRotateCommand extends CommandBase {
     private final ArmRotateSystem m_subsystem;
     private final Supplier<Double> control;
-    private Double initialValue;
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
             Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
@@ -26,7 +25,6 @@ public class ArmRotateCommand extends CommandBase {
         m_subsystem = subsystem;
         this.control = control;
         angle_controller.setSetpoint(subsystem.getArmPosition());
-        initialValue = m_subsystem.getArmPosition();
 
         addRequirements(m_subsystem);
     }
@@ -35,7 +33,6 @@ public class ArmRotateCommand extends CommandBase {
     @Override
     public void initialize() {
         angle_controller.setSetpoint(m_subsystem.getArmPosition());
-        initialValue = m_subsystem.getArmPosition();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -43,12 +40,13 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        // if (!m_subsystem.armRotateBreak.get()){
-        //     m_subsystem.motor1.setSelectedSensorPosition(32000);
-        // } else {
+        if (!m_subsystem.armRotateBreak.get()){
+            m_subsystem.motor1.setSelectedSensorPosition(32000);
+            angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 32000));
+        } else {
             angle_controller.setSetpoint(
                     DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 35000));
-        // }
+        }
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
     }
