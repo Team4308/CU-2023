@@ -93,14 +93,14 @@ public final class Constants {
 
             public static class PitchControl {
                 //p = 0.004, i = 0.0001, d = 0.0007
-                public static double kP = 0.008;
+                public static double kP = 0.0065;
                 public static double kI = 0.000;
                 public static double kD = 0.000;
                 public static double kTolerance = 2.0;
             }
 
             public static class HoldInPlace {
-                public static double kP = 0.0003;
+                public static double kP = 0.00015;
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 100.0;
@@ -128,7 +128,7 @@ public final class Constants {
                 public static int profileSlot = 1;
 
                 public static int maxVel = 16000;
-                public static int maxAcc = 9000;
+                public static int maxAcc = 11000;
 
                 public static class Left {
                     public static double kP = 0.0001;
@@ -149,7 +149,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 4500;
+            public static double VelocityDriveRPM = 4000;
         }
     }
 }

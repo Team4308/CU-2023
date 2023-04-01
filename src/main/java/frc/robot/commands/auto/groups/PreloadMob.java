@@ -43,7 +43,7 @@ public class PreloadMob extends SequentialCommandGroup {
                         new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(0.5),
+                        new WaitCommand(1)      ,
                         new ParallelDeadlineGroup(
                             new WaitCommand(2),
                             new ArmExtend(-50000, armExtendSystem)
@@ -53,8 +53,9 @@ public class PreloadMob extends SequentialCommandGroup {
                 new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
             new ParallelDeadlineGroup(
-            new ArmRotate(0, armRotateSystem),
-            new DriveDistance(-2, driveSystem))
+            new ArmRotate(0, armRotateSystem)// ,
+            //new DriveDistance(-2, driveSystem)
+            )
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
     }

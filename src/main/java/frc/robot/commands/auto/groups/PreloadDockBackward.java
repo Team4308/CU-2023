@@ -22,9 +22,9 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class PreloadDock extends SequentialCommandGroup {
+public class PreloadDockBackward extends SequentialCommandGroup {
 
-    public PreloadDock(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
+    public PreloadDockBackward(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         driveSystem.resetAngle();
         addCommands(
             //Places game piece, turns around and docks
@@ -32,7 +32,7 @@ public class PreloadDock extends SequentialCommandGroup {
             //game piece (copied from PreloadMob)
             new SequentialCommandGroup(
                 new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
-                new WaitCommand(0.25),
+                new WaitCommand(0.5),
                 new ArmRotate(29000, armRotateSystem)
             ),
             new ParallelRaceGroup(
@@ -44,7 +44,11 @@ public class PreloadDock extends SequentialCommandGroup {
                           
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
                     new SequentialCommandGroup(
-                        new WaitCommand(.25)
+                        new WaitCommand(.25),
+                        new ParallelDeadlineGroup(
+                            new WaitCommand(1.75),
+                            new ArmExtend(-30000, armExtendSystem)
+                        )
                     )
                 ),
                 new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
@@ -52,20 +56,16 @@ public class PreloadDock extends SequentialCommandGroup {
 
             //Movement and docking (guessed values)
             new SequentialCommandGroup(
+                
+                // new WaitCommand(0.5),
                 new ParallelDeadlineGroup(
-                    new WaitCommand(1.75),
-                    new ArmExtend(-30000, armExtendSystem),
-                    new SequentialCommandGroup(
-                        new WaitCommand(0.5),
-                        new ArmRotate(9000, armRotateSystem)
-                    ),
-                    new DriveDistance(-0.3, driveSystem)),
-                new TurnAngle(180, driveSystem),
+                    new ArmRotate(3000, armRotateSystem),
+                    new DriveDistance(-0.5, driveSystem)),
                 // new TurnDistance(1.2, -1.2, driveSystem),
-                new DriveDistance(1.5, driveSystem),
+                new DriveDistance(-1.5, driveSystem),
                 // new ParallelDeadlineGroup(
                 //         new WaitCommand(4),
-                new DockingCommand(driveSystem)
+                        new DockingCommand(driveSystem)
                 // )
                 
             )

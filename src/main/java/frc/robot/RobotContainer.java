@@ -46,6 +46,7 @@ import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.TurnAngle;
 import frc.robot.commands.auto.TurnDistance;
 import frc.robot.commands.auto.groups.PreloadDock;
+import frc.robot.commands.auto.groups.PreloadDockBackward;
 import frc.robot.commands.auto.groups.PreloadDockHigh;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
@@ -88,6 +89,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
   private final PreloadDock preloadDock;
+  private final PreloadDockBackward preloadDockBackward;
   private final PreloadMobDock preloadMobDock;
   private final PreloadMob PreloadMob;
   private final PreloadDockHigh preloadDockHigh;
@@ -127,6 +129,7 @@ public class RobotContainer {
     // Auto
 
     preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     PreloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
@@ -136,6 +139,7 @@ public class RobotContainer {
   
 
     autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
+    autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
 
     autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
 
@@ -179,7 +183,7 @@ public class RobotContainer {
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.RB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
+    stick.LB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
     
     //LEFT RIGHT TURNS
     // stick.X.whileTrue(new TurnDistance(0.5,-0.5, m_driveSystem));
