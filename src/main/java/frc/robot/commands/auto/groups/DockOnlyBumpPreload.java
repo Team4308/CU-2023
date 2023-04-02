@@ -14,13 +14,13 @@ import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ClawSystem;
 
 
-public class DockOnly extends SequentialCommandGroup {
+public class DockOnlyBumpPreload extends SequentialCommandGroup {
 
-    public DockOnly(DriveSystem driveSystem, ClawSystem clawSystem) {
+    public DockOnlyBumpPreload(DriveSystem driveSystem, ClawSystem clawSystem) {
         //Starts facing charging station, moves forward and docks
         addCommands(
             new SequentialCommandGroup(
-                new InstantCommand(() -> driveSystem.resetAngle(), driveSystem),
+                new DriveDistance(-1, driveSystem),
                 new DriveDistance(1.5, driveSystem),
                 new ParallelDeadlineGroup(new WaitCommand(10), new DockingCommand(driveSystem))
             )

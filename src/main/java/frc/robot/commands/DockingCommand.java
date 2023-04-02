@@ -39,6 +39,9 @@ public class DockingCommand extends CommandBase {
     public void execute() {
         double roll = m_subsystem.gyro.getAngle();
         double output = DoubleUtils.clamp(pitchController.calculate(roll), -1.0, 1.0);
+        // if(m_subsystem.getRightSensorPosition()>4.0){
+        //     output = 0.0;
+        // }
         m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
 
     }

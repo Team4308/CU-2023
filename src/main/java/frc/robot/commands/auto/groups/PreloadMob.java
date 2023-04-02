@@ -53,8 +53,8 @@ public class PreloadMob extends SequentialCommandGroup {
                 new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
             new ParallelDeadlineGroup(
-            new ArmRotate(0, armRotateSystem)// ,
-            //new DriveDistance(-2, driveSystem)
+            new ArmRotate(0, armRotateSystem),
+            new DriveDistance(-2, driveSystem)
             )
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );
