@@ -66,8 +66,8 @@ public class PreloadDock extends SequentialCommandGroup {
                     new ParallelRaceGroup(
                         new SequentialCommandGroup(
                             new WaitCommand(.25),
-                            new ParallelDeadlineGroup(
-                                new WaitCommand(1.75),
+                            new ParallelRaceGroup(
+                                new WaitCommand(2),
                                 new ArmExtend(-20000, armExtendSystem)
                             )
                         ),
