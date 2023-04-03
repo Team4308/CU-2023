@@ -76,6 +76,7 @@ public class PreloadDock extends SequentialCommandGroup {
                       new SequentialCommandGroup(
                         new WaitCommand(1),
                         new ArmRotate(3000, armRotateSystem))
+                    )
                 )
             )
         );
