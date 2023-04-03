@@ -15,8 +15,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import com.kauailabs.navx.frc.AHRS;
+// import edu.wpi.first.wpilibj.ADIS16470_IMU;
+// import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -32,7 +34,8 @@ public class DriveSystem extends TankDriveSubsystem {
         private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
         // IMU
-        public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+        //public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+        public AHRS gyro = new AHRS(SerialPort.Port.kUSB);
         public static DifferentialDriveOdometry odometry;
         // Beambreaks
         public static DigitalInput leftLineBreak;
@@ -43,7 +46,6 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // Init
         public DriveSystem() {
-                gyro.setYawAxis(IMUAxis.kZ);
 
                 // Setup and Add Controllers
                 masterLeft = new TalonFX(Constants.Mapping.Drive.frontLeft);
@@ -54,6 +56,9 @@ public class DriveSystem extends TankDriveSubsystem {
                 controllersFX.add(slaveLeft);
                 slaveRight = new TalonFX(Constants.Mapping.Drive.backRight);
                 controllersFX.add(slaveRight);
+
+                // Calibrate Gyro
+                gyro.calibrate();
 
                 odometry= new DifferentialDriveOdometry(new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition(),
                 new Pose2d(0.0, 0.0, new Rotation2d()));
@@ -194,7 +199,9 @@ public class DriveSystem extends TankDriveSubsystem {
         public void resetAngle() {
                 gyro.reset();
         }
-
+        public void calibrateGyro() {
+                gyro.calibrate();
+        }
         public void stopControllers() {
                 masterLeft.set(TalonFXControlMode.PercentOutput, 0.0);
                 masterRight.set(TalonFXControlMode.PercentOutput, 0.0);
@@ -251,9 +258,10 @@ public class DriveSystem extends TankDriveSubsystem {
                 */
                 Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
                 Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
-
-                Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
-                Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
+                Shuffleboard.getTab("Log").addFloat("Pitch", () -> gyro.getPitch());
+                Shuffleboard.getTab("Log").addFloat("z accel", () -> gyro.getRawAccelZ());
+                // Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
+                // Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
                 // Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
                 SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());

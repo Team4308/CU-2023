@@ -23,7 +23,7 @@ public final class Constants {
     }
 
     public static class Generic {
-        public static int timeoutMs = 3000;
+        public static int timeoutMs = 2000;
     }
 
     public static class Config {
@@ -82,6 +82,13 @@ public final class Constants {
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 0.5;
+            }
+
+            public static class GyroTurnControl {
+                public static double kP = 0.005;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kTolerance = 3.0;
             }
 
             public static class RangeControl {

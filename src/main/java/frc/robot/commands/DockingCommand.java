@@ -37,11 +37,8 @@ public class DockingCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double roll = m_subsystem.gyro.getAngle();
-        double output = DoubleUtils.clamp(pitchController.calculate(roll), -1.0, 1.0);
-        // if(m_subsystem.getRightSensorPosition()>4.0){
-        //     output = 0.0;
-        // }
+        double pitch = m_subsystem.gyro.getPitch();
+        double output = DoubleUtils.clamp(pitchController.calculate(pitch), -1.0, 1.0);
         m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
 
     }
