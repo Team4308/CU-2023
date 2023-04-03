@@ -23,7 +23,7 @@ public final class Constants {
     }
 
     public static class Generic {
-        public static int timeoutMs = 3000;
+        public static int timeoutMs = 2000;
     }
 
     public static class Config {
