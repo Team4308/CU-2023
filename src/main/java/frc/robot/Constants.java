@@ -84,6 +84,13 @@ public final class Constants {
                 public static double kTolerance = 0.5;
             }
 
+            public static class GyroTurnControl {
+                public static double kP = 0.005;
+                public static double kI = 0.0;
+                public static double kD = 0.0;
+                public static double kTolerance = 3.0;
+            }
+
             public static class RangeControl {
                 public static double kP = 0.01;
                 public static double kI = 0.0;
