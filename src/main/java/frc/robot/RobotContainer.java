@@ -46,12 +46,15 @@ import frc.robot.commands.auto.ArmRotate;
 import frc.robot.commands.auto.TurnAngle;
 import frc.robot.commands.auto.TurnDistance;
 import frc.robot.commands.auto.groups.PreloadDock;
+import frc.robot.commands.auto.groups.PreloadDockBackward;
 import frc.robot.commands.auto.groups.PreloadDockHigh;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
 import frc.robot.commands.auto.groups.PreloadMobHigh;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
+import frc.robot.commands.auto.groups.DockOnlyArmPreload;
+import frc.robot.commands.auto.groups.DockOnlyBumpPreload;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -88,11 +91,14 @@ public class RobotContainer {
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
   private final PreloadDock preloadDock;
+  private final PreloadDockBackward preloadDockBackward;
   private final PreloadMobDock preloadMobDock;
-  private final PreloadMob PreloadMob;
+  private final PreloadMob preloadMob;
   private final PreloadDockHigh preloadDockHigh;
   private final Basic basic;
   private final DockOnly dockOnly;
+  private final DockOnlyBumpPreload dockBumpPreload;
+  private final DockOnlyArmPreload dockOnlyArmPreload;
   private final PreloadMobHigh preloadMobHigh;
   public Boolean armOut=false;
 
@@ -127,23 +133,30 @@ public class RobotContainer {
     // Auto
 
     preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
     preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    PreloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+    preloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
     basic = new Basic(m_driveSystem, m_clawSystem);
-    dockOnly = new DockOnly(m_driveSystem);
+    dockOnly = new DockOnly(m_driveSystem, m_clawSystem);
+    dockBumpPreload = new DockOnlyBumpPreload(m_driveSystem, m_clawSystem);
+    dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
     preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
   
 
     autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
+    autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
 
     autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
+    autoCommandChooser.addOption("Preloaod + Mobility (mid)", preloadMob);
 
     autoCommandChooser.addOption("High Pre-Load + dock", preloadDockHigh);
   
 
     autoCommandChooser.addOption("2m", basic);
     autoCommandChooser.addOption("Dock Only", dockOnly);
+    autoCommandChooser.addOption("Dock Only w/ Backwards Preload", dockBumpPreload);
+    autoCommandChooser.addOption("Dock Only w/ Arm Preload", dockOnlyArmPreload);
 
     autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
 
@@ -179,7 +192,7 @@ public class RobotContainer {
     // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
     // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
     stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.RB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
+    stick.LB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
     
     //LEFT RIGHT TURNS
     // stick.X.whileTrue(new TurnDistance(0.5,-0.5, m_driveSystem));
