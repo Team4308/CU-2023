@@ -21,7 +21,7 @@ public class GyroTurnAngle extends CommandBase {
     int withinThresholdLoops = 0;
 
     public GyroTurnAngle(double angle, DriveSystem subsystem) {
-        DriverStation.reportWarning("Turning "+angle, null);
+        DriverStation.reportWarning("Turning "+angle, false);
         this.m_subsystem = subsystem;
         originalAngle = m_subsystem.gyro.getAngle();
         targetAngle = angle + originalAngle;
