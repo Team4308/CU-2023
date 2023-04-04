@@ -37,6 +37,7 @@ public class DriveSystem extends TankDriveSubsystem {
         //public static ADIS16470_IMU gyro = new ADIS16470_IMU();
         public AHRS gyro = new AHRS(SerialPort.Port.kMXP);
         public static DifferentialDriveOdometry odometry;
+
         // Beambreaks
         public static DigitalInput leftLineBreak;
         public static DigitalInput rightLineBreak;
@@ -260,6 +261,10 @@ public class DriveSystem extends TankDriveSubsystem {
                 Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
                 Shuffleboard.getTab("Log").addFloat("Pitch", () -> gyro.getPitch());
                 Shuffleboard.getTab("Log").addFloat("z accel", () -> gyro.getRawAccelZ());
+                Shuffleboard.getTab("Log").addFloat("Yaw", () -> gyro.getYaw());
+                Shuffleboard.getTab("Log").addFloat("Roll", () -> gyro.getRoll());
+                Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
+
                 // Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 // Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
