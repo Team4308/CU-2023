@@ -22,6 +22,7 @@ public class GyroTurnAngle extends CommandBase {
 
     public GyroTurnAngle(double angle, DriveSystem subsystem) {
         DriverStation.reportWarning("Turning "+angle, false);
+        
         this.m_subsystem = subsystem;
         originalAngle = m_subsystem.gyro.getAngle();
         targetAngle = angle + originalAngle;
@@ -41,15 +42,14 @@ public class GyroTurnAngle extends CommandBase {
     public void execute() {
         double output = DoubleUtils.clamp(turn_controller.calculate(m_subsystem.gyro.getAngle()), -1.0, 1.0);
 
-        double leftTargetRPM = output*Constants.DynConfig.Drive.VelocityDriveRPM;
-        double rightTargetRPM = -output*Constants.DynConfig.Drive.VelocityDriveRPM;
+        double leftTargetRPM = -output*Constants.DynConfig.Drive.VelocityDriveRPM;
+        double rightTargetRPM = output*Constants.DynConfig.Drive.VelocityDriveRPM;
         double leftTargetUnitsPS = (leftTargetRPM / 600.0)
                 * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0)
                 * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS,
-                rightTargetUnitsPS);
-
+        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS*0.35,
+                rightTargetUnitsPS*0.35);
         if (Math.abs(m_subsystem.gyro.getAngle() - targetAngle) < tolerance) {
             withinThresholdLoops += 1;
         } else {
