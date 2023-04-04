@@ -51,6 +51,7 @@ import frc.robot.commands.auto.groups.PreloadDockHigh;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
 import frc.robot.commands.auto.groups.PreloadMobHigh;
+import frc.robot.commands.auto.groups.PreloadMobHighStart;
 import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
 import frc.robot.commands.auto.groups.DockOnlyArmPreload;
@@ -100,6 +101,7 @@ public class RobotContainer {
   private final DockOnlyBumpPreload dockBumpPreload;
   private final DockOnlyArmPreload dockOnlyArmPreload;
   private final PreloadMobHigh preloadMobHigh;
+  private final PreloadMobHighStart preloadMobHighStart;
   public Boolean armOut=false;
 
 
@@ -142,6 +144,7 @@ public class RobotContainer {
     dockBumpPreload = new DockOnlyBumpPreload(m_driveSystem, m_clawSystem);
     dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
     preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+    preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
   
 
     autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
@@ -159,6 +162,7 @@ public class RobotContainer {
     autoCommandChooser.addOption("Dock Only w/ Arm Preload", dockOnlyArmPreload);
 
     autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
+    autoCommandChooser.addOption("High Preload without Drive Forward", preloadMobHighStart);
 
     SmartDashboard.putData(autoCommandChooser);
 
