@@ -31,6 +31,9 @@ public class ArmExtendSystem extends MotoredSubsystem {
 
         // for extending and retracting arm
         motor2 = new TalonFX(Constants.Mapping.Arm.motor2);
+        motor2.setSensorPhase(true);
+        motor2.setInverted(true);
+
 
         controllersFX.add(motor2);
 /* 
