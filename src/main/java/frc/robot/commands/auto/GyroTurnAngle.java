@@ -24,9 +24,11 @@ public class GyroTurnAngle extends CommandBase {
         DriverStation.reportWarning("Turning "+angle, false);
         
         this.m_subsystem = subsystem;
-        originalAngle = m_subsystem.gyro.getAngle();
+        originalAngle = m_subsystem.gyro.getYaw();
         targetAngle = angle + originalAngle;
         withinThresholdLoops = 0;
+        turn_controller.enableContinuousInput(-180, 180);
+        turn_controller.setTolerance(Constants.Config.Drive.GyroTurnControl.kTolerance);
         turn_controller.setSetpoint(targetAngle);
         addRequirements(this.m_subsystem);
     }
