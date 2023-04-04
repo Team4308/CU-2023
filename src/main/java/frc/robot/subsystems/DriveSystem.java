@@ -265,6 +265,8 @@ public class DriveSystem extends TankDriveSubsystem {
                 Shuffleboard.getTab("Log").addFloat("Roll", () -> gyro.getRoll());
                 Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
 
+                Shuffleboard.getTab("Log").addString("Axis", () -> gyro.getBoardYawAxis().toString());
+
                 // Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
                 // Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
                 Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
