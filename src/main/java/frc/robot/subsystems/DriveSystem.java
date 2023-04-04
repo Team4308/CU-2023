@@ -35,7 +35,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // IMU
         //public static ADIS16470_IMU gyro = new ADIS16470_IMU();
-        public AHRS gyro = new AHRS(SerialPort.Port.kUSB);
+        public AHRS gyro = new AHRS(SerialPort.Port.kMXP);
         public static DifferentialDriveOdometry odometry;
 
         // Beambreaks
