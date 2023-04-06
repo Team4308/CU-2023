@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.kauailabs.navx.frc.AHRS;
 // import edu.wpi.first.wpilibj.ADIS16470_IMU;
 // import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -34,9 +34,8 @@ public class DriveSystem extends TankDriveSubsystem {
     private ArrayList<TalonFX> controllersFX = new ArrayList<TalonFX>();
 
     // IMU
-    //public static ADIS16470_IMU gyro = new ADIS16470_IMU();
-    public AHRS gyro = new AHRS(SerialPort.Port.kMXP);
-    public static DifferentialDriveOdometry odometry;
+    // public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+    public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     // Beambreaks
     public static DigitalInput leftLineBreak;
@@ -61,9 +60,6 @@ public class DriveSystem extends TankDriveSubsystem {
         // Calibrate Gyro
         gyro.calibrate();
 
-        odometry= new DifferentialDriveOdometry(new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition(),
-            new Pose2d(0.0, 0.0, new Rotation2d()));
-
         leftLineBreak = new DigitalInput(4); // DIO 4
         // Reset Config for all
         for (TalonFX talon : controllersFX) {
@@ -82,11 +78,11 @@ public class DriveSystem extends TankDriveSubsystem {
         for (TalonFX talon : controllersFX) {
             talon.configFactoryDefault(Constants.Generic.timeoutMs);
             talon.configOpenloopRamp(Constants.Config.Drive.Power.kOpenLoopRamp,
-                Constants.Generic.timeoutMs);
+                    Constants.Generic.timeoutMs);
             talon.configClosedloopRamp(Constants.Config.Drive.Power.kClosedLoopRamp,
-                Constants.Generic.timeoutMs);
+                    Constants.Generic.timeoutMs);
             talon.configStatorCurrentLimit(Constants.Config.Drive.Power.kStatorCurrentLimit,
-                Constants.Generic.timeoutMs);
+                    Constants.Generic.timeoutMs);
             talon.setNeutralMode(NeutralMode.Coast);
             talon.configNeutralDeadband(0.001, Constants.Generic.timeoutMs);
             talon.changeMotionControlFramePeriod(5);
@@ -96,9 +92,9 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // Configure Primary Closed Loop Sensor
         masterLeft.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
-            Constants.Generic.timeoutMs);
+                Constants.Generic.timeoutMs);
         masterRight.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0,
-            Constants.Generic.timeoutMs);
+                Constants.Generic.timeoutMs);
 
         // Set Sensor Phase for all loops
         masterLeft.setSensorPhase(false);
@@ -106,24 +102,24 @@ public class DriveSystem extends TankDriveSubsystem {
 
         // Set Left Velocity PIDF values
         masterLeft.config_kP(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Left.kP, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Left.kP, Constants.Generic.timeoutMs);
         masterLeft.config_kI(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Left.kI, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Left.kI, Constants.Generic.timeoutMs);
         masterLeft.config_kD(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Left.kD, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Left.kD, Constants.Generic.timeoutMs);
         masterLeft.config_kF(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Left.kF, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Left.kF, Constants.Generic.timeoutMs);
         masterLeft.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
 
         // Set Right Velocity PIDF values
         masterRight.config_kP(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Right.kP, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Right.kP, Constants.Generic.timeoutMs);
         masterRight.config_kI(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Right.kI, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Right.kI, Constants.Generic.timeoutMs);
         masterRight.config_kD(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Right.kD, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Right.kD, Constants.Generic.timeoutMs);
         masterRight.config_kF(Constants.Config.Drive.VelocityControl.profileSlot,
-            Constants.Config.Drive.VelocityControl.Right.kF, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.VelocityControl.Right.kF, Constants.Generic.timeoutMs);
         masterRight.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
 
         masterLeft.configMotionCruiseVelocity(Constants.Config.Drive.MotionMagic.maxVel);
@@ -132,23 +128,23 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.configMotionAcceleration(Constants.Config.Drive.MotionMagic.maxAcc);
 
         masterLeft.config_kP(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
         masterLeft.config_kI(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kI, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kI, Constants.Generic.timeoutMs);
         masterLeft.config_kD(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterLeft.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
         masterLeft.setNeutralMode(NeutralMode.Coast);
         masterLeft.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
         masterRight.config_kP(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kP, Constants.Generic.timeoutMs);
         masterRight.config_kI(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kI, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kI, Constants.Generic.timeoutMs);
         masterRight.config_kD(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kD, Constants.Generic.timeoutMs);
         masterRight.config_kF(Constants.Config.Drive.MotionMagic.profileSlot,
-            Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
+                Constants.Config.Drive.MotionMagic.Right.kF, Constants.Generic.timeoutMs);
         masterRight.setNeutralMode(NeutralMode.Coast);
         masterRight.config_IntegralZone(Constants.Config.Drive.MotionMagic.profileSlot, 10);
 
@@ -167,7 +163,7 @@ public class DriveSystem extends TankDriveSubsystem {
 
     public double getRightSensorPosition() {
         return masterRight.getSelectedSensorPosition(0)
-            * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
+                * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
     }
 
     public double getLeftSensorVelocity() {
@@ -178,7 +174,6 @@ public class DriveSystem extends TankDriveSubsystem {
         return masterRight.getSelectedSensorVelocity(0);
     }
 
-
     public void setMotorOutput(ControlMode mode, double left, double right) {
         masterLeft.set(mode, left);
         masterRight.set(mode, right);
@@ -188,10 +183,6 @@ public class DriveSystem extends TankDriveSubsystem {
      * Misc Stuff
      */
 
-    public void updateOdometry() {
-        odometry.update(
-            new Rotation2d(gyro.getAngle()), masterLeft.getSelectedSensorPosition(), masterRight.getSelectedSensorPosition());
-    }
     public void selectProfileSlot(int slot) {
         masterLeft.selectProfileSlot(slot, 0);
         masterRight.selectProfileSlot(slot, 0);
@@ -200,9 +191,11 @@ public class DriveSystem extends TankDriveSubsystem {
     public void resetAngle() {
         gyro.reset();
     }
+
     public void calibrateGyro() {
         gyro.calibrate();
     }
+
     public void stopControllers() {
         masterLeft.set(TalonFXControlMode.PercentOutput, 0.0);
         masterRight.set(TalonFXControlMode.PercentOutput, 0.0);
@@ -215,7 +208,7 @@ public class DriveSystem extends TankDriveSubsystem {
     }
 
     public void toggleBrake() {
-        if(brakeMode) {
+        if (brakeMode) {
             masterLeft.setNeutralMode(NeutralMode.Brake);
             masterRight.setNeutralMode(NeutralMode.Brake);
             brakeMode = true;
@@ -225,36 +218,37 @@ public class DriveSystem extends TankDriveSubsystem {
             brakeMode = false;
         }
 
-
     }
 
     public void BBAlign() {
         Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
-        Boolean rightLineBreak =  false;
+        Boolean rightLineBreak = false;
         final double output = 0.2;
 
         if (!leftLineBreak && rightLineBreak) {
-            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.05*output, output);
+            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.05 * output, output);
         } else if (!rightLineBreak && leftLineBreak) {
-            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, 0.05*output);
+            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, 0.05 * output);
         } else {
-            //stopControllers();
-            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.5*output, 0.5*output);
+            // stopControllers();
+            setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), 0.5 * output, 0.5 * output);
         }
     }
 
     @Override
     public Sendable log() {
         /*
-        Shuffleboard.getTab("Log").addNumber("Left Vel",
-                        () -> ((getLeftSensorVelocity()
-                                        / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
-        Shuffleboard.getTab("Log").addNumber("Right Vel",
-                        () -> ((getRightSensorVelocity()
-                                        / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
-        Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
-        Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
-        */
+         * Shuffleboard.getTab("Log").addNumber("Left Vel",
+         * () -> ((getLeftSensorVelocity()
+         * / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
+         * Shuffleboard.getTab("Log").addNumber("Right Vel",
+         * () -> ((getRightSensorVelocity()
+         * / Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation) * 600));
+         * Shuffleboard.getTab("Log").addNumber("Left Pos", () ->
+         * getLeftSensorPosition());
+         * Shuffleboard.getTab("Log").addNumber("Right Pos", () ->
+         * getRightSensorPosition());
+         */
         Shuffleboard.getTab("Log").addNumber("Left Pos", () -> getLeftSensorPosition());
         Shuffleboard.getTab("Log").addNumber("Right Pos", () -> getRightSensorPosition());
         Shuffleboard.getTab("Log").addFloat("Pitch", () -> gyro.getPitch());
@@ -268,10 +262,12 @@ public class DriveSystem extends TankDriveSubsystem {
         // Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
         // Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
         Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
-        // Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () -> rightLineBreak.get());
+        // Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () ->
+        // rightLineBreak.get());
         SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());
         // SmartDashboard.putBoolean("RightLineBreak", rightLineBreak.get());
-        //SmartDashboard.putNumber("Driver Mode", NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
+        // SmartDashboard.putNumber("Driver Mode",
+        // NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getInteger(0));
         return this;
     }
 }
