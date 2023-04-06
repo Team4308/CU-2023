@@ -26,13 +26,13 @@ public class LEDSystem extends LogSubsystem {
     }
 
     //Helper function, takes in rgb and maps 0-255 to 0-1
-    public void setRGB(int R, int G, int B){
+    public void setRGB(int R, int G, int B) {
         double mapR = (1.0/255)*R;
         double mapG = (1.0/255)*G;
-        double mapB = (1.0/255)*B; 
+        double mapB = (1.0/255)*B;
         ledR.updateDutyCycle(mapR);
         ledG.updateDutyCycle(mapG);
-        ledB.updateDutyCycle(mapB); 
+        ledB.updateDutyCycle(mapB);
     }
 
     public Sendable log() {

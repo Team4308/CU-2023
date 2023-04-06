@@ -41,7 +41,7 @@ public class PreloadDock extends SequentialCommandGroup {
                         new WaitCommand(1.75),
                         new ArmExtend(-280000, armExtendSystem)
                     ),
-                          
+
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
                     new SequentialCommandGroup(
                         new WaitCommand(.25)
@@ -54,7 +54,7 @@ public class PreloadDock extends SequentialCommandGroup {
 
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
-                    
+
                     new WaitCommand(0.5),
                     new DriveDistance(-0.5, driveSystem),
                     new GyroTurnAngle(180.0, driveSystem),
@@ -62,20 +62,20 @@ public class PreloadDock extends SequentialCommandGroup {
                     new DriveDistance(1.5, driveSystem),
                     // new ParallelDeadlineGroup(
                     //         new WaitCommand(4),
-                            new DockingCommand(driveSystem)
+                    new DockingCommand(driveSystem)
                     // )
-                    
+
                 ),
                 new SequentialCommandGroup(
                     new WaitCommand(.25),
                     new ParallelDeadlineGroup(
-                      new ParallelRaceGroup(
-                        new WaitCommand(2),
-                        new ArmExtend(-20000, armExtendSystem)
-                      ),
-                      new SequentialCommandGroup(
-                        new WaitCommand(1),
-                        new ArmRotate(3000, armRotateSystem))
+                        new ParallelRaceGroup(
+                            new WaitCommand(2),
+                            new ArmExtend(-20000, armExtendSystem)
+                        ),
+                        new SequentialCommandGroup(
+                            new WaitCommand(1),
+                            new ArmRotate(3000, armRotateSystem))
                     )
                 )
             )

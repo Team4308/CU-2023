@@ -21,7 +21,7 @@ public class PreloadMobDock extends SequentialCommandGroup {
     public PreloadMobDock(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         addCommands(
             //places game piece, crosses mobility bonus line, then docks
-            
+
             //game piece
             new SequentialCommandGroup(
                 new ArmRotate(24000, armRotateSystem),

@@ -78,7 +78,7 @@ public class JoystickHelper {
 
     public static Vector2 scaleStick(Vector2 stickInput, double scale) {
         Vector2 newStickInput = new Vector2(Math.signum(stickInput.x) * Math.abs(Math.pow(stickInput.x, scale)),
-                Math.signum(stickInput.y) * Math.abs(Math.pow(stickInput.y, scale)));
+            Math.signum(stickInput.y) * Math.abs(Math.pow(stickInput.y, scale)));
         return newStickInput;
     }
 
@@ -94,9 +94,9 @@ public class JoystickHelper {
 
     public static Vector2 precisionScaleStick(Vector2 stickInput, double scale, double precision) {
         double newX = (precision * Math.signum(stickInput.x) * Math.abs(Math.pow(stickInput.x, scale)))
-                + ((1 - precision) * stickInput.x);
+            + ((1 - precision) * stickInput.x);
         double newY = (precision * Math.signum(stickInput.y) * Math.abs(Math.pow(stickInput.y, scale)))
-                + ((1 - precision) * stickInput.y);
+            + ((1 - precision) * stickInput.y);
         return new Vector2(newX, newY);
     }
 
@@ -109,10 +109,10 @@ public class JoystickHelper {
 
         double newX = ((w * (Math.pow(x, scale)) + (1.0 - w) * x)
                 - (Math.abs(x) / x) * (w * (Math.pow(d, scale)) + (1.0 - w) * d))
-                / (1.0 - (w * (Math.pow(d, scale)) + (1.0 - w) * d));
+            / (1.0 - (w * (Math.pow(d, scale)) + (1.0 - w) * d));
         double newY = ((w * (Math.pow(y, scale)) + (1.0 - w) * y)
                 - (Math.abs(y) / y) * (w * (Math.pow(d, scale)) + (1.0 - w) * d))
-                / (1.0 - (w * (Math.pow(d, scale)) + (1.0 - w) * d));
+            / (1.0 - (w * (Math.pow(d, scale)) + (1.0 - w) * d));
 
         return new Vector2(newX, newY);
     }

@@ -41,7 +41,7 @@ public class PreloadDockBackward extends SequentialCommandGroup {
                         new WaitCommand(1.75),
                         new ArmExtend(-280000, armExtendSystem)
                     ),
-                          
+
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
                     new SequentialCommandGroup(
                         new WaitCommand(.25),
@@ -56,7 +56,7 @@ public class PreloadDockBackward extends SequentialCommandGroup {
 
             //Movement and docking (guessed values)
             new SequentialCommandGroup(
-                
+
                 // new WaitCommand(0.5),
                 new ParallelDeadlineGroup(
                     new ArmRotate(3000, armRotateSystem),
@@ -65,9 +65,9 @@ public class PreloadDockBackward extends SequentialCommandGroup {
                 new DriveDistance(-1.5, driveSystem),
                 // new ParallelDeadlineGroup(
                 //         new WaitCommand(4),
-                        new DockingCommand(driveSystem)
+                new DockingCommand(driveSystem)
                 // )
-                
+
             )
         );
     }

@@ -12,7 +12,7 @@ public class DockingCommand extends CommandBase {
     private final DriveSystem m_subsystem;
 
     private final PIDController pitchController = new PIDController(Constants.Config.Drive.PitchControl.kP,
-            Constants.Config.Drive.PitchControl.kI, Constants.Config.Drive.PitchControl.kD);
+        Constants.Config.Drive.PitchControl.kI, Constants.Config.Drive.PitchControl.kD);
 
     // Init
     public DockingCommand(DriveSystem subsystem) {

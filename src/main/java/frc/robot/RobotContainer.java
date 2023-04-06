@@ -135,7 +135,7 @@ public class RobotContainer {
 
         preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
-                m_clawSystem);
+            m_clawSystem);
         preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
@@ -145,7 +145,7 @@ public class RobotContainer {
         dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
         preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
-                m_clawSystem);
+            m_clawSystem);
 
         autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
         autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
@@ -243,7 +243,7 @@ public class RobotContainer {
 
     public Vector2 getHoldControl() {
         Vector2 control = new Vector2(m_driveSystem.masterLeft.getSelectedSensorPosition(),
-                m_driveSystem.masterRight.getSelectedSensorPosition());
+            m_driveSystem.masterRight.getSelectedSensorPosition());
         return control;
     }
 

@@ -49,22 +49,22 @@ public class PreloadDockHigh extends SequentialCommandGroup {
                     )
                 ),
                 new RepeatCommand(new ArmRotateHold(30000, armRotateSystem))
-                ),
-    
-           //Movement and docking (guessed values)
-           new SequentialCommandGroup(
-            new WaitCommand(0.5),
-            new ParallelDeadlineGroup(
+            ),
+
+            //Movement and docking (guessed values)
+            new SequentialCommandGroup(
+                new WaitCommand(0.5),
+                new ParallelDeadlineGroup(
                     new ArmRotate(3000, armRotateSystem),
                     new DriveDistance(-0.5, driveSystem)),
-            new TurnDistance(0.125, -0.125, driveSystem),
-            new DriveDistance(5, driveSystem),
-            new ParallelDeadlineGroup(
+                new TurnDistance(0.125, -0.125, driveSystem),
+                new DriveDistance(5, driveSystem),
+                new ParallelDeadlineGroup(
                     new WaitCommand(4),
                     new DockingCommand(driveSystem)
+                )
+
             )
-            
-        )
         );
     }
 }

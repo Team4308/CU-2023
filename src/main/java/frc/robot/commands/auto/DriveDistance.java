@@ -43,9 +43,9 @@ public class DriveDistance extends CommandBase {
         m_subsystem.masterLeft.set(TalonFXControlMode.MotionMagic, encoderDistance);
         m_subsystem.masterRight.set(TalonFXControlMode.MotionMagic, encoderDistance);
         if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistance + 1
-                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 1
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistance + 1
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistance - 1) {
+            && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 1
+            && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistance + 1
+            && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistance - 1) {
             withinThresholdLoops++;
         } else {
             withinThresholdLoops = 0;

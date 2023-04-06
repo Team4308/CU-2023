@@ -15,13 +15,13 @@ public class GyroTurnAngle extends CommandBase {
     private double originalAngle;
     private double targetAngle;
     private final PIDController turn_controller = new PIDController(Constants.Config.Drive.GyroTurnControl.kP,
-     Constants.Config.Drive.GyroTurnControl.kI, Constants.Config.Drive.GyroTurnControl.kD);
+        Constants.Config.Drive.GyroTurnControl.kI, Constants.Config.Drive.GyroTurnControl.kD);
 
     int withinThresholdLoops = 0;
 
     public GyroTurnAngle(double angle, DriveSystem subsystem) {
         DriverStation.reportWarning("Turning "+angle, false);
-        
+
         this.m_subsystem = subsystem;
 
         targetAngle = angle;
@@ -48,12 +48,12 @@ public class GyroTurnAngle extends CommandBase {
         double leftTargetRPM = -output*Constants.DynConfig.Drive.VelocityDriveRPM;
         double rightTargetRPM = output*Constants.DynConfig.Drive.VelocityDriveRPM;
         double leftTargetUnitsPS = (leftTargetRPM / 600.0)
-                * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
+            * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0)
-                * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
+            * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS,
-                rightTargetUnitsPS);
-        
+            rightTargetUnitsPS);
+
         if (turn_controller.atSetpoint()) {
             withinThresholdLoops += 1;
         } else {

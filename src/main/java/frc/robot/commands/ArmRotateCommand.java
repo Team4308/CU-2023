@@ -16,7 +16,7 @@ public class ArmRotateCommand extends CommandBase {
     private final Supplier<Double> control;
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AngleControl.kP,
-            Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
+        Constants.Config.Arm.AngleControl.kI, Constants.Config.Arm.AngleControl.kD);
 
     public static DigitalInput armRotateBreak;
 
@@ -40,18 +40,20 @@ public class ArmRotateCommand extends CommandBase {
     public void execute() {
         double control = this.control.get();
 
-        if (!m_subsystem.armRotateBreak.get()){
+        if (!m_subsystem.armRotateBreak.get()) {
             m_subsystem.motor1.setSelectedSensorPosition(32000);
             angle_controller.setSetpoint(DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 32000));
         } else {
             angle_controller.setSetpoint(
-                    DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 35000));
+                DoubleUtils.clamp(angle_controller.getSetpoint() + control * 1000, -10000, 35000));
         }
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
         m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output);
     }
     @Override
-    public boolean isFinished() {return false;}
+    public boolean isFinished() {
+        return false;
+    }
     @Override
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();

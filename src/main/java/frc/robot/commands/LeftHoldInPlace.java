@@ -16,7 +16,7 @@ public class LeftHoldInPlace extends CommandBase {
     private final DriveSystem m_subsystem;
     private final Supplier<Double> control;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
-            Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
+        Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
 
     // Init
     public LeftHoldInPlace(DriveSystem subsystem, Supplier<Double> control) {
@@ -41,7 +41,7 @@ public class LeftHoldInPlace extends CommandBase {
         double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.masterLeft.getSelectedSensorPosition()), -1.0,
                 1.0);
         m_subsystem.masterLeft.set(TalonFXControlMode.PercentOutput, control);
-        
+
     }
 
     @Override

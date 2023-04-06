@@ -76,7 +76,7 @@ public final class Constants {
                 public static double kClosedLoopRamp = 0.0;
 
                 public static StatorCurrentLimitConfiguration kStatorCurrentLimit = new StatorCurrentLimitConfiguration(
-                        true, 50, 60, 100);
+                    true, 50, 60, 100);
             }
 
             public static class AngleControl {

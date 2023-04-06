@@ -15,7 +15,7 @@ public class TurnAngle extends CommandBase {
     public TurnAngle(double angle, DriveSystem subsystem) {
         this.angle = angle;
         this.m_subsystem = subsystem;
-        
+
         withinThresholdLoops = 0;
 
         addRequirements(this.m_subsystem);
@@ -39,9 +39,9 @@ public class TurnAngle extends CommandBase {
         m_subsystem.masterRight.set(TalonFXControlMode.MotionMagic, -encoderDistance);
 
         if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistance + 5
-                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 5
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() < -encoderDistance + 5
-                && m_subsystem.masterRight.getActiveTrajectoryPosition() > -encoderDistance - 5) {
+            && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 5
+            && m_subsystem.masterRight.getActiveTrajectoryPosition() < -encoderDistance + 5
+            && m_subsystem.masterRight.getActiveTrajectoryPosition() > -encoderDistance - 5) {
             withinThresholdLoops += 1;
         } else {
             withinThresholdLoops = 0;

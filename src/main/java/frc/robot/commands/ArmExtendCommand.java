@@ -15,7 +15,7 @@ public class ArmExtendCommand extends CommandBase {
     private final ArmExtendSystem m_subsystem;
     private final Supplier<Double> control;
     private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
-            Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
+        Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
     // Init
     public ArmExtendCommand(ArmExtendSystem subsystem, Supplier<Double> control) {
         m_subsystem = subsystem;
@@ -38,7 +38,7 @@ public class ArmExtendCommand extends CommandBase {
         if (!m_subsystem.armExtendBreak.get()) { // If arm is backed all the way in
             m_subsystem.motor2.setSelectedSensorPosition(0);
             extension_controller.setSetpoint(m_subsystem.getSensorPosition());
-            if(control > 0){
+            if(control > 0) {
                 return;
             }
         }
@@ -54,10 +54,10 @@ public class ArmExtendCommand extends CommandBase {
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
-    
+
     @Override
     public void end(boolean interrupted) {
         m_subsystem.stopControllers();
