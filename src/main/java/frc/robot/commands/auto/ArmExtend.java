@@ -13,7 +13,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class ArmExtend extends CommandBase {
     private final ArmExtendSystem m_subsystem;
     private final double encoderDistance;
-    private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP, Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
+    private final PIDController extension_controller = new PIDController(Constants.Config.Arm.ExtensionControl.kP,
+            Constants.Config.Arm.ExtensionControl.kI, Constants.Config.Arm.ExtensionControl.kD);
 
     int withinThresholdLoops;
 
@@ -36,9 +37,11 @@ public class ArmExtend extends CommandBase {
         double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.getSensorPosition()), -1.0, 1.0);
         m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput, output);
 
-        if(m_subsystem.getSensorPosition() < encoderDistance + 5000
-            && m_subsystem.getSensorPosition() > encoderDistance - 5000) withinThresholdLoops++;
-        else withinThresholdLoops = 0;
+        if (m_subsystem.getSensorPosition() < encoderDistance + 4000
+                && m_subsystem.getSensorPosition() > encoderDistance - 4000)
+            withinThresholdLoops++;
+        else
+            withinThresholdLoops = 0;
     }
 
     @Override
@@ -49,6 +52,6 @@ public class ArmExtend extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 1);
     }
 }

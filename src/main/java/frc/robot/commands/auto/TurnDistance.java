@@ -49,9 +49,9 @@ public class TurnDistance extends CommandBase {
         m_subsystem.masterLeft.set(TalonFXControlMode.MotionMagic, encoderDistanceL);
         m_subsystem.masterRight.set(TalonFXControlMode.MotionMagic, encoderDistanceR);
         if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistanceL + 1
-            && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistanceL - 1
-            && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistanceR + 1
-            && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistanceR - 1) {
+                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistanceL - 1
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() < encoderDistanceR + 1
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() > encoderDistanceR - 1) {
             withinThresholdLoops++;
         } else {
             withinThresholdLoops = 0;
@@ -68,6 +68,6 @@ public class TurnDistance extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 2);
     }
 }

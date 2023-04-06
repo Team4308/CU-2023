@@ -56,6 +56,7 @@ import frc.robot.commands.auto.groups.Basic;
 import frc.robot.commands.auto.groups.DockOnly;
 import frc.robot.commands.auto.groups.DockOnlyArmPreload;
 import frc.robot.commands.auto.groups.DockOnlyBumpPreload;
+import frc.robot.commands.auto.groups.MidPlusDock;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -102,6 +103,7 @@ public class RobotContainer {
     private final DockOnlyArmPreload dockOnlyArmPreload;
     private final PreloadMobHigh preloadMobHigh;
     private final PreloadMobHighStart preloadMobHighStart;
+    private final MidPlusDock midPlusDock;
     public Boolean armOut = false;
 
     public RobotContainer() {
@@ -135,7 +137,7 @@ public class RobotContainer {
 
         preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
-            m_clawSystem);
+                m_clawSystem);
         preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
@@ -145,10 +147,13 @@ public class RobotContainer {
         dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
         preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
         preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
-            m_clawSystem);
+                m_clawSystem);
+        midPlusDock = new MidPlusDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
 
-        autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
-        autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
+        autoCommandChooser.setDefaultOption("Mid + Dock", midPlusDock);
+
+        autoCommandChooser.addOption("Score & Dock", preloadDock);
+        autoCommandChooser.addOption("Score & Dock Backwards", preloadDockBackward);
 
         autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
         autoCommandChooser.addOption("Preloaod + Mobility (mid)", preloadMob);
@@ -243,7 +248,7 @@ public class RobotContainer {
 
     public Vector2 getHoldControl() {
         Vector2 control = new Vector2(m_driveSystem.masterLeft.getSelectedSensorPosition(),
-            m_driveSystem.masterRight.getSelectedSensorPosition());
+                m_driveSystem.masterRight.getSelectedSensorPosition());
         return control;
     }
 

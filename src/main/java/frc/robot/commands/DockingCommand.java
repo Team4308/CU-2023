@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 import ca.team4308.absolutelib.math.DoubleUtils;
@@ -12,15 +13,12 @@ public class DockingCommand extends CommandBase {
     private final DriveSystem m_subsystem;
 
     private final PIDController pitchController = new PIDController(Constants.Config.Drive.PitchControl.kP,
-        Constants.Config.Drive.PitchControl.kI, Constants.Config.Drive.PitchControl.kD);
+            Constants.Config.Drive.PitchControl.kI, Constants.Config.Drive.PitchControl.kD);
 
     // Init
     public DockingCommand(DriveSystem subsystem) {
-        // subsystem.resetAngle();
-        m_subsystem = subsystem;
-        //was 0.0
-        //subsystem.gyro.getAngle()
-        //-1.0
+        this.m_subsystem = subsystem;
+
         pitchController.setSetpoint(0.0);
         pitchController.setTolerance(Constants.Config.Drive.PitchControl.kTolerance);
 
@@ -30,17 +28,21 @@ public class DockingCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_subsystem.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot);
         m_subsystem.stopControllers();
+        pitchController.reset();
+
+        m_subsystem.masterLeft.setNeutralMode(NeutralMode.Brake);
+        m_subsystem.masterRight.setNeutralMode(NeutralMode.Brake);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         double pitch = m_subsystem.gyro.getRoll();
-        double output = DoubleUtils.clamp(pitchController.calculate(pitch), -1.0, 1.0);
-        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
 
+        double output = DoubleUtils.clamp(pitchController.calculate(pitch), -0.15, 0.15);
+
+        m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), output, output);
     }
 
     @Override
@@ -48,4 +50,8 @@ public class DockingCommand extends CommandBase {
         m_subsystem.stopControllers();
     }
 
+    @Override
+    public boolean isFinished() {
+        return pitchController.atSetpoint();
+    }
 }

@@ -30,7 +30,7 @@ public class TurnAngle extends CommandBase {
 
     @Override
     public void execute() {
-        double encoderDistance = (107.0*Math.PI
+        double encoderDistance = (107.0 * Math.PI
                 / Constants.Config.Drive.Kinematics.kEncoderInchesPerCount);
         encoderDistance /= Constants.Config.Drive.Kinematics.kGearRatio;
         encoderDistance *= this.angle / 360;
@@ -39,9 +39,9 @@ public class TurnAngle extends CommandBase {
         m_subsystem.masterRight.set(TalonFXControlMode.MotionMagic, -encoderDistance);
 
         if (m_subsystem.masterLeft.getActiveTrajectoryPosition() < encoderDistance + 5
-            && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 5
-            && m_subsystem.masterRight.getActiveTrajectoryPosition() < -encoderDistance + 5
-            && m_subsystem.masterRight.getActiveTrajectoryPosition() > -encoderDistance - 5) {
+                && m_subsystem.masterLeft.getActiveTrajectoryPosition() > encoderDistance - 5
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() < -encoderDistance + 5
+                && m_subsystem.masterRight.getActiveTrajectoryPosition() > -encoderDistance - 5) {
             withinThresholdLoops += 1;
         } else {
             withinThresholdLoops = 0;
@@ -56,6 +56,6 @@ public class TurnAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 2);
     }
 }
