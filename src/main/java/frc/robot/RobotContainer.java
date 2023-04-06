@@ -68,246 +68,236 @@ import frc.robot.commands.auto.groups.DockOnlyBumpPreload;
  */
 public class RobotContainer {
 
-  // Subsystems
-  public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
-  private final DriveSystem m_driveSystem;
-  private final ArmRotateSystem m_armRotateSystem;
-  private final ArmExtendSystem m_armExtendSystem;
-  private final ClawSystem m_clawSystem;
-  private final LimelightSystem m_limelightSystem;
-  private final LEDSystem m_ledSystem;
+    // Subsystems
+    public final ArrayList<LogSubsystem> subsystems = new ArrayList<LogSubsystem>();
+    private final DriveSystem m_driveSystem;
+    private final ArmRotateSystem m_armRotateSystem;
+    private final ArmExtendSystem m_armExtendSystem;
+    private final ClawSystem m_clawSystem;
+    private final LimelightSystem m_limelightSystem;
+    private final LEDSystem m_ledSystem;
 
-  // Commands
-  private final DriveCommand driveCommand;
-  private final ArmRotateCommand armRotateCommand;
-  private final ArmExtendCommand armExtendCommand;
-  private final LEDCommand ledCommand;
+    // Commands
+    private final DriveCommand driveCommand;
+    private final ArmRotateCommand armRotateCommand;
+    private final ArmExtendCommand armExtendCommand;
+    private final LEDCommand ledCommand;
 
-  // Controllers
-  public final XBoxWrapper stick = new XBoxWrapper(0);
-  public final XBoxWrapper stick2 = new XBoxWrapper(1);
-  private Integer humanMode = 0;
-
-  // Auto
-  private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
-
-  private final PreloadDock preloadDock;
-  private final PreloadDockBackward preloadDockBackward;
-  private final PreloadMobDock preloadMobDock;
-  private final PreloadMob preloadMob;
-  private final PreloadDockHigh preloadDockHigh;
-  private final Basic basic;
-  private final DockOnly dockOnly;
-  private final DockOnlyBumpPreload dockBumpPreload;
-  private final DockOnlyArmPreload dockOnlyArmPreload;
-  private final PreloadMobHigh preloadMobHigh;
-  private final PreloadMobHighStart preloadMobHighStart;
-  public Boolean armOut=false;
-
-
-  public RobotContainer() {
-
-    m_driveSystem = new DriveSystem();
-    subsystems.add(m_driveSystem);
-    m_armRotateSystem = new ArmRotateSystem();
-    subsystems.add(m_armRotateSystem);
-    m_armExtendSystem = new ArmExtendSystem();
-    subsystems.add(m_armExtendSystem);
-    m_clawSystem = new ClawSystem();
-    subsystems.add(m_clawSystem);
-    m_limelightSystem = new LimelightSystem();
-    subsystems.add(m_limelightSystem);
-    m_ledSystem = new LEDSystem();
-    subsystems.add(m_ledSystem);
-
-    driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
-    m_driveSystem.setDefaultCommand(driveCommand);
-
-    armRotateCommand = new ArmRotateCommand(m_armRotateSystem, () -> getArmRotateControl());
-    m_armRotateSystem.setDefaultCommand(armRotateCommand);
-
-    armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
-    m_armExtendSystem.setDefaultCommand(armExtendCommand);
-
-    ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
-    m_ledSystem.setDefaultCommand(ledCommand);
+    // Controllers
+    public final XBoxWrapper stick = new XBoxWrapper(0);
+    public final XBoxWrapper stick2 = new XBoxWrapper(1);
+    private Integer humanMode = 0;
 
     // Auto
+    private final SendableChooser<Command> autoCommandChooser = new SendableChooser<Command>();
 
-    preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    preloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
-    basic = new Basic(m_driveSystem, m_clawSystem);
-    dockOnly = new DockOnly(m_driveSystem, m_clawSystem);
-    dockBumpPreload = new DockOnlyBumpPreload(m_driveSystem, m_clawSystem);
-    dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
-    preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-    preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
-  
+    private final PreloadDock preloadDock;
+    private final PreloadDockBackward preloadDockBackward;
+    private final PreloadMobDock preloadMobDock;
+    private final PreloadMob preloadMob;
+    private final PreloadDockHigh preloadDockHigh;
+    private final Basic basic;
+    private final DockOnly dockOnly;
+    private final DockOnlyBumpPreload dockBumpPreload;
+    private final DockOnlyArmPreload dockOnlyArmPreload;
+    private final PreloadMobHigh preloadMobHigh;
+    private final PreloadMobHighStart preloadMobHighStart;
+    public Boolean armOut = false;
 
-    autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
-    autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
+    public RobotContainer() {
 
-    autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
-    autoCommandChooser.addOption("Preloaod + Mobility (mid)", preloadMob);
+        m_driveSystem = new DriveSystem();
+        subsystems.add(m_driveSystem);
+        m_armRotateSystem = new ArmRotateSystem();
+        subsystems.add(m_armRotateSystem);
+        m_armExtendSystem = new ArmExtendSystem();
+        subsystems.add(m_armExtendSystem);
+        m_clawSystem = new ClawSystem();
+        subsystems.add(m_clawSystem);
+        m_limelightSystem = new LimelightSystem();
+        subsystems.add(m_limelightSystem);
+        m_ledSystem = new LEDSystem();
+        subsystems.add(m_ledSystem);
 
-    autoCommandChooser.addOption("High Pre-Load + dock", preloadDockHigh);
-  
+        driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
+        m_driveSystem.setDefaultCommand(driveCommand);
 
-    autoCommandChooser.addOption("2m", basic);
-    autoCommandChooser.addOption("Dock Only", dockOnly);
-    autoCommandChooser.addOption("Dock Only w/ Backwards Preload", dockBumpPreload);
-    autoCommandChooser.addOption("Dock Only w/ Arm Preload", dockOnlyArmPreload);
+        armRotateCommand = new ArmRotateCommand(m_armRotateSystem, () -> getArmRotateControl());
+        m_armRotateSystem.setDefaultCommand(armRotateCommand);
 
-    autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
-    autoCommandChooser.addOption("High Preload without Drive Forward", preloadMobHighStart);
+        armExtendCommand = new ArmExtendCommand(m_armExtendSystem, () -> getArmExtendControl());
+        m_armExtendSystem.setDefaultCommand(armExtendCommand);
 
-    SmartDashboard.putData(autoCommandChooser);
+        ledCommand = new LEDCommand(m_ledSystem, () -> getLEDCommand());
+        m_ledSystem.setDefaultCommand(ledCommand);
 
-    configureBindings();
-  }
+        // Auto
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Controller #0
+        preloadDock = new PreloadDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+        preloadDockBackward = new PreloadDockBackward(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
+                m_clawSystem);
+        preloadMobDock = new PreloadMobDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+        preloadDockHigh = new PreloadDockHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+        preloadMob = new PreloadMob(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem, armOut);
+        basic = new Basic(m_driveSystem, m_clawSystem);
+        dockOnly = new DockOnly(m_driveSystem, m_clawSystem);
+        dockBumpPreload = new DockOnlyBumpPreload(m_driveSystem, m_clawSystem);
+        dockOnlyArmPreload = new DockOnlyArmPreload(m_driveSystem, m_clawSystem, m_armRotateSystem);
+        preloadMobHigh = new PreloadMobHigh(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
+        preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
+                m_clawSystem);
 
-    //stick.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
+        autoCommandChooser.setDefaultOption("Score & Dock", preloadDock);
+        autoCommandChooser.setDefaultOption("Score & Dock Backwards", preloadDockBackward);
 
-    // Limelight Functions
-    stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
-    //stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
-    stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
-    //stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
-    // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
-    // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
-    stick.LB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
-    
-    //LEFT RIGHT TURNS
-    // stick.X.whileTrue(new TurnDistance(0.5,-0.5, m_driveSystem));
-    // stick.B.whileTrue(new TurnAngle(-90, m_driveSystem));
+        autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
+        autoCommandChooser.addOption("Preloaod + Mobility (mid)", preloadMob);
 
-    // Controller #1
+        autoCommandChooser.addOption("High Pre-Load + dock", preloadDockHigh);
 
-    // Pneumatic Claw
-    stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
-    stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
+        autoCommandChooser.addOption("Gyro Turning", basic);
+        autoCommandChooser.addOption("Dock Only", dockOnly);
+        autoCommandChooser.addOption("Dock Only w/ Backwards Preload", dockBumpPreload);
+        autoCommandChooser.addOption("Dock Only w/ Arm Preload", dockOnlyArmPreload);
 
-    // Arm Auto-Position
-    
-    // Set Middle
-    stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
-    // Middle Node
-    stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
-    // Human Player Lineup
-    stick2.A.whileTrue(new ArmRotate(250000, m_armRotateSystem));
+        autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
+        autoCommandChooser.addOption("High Preload without Drive Forward", preloadMobHighStart);
 
-    stick2.Start.onTrue(new InstantCommand(() -> playerWantMode()));
+        SmartDashboard.putData(autoCommandChooser);
 
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-
-  public Vector2 getDriveControl() {
-    double throttle = DoubleUtils.normalize(stick.getLeftY());
-    if(stick.RB.getAsBoolean()){
-      throttle /= 2;
+        configureBindings();
     }
 
-    double turn = DoubleUtils.normalize(stick.getRightX());
-    if(stick.getLeftY()!=0.0){
-        //increase turn in here
-        turn *= 1.4;
-    }
-    else{
-      turn -= throttle*0.4;
-    }
-    
-    
- 
-    Vector2 control = new Vector2(turn, throttle);
-    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-    control = JoystickHelper.scaleStick(control, Constants.Config.Input.Stick.kInputScale);
-    control = JoystickHelper.clampStick(control);
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+        // Controller #0
 
-    return control;
-  }
+        // stick.B.whileTrue(new RepeatCommand(new InstantCommand(() ->
+        // m_driveSystem.BBAlign(), m_driveSystem)));
 
-  public Vector2 getHoldControl(){
-    Vector2 control = new Vector2(m_driveSystem.masterLeft.getSelectedSensorPosition(), m_driveSystem.masterRight.getSelectedSensorPosition());
-    return control;
-  }
+        // Limelight Functions
+        stick.A.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
+        // stick.X.whileTrue(new PipelineCommand(m_limelightSystem));
+        stick.Y.onTrue(new InstantCommand(() -> m_limelightSystem.toggleCamera(), m_limelightSystem));
+        // stick.RB.onTrue(new InstantCommand(() -> toggleBrakeMode()));
+        // stick.LB.whileTrue(new DockingCommand(m_driveSystem));
+        // stick.RB.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(),
+        // m_driveSystem));
+        stick.Start.onTrue(new InstantCommand(() -> m_driveSystem.resetAngle(), m_driveSystem));
+        stick.LB.whileTrue(new HoldInPlace(m_driveSystem, () -> getHoldControl()));
 
-  public Double getArmExtendControl() {
-    double y = DoubleUtils.normalize(stick2.getLeftY());
-    Vector2 control = new Vector2(0.0, y);
-    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-    control = JoystickHelper.clampStick(control);
-    return control.y;
-  }
+        // LEFT RIGHT TURNS
+        // stick.X.whileTrue(new TurnDistance(0.5,-0.5, m_driveSystem));
+        // stick.B.whileTrue(new TurnAngle(-90, m_driveSystem));
 
-  public Double getArmRotateControl() {
-    double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.35;
-    Vector2 control = new Vector2(0.0, y);
-    control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
-    control = JoystickHelper.clampStick(control);
-    return control.y;
-  }
+        // Controller #1
 
-  public Double getRangeCommand() {
-    m_limelightSystem.setPipeline(2);
-    return m_limelightSystem.getXAngle();
-  }
+        // Pneumatic Claw
+        stick2.LB.onTrue(new InstantCommand(() -> m_clawSystem.toggle(), m_clawSystem));
+        stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
 
-  public Double getAimCommand() {
-    return m_limelightSystem.getXAngle();
-  }
+        // Arm Auto-Position
 
-  public Integer getLEDCommand() {
-    Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
-    // Boolean armExtended = m_armExtendSystem.checkIfExtend();
-    if (RobotController.getBatteryVoltage() <= 10.00)
-      return 7; // low voltage
-    if(humanMode == 1){
-      return 3;
-    }
-    if(humanMode == 2){
-      return 4;
+        // Set Middle
+        stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
+        // Middle Node
+        stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
+        // Human Player Lineup
+        stick2.A.whileTrue(new ArmRotate(250000, m_armRotateSystem));
+
+        stick2.Start.onTrue(new InstantCommand(() -> playerWantMode()));
+
     }
 
-    if (clawState == Value.kReverse)
-      return 1;
-    return 8;
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
 
-  public void playerWantMode(){
-    humanMode++;
-    if(humanMode == 3){
-      humanMode = 0;
+    public Vector2 getDriveControl() {
+        double throttle = DoubleUtils.normalize(stick.getLeftY());
+        double turn = DoubleUtils.normalize(stick.getRightX());
+
+        Vector2 control = new Vector2(turn, throttle);
+
+        control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
+        control = JoystickHelper.precisionScaleStick(control, Constants.Config.Input.Stick.kInputScale, 0.6);
+        control = JoystickHelper.clampStick(control);
+
+        return control;
     }
-  }
 
-  public Command getAutonomousCommand() {
-    return autoCommandChooser.getSelected();
-  }
+    public Vector2 getHoldControl() {
+        Vector2 control = new Vector2(m_driveSystem.masterLeft.getSelectedSensorPosition(),
+                m_driveSystem.masterRight.getSelectedSensorPosition());
+        return control;
+    }
+
+    public Double getArmExtendControl() {
+        double y = DoubleUtils.normalize(stick2.getLeftY());
+        Vector2 control = new Vector2(0.0, y);
+        control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
+        control = JoystickHelper.clampStick(control);
+        return control.y;
+    }
+
+    public Double getArmRotateControl() {
+        double y = (DoubleUtils.normalize(stick2.getRightY())) * -0.35;
+        Vector2 control = new Vector2(0.0, y);
+        control = JoystickHelper.ScaledAxialDeadzone(control, Constants.Config.Input.kInputDeadband);
+        control = JoystickHelper.clampStick(control);
+        return control.y;
+    }
+
+    public Double getRangeCommand() {
+        m_limelightSystem.setPipeline(2);
+        return m_limelightSystem.getXAngle();
+    }
+
+    public Double getAimCommand() {
+        return m_limelightSystem.getXAngle();
+    }
+
+    public Integer getLEDCommand() {
+        Value clawState = m_clawSystem.solenoid1.get(); // kForward or kReverse or kOff
+        // Boolean armExtended = m_armExtendSystem.checkIfExtend();
+        if (RobotController.getBatteryVoltage() <= 10.00)
+            return 7; // low voltage
+        if (humanMode == 1) {
+            return 3;
+        }
+        if (humanMode == 2) {
+            return 4;
+        }
+
+        if (clawState == Value.kReverse)
+            return 1;
+        return 8;
+    }
+
+    public void playerWantMode() {
+        humanMode++;
+        if (humanMode == 3) {
+            humanMode = 0;
+        }
+    }
+
+    public Command getAutonomousCommand() {
+        return autoCommandChooser.getSelected();
+    }
 
 }

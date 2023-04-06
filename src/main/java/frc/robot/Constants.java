@@ -41,11 +41,13 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+
             public static class AutoAngleControl {
                 public static double kP = 0.0005;
                 public static double kI = 0.000;
                 public static double kD = 0.000;
             }
+
             public static class AutoAngleControlHold {
                 public static double kP = 0.0002;
                 public static double kI = 0.0001;
@@ -99,7 +101,7 @@ public final class Constants {
             }
 
             public static class PitchControl {
-                //p = 0.004, i = 0.0001, d = 0.0007
+                // p = 0.004, i = 0.0001, d = 0.0007
                 public static double kP = 0.0065;
                 public static double kI = 0.000;
                 public static double kD = 0.000;
@@ -156,7 +158,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 5000;
+            public static double VelocityDriveRPM = 5400;
         }
     }
 }

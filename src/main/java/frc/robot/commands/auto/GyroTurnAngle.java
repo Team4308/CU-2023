@@ -16,7 +16,6 @@ public class GyroTurnAngle extends CommandBase {
     private double targetAngle;
     private final PIDController turn_controller = new PIDController(Constants.Config.Drive.GyroTurnControl.kP,
      Constants.Config.Drive.GyroTurnControl.kI, Constants.Config.Drive.GyroTurnControl.kD);
-    private double tolerance = Constants.Config.Drive.GyroTurnControl.kTolerance;
 
     int withinThresholdLoops = 0;
 
@@ -24,12 +23,12 @@ public class GyroTurnAngle extends CommandBase {
         DriverStation.reportWarning("Turning "+angle, false);
         
         this.m_subsystem = subsystem;
-        originalAngle = m_subsystem.gyro.getYaw();
-        targetAngle = angle + originalAngle;
-        withinThresholdLoops = 0;
+
+        targetAngle = angle;
+
         turn_controller.enableContinuousInput(-180, 180);
         turn_controller.setTolerance(Constants.Config.Drive.GyroTurnControl.kTolerance);
-        turn_controller.setSetpoint(targetAngle);
+
         addRequirements(this.m_subsystem);
     }
 
@@ -38,11 +37,13 @@ public class GyroTurnAngle extends CommandBase {
         m_subsystem.stopControllers();
         this.m_subsystem.masterLeft.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
         this.m_subsystem.masterRight.selectProfileSlot(Constants.Config.Drive.VelocityControl.profileSlot, 0);
+
+        turn_controller.setSetpoint(targetAngle + m_subsystem.gyro.getYaw());
     }
 
     @Override
     public void execute() {
-        double output = DoubleUtils.clamp(turn_controller.calculate(m_subsystem.gyro.getAngle()), -1.0, 1.0);
+        double output = DoubleUtils.clamp(turn_controller.calculate(m_subsystem.gyro.getYaw()), -1.0, 1.0);
 
         double leftTargetRPM = -output*Constants.DynConfig.Drive.VelocityDriveRPM;
         double rightTargetRPM = output*Constants.DynConfig.Drive.VelocityDriveRPM;
@@ -50,9 +51,10 @@ public class GyroTurnAngle extends CommandBase {
                 * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
         double rightTargetUnitsPS = (rightTargetRPM / 600.0)
                 * (Constants.Config.Drive.Kinematics.kSensorUnitsPerRotation);
-        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS*0.35,
-                rightTargetUnitsPS*0.35);
-        if (Math.abs(m_subsystem.gyro.getAngle() - targetAngle) < tolerance) {
+        m_subsystem.setMotorOutput(TalonFXControlMode.Velocity.toControlMode(), leftTargetUnitsPS,
+                rightTargetUnitsPS);
+        
+        if (turn_controller.atSetpoint()) {
             withinThresholdLoops += 1;
         } else {
             withinThresholdLoops = 0;
@@ -67,6 +69,6 @@ public class GyroTurnAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 10);
+        return (withinThresholdLoops > 4);
     }
 }

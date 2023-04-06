@@ -36,7 +36,7 @@ public class PreloadMob extends SequentialCommandGroup {
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
                         new WaitCommand(2),
-                        new ArmExtend(-280000, armExtendSystem)
+                        new ArmExtend(-250000, armExtendSystem)
                     ),
                     //Why put this in a parallel group when theres one command
                     new ParallelCommandGroup(       
@@ -46,14 +46,14 @@ public class PreloadMob extends SequentialCommandGroup {
                         new WaitCommand(1)      ,
                         new ParallelDeadlineGroup(
                             new WaitCommand(2),
-                            new ArmExtend(-50000, armExtendSystem)
+                            new ArmExtend(-20000, armExtendSystem)
                         )
                     )
                 ),
                 new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
             new ParallelDeadlineGroup(
-            new ArmRotate(0, armRotateSystem),
+            new ArmRotate(2000, armRotateSystem),
             new DriveDistance(-2, driveSystem)
             )
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))

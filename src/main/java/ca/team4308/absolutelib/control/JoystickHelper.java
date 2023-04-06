@@ -93,8 +93,10 @@ public class JoystickHelper {
     }
 
     public static Vector2 precisionScaleStick(Vector2 stickInput, double scale, double precision) {
-        double newX = (precision * Math.pow(stickInput.x, scale)) + ((1 - precision) * stickInput.x);
-        double newY = (precision * Math.pow(stickInput.y, scale)) + ((1 - precision) * stickInput.y);
+        double newX = (precision * Math.signum(stickInput.x) * Math.abs(Math.pow(stickInput.x, scale)))
+                + ((1 - precision) * stickInput.x);
+        double newY = (precision * Math.signum(stickInput.y) * Math.abs(Math.pow(stickInput.y, scale)))
+                + ((1 - precision) * stickInput.y);
         return new Vector2(newX, newY);
     }
 
