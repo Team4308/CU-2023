@@ -210,14 +210,14 @@ public class RobotContainer {
         stick2.RB.whileTrue(new RepeatCommand(new InstantCommand(() -> m_clawSystem.BBclose(), m_clawSystem)));
 
         // Arm Auto-Position
-
+ 
         // Set Middle
         stick2.B.whileTrue(new ArmRotate(16000, m_armRotateSystem));
         // Middle Node
         stick2.X.whileTrue(new ArmRotate(30000, m_armRotateSystem));
         // Human Player Lineup
-        stick2.A.whileTrue(new ArmRotate(250000, m_armRotateSystem));
-
+        stick2.A.whileTrue(new ArmRotate(25000, m_armRotateSystem));
+ 
         stick2.Start.onTrue(new InstantCommand(() -> playerWantMode()));
 
     }
