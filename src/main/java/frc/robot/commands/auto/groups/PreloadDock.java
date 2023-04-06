@@ -39,7 +39,7 @@ public class PreloadDock extends SequentialCommandGroup {
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
                         new WaitCommand(1.75),
-                        new ArmExtend(-280000, armExtendSystem)
+                        new ArmExtend(-250000, armExtendSystem)
                     ),
 
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
@@ -71,7 +71,7 @@ public class PreloadDock extends SequentialCommandGroup {
                     new ParallelDeadlineGroup(
                         new ParallelRaceGroup(
                             new WaitCommand(2),
-                            new ArmExtend(-20000, armExtendSystem)
+                            new ArmExtend(-15000, armExtendSystem)
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(1),

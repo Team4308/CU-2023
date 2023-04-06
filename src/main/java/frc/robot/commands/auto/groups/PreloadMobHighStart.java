@@ -36,7 +36,7 @@ public class PreloadMobHighStart extends SequentialCommandGroup {
                         new ArmExtend(-540000, armExtendSystem),
                         new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
                         new WaitCommand(0.25),
-                        new ArmExtend(-20000, armExtendSystem)
+                        new ArmExtend(-12000, armExtendSystem)
                     ),
                     new RepeatCommand(new ArmRotateHold(32000, armRotateSystem))
                 )

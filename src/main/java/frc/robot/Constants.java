@@ -87,9 +87,9 @@ public final class Constants {
             }
 
             public static class GyroTurnControl {
-                public static double kP = 0.005;
+                public static double kP = 0.00125;
                 public static double kI = 0.0;
-                public static double kD = 0.0;
+                public static double kD = 0.0001;
                 public static double kTolerance = 3.0;
             }
 
