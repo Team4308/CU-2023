@@ -23,7 +23,7 @@ public final class Constants {
     }
 
     public static class Generic {
-        public static int timeoutMs = 2000;
+        public static int timeoutMs = 3000;
     }
 
     public static class Config {
@@ -76,7 +76,7 @@ public final class Constants {
                 public static double kClosedLoopRamp = 0.0;
 
                 public static StatorCurrentLimitConfiguration kStatorCurrentLimit = new StatorCurrentLimitConfiguration(
-                        true, 50, 60, 100);
+                        true, 80, 80, 100);
             }
 
             public static class AngleControl {
@@ -102,9 +102,9 @@ public final class Constants {
 
             public static class PitchControl {
                 // p = 0.004, i = 0.0001, d = 0.0007
-                public static double kP = 0.04;
+                public static double kP = 0.005;
                 public static double kI = 0.000;
-                public static double kD = 0.0025;
+                public static double kD = 0.002;
                 public static double kTolerance = 3.0;
             }
 
@@ -119,16 +119,16 @@ public final class Constants {
                 public static int profileSlot = 0;
 
                 public static class Left {
-                    public static double kP = 0.1;
+                    public static double kP = 0.07;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 1.25;
                     public static double kF = 0.0468;
                 }
 
                 public static class Right {
-                    public static double kP = 0.055;
+                    public static double kP = 0.07;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 1.25;
                     public static double kF = 0.0468;
                 }
             }
@@ -158,7 +158,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 5400;
+            public static double VelocityDriveRPM = 6000;
         }
     }
 }

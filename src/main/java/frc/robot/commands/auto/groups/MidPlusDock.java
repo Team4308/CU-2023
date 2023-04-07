@@ -36,8 +36,8 @@ public class MidPlusDock extends SequentialCommandGroup {
             // continue raising arm while extending
             // this saves time
             new ParallelRaceGroup(
-                new ParallelCommandGroup(
-                    new ArmRotate(29000, armRotateSystem),
+                new ParallelRaceGroup(
+                    new ArmRotateHold(29000, armRotateSystem),
                     new ArmExtend(-250000, armExtendSystem)
                 ),
                 new WaitCommand(2)
@@ -75,13 +75,13 @@ public class MidPlusDock extends SequentialCommandGroup {
                 new ArmExtend(-20000, armExtendSystem),
                 new ArmRotate(2000, armRotateSystem)
             ),
-            new DockingCommand(driveSystem),
-            new WaitCommand(0.4),
-            new DockingCommand(driveSystem),
-            new WaitCommand(0.4),
-            new DockingCommand(driveSystem),
-            new WaitCommand(0.4),
             new DockingCommand(driveSystem)
+            // new WaitCommand(0.4),
+            // new DockingCommand(driveSystem),
+            // new WaitCommand(0.4),
+            // new DockingCommand(driveSystem),
+            // new WaitCommand(0.4),
+            // new DockingCommand(driveSystem)
         );
     }
 }

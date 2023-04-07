@@ -12,7 +12,7 @@ public class Basic extends SequentialCommandGroup {
 
     public Basic(DriveSystem driveSystem, ClawSystem clawSystem) {
         addCommands(
-            new GyroTurnAngle(90, driveSystem)
+            new DriveDistance(-3, driveSystem)
         );
     }
 }

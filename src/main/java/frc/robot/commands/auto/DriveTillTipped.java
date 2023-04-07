@@ -38,7 +38,7 @@ public class DriveTillTipped extends CommandBase {
         m_subsystem.masterLeft.set(TalonFXControlMode.PercentOutput, speed);
         m_subsystem.masterRight.set(TalonFXControlMode.PercentOutput, speed);
 
-        if (Math.abs(angle - m_subsystem.gyro.getRoll()) < 5) {
+        if (Math.abs(angle - (m_subsystem.gyro.getRoll() - 1.5)) < 5) {
             withinThresholdLoops++;
         } else {
             withinThresholdLoops = 0;

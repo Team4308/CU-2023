@@ -262,6 +262,7 @@ public class DriveSystem extends TankDriveSubsystem {
         // Shuffleboard.getTab("Log").addDouble("Angle", () -> gyro.getAngle());
         // Shuffleboard.getTab("Log").addDouble("z accel", () -> gyro.getAccelZ());
         Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", () -> leftLineBreak.get());
+        Shuffleboard.getTab("Log").addBoolean("gyro connected", () -> gyro.isConnected());
         // Shuffleboard.getTab("Log").addBoolean("RightLineBreak", () ->
         // rightLineBreak.get());
         SmartDashboard.putBoolean("LeftLineBreak", leftLineBreak.get());

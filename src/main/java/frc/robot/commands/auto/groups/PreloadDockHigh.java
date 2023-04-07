@@ -34,7 +34,7 @@ public class PreloadDockHigh extends SequentialCommandGroup {
                 new ArmRotate(25000, armRotateSystem),
                 new ParallelRaceGroup(
                     new WaitCommand(2.5),
-                    new ArmExtend(-600000, armExtendSystem),
+                    new ArmExtend(-500000, armExtendSystem),
                     new RepeatCommand(new ArmRotate(26000, armRotateSystem))
                 )
             ),
@@ -43,10 +43,7 @@ public class PreloadDockHigh extends SequentialCommandGroup {
                     //new WaitCommand(0.25),
                     new DriveDistance(0.75, driveSystem),
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(1.5),
-                        new ArmExtend(-50000, armExtendSystem)
-                    )
+                    new ArmExtend(-20000, armExtendSystem)
                 ),
                 new RepeatCommand(new ArmRotateHold(30000, armRotateSystem))
             ),

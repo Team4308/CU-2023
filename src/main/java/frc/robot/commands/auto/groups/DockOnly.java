@@ -21,7 +21,8 @@ public class DockOnly extends SequentialCommandGroup {
         addCommands(
             new SequentialCommandGroup(
                 new InstantCommand(() -> driveSystem.resetAngle(), driveSystem),
-                new DriveDistance(1.5, driveSystem),
+                new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem),
+                new DriveDistance(2, driveSystem),
                 new ParallelDeadlineGroup(new WaitCommand(10), new DockingCommand(driveSystem))
             )
 

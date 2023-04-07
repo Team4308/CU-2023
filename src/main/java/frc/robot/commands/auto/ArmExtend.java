@@ -52,6 +52,6 @@ public class ArmExtend extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 1);
+        return (withinThresholdLoops > 3);
     }
 }
