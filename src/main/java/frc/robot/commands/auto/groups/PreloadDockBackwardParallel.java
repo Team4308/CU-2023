@@ -22,9 +22,9 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class PreloadDockBackward extends SequentialCommandGroup {
+public class PreloadDockBackwardParallel extends SequentialCommandGroup {
 
-    public PreloadDockBackward(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
+    public PreloadDockBackwardParallel(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem) {
         driveSystem.resetAngle();
         addCommands(
             //places game piece, skips docking, then passes mobility bonus line
@@ -63,29 +63,34 @@ public class PreloadDockBackward extends SequentialCommandGroup {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
                         new ArmExtend(-500000, armExtendSystem),
-                        new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem),
-                        new WaitCommand(0.25),
-                        new ArmExtend(-12000, armExtendSystem)
+                        new InstantCommand(() -> clawSystem.solenoid1.set(Value.kForward), clawSystem)
+                       
+                        
                     ),
                     new RepeatCommand(new ArmRotateHold(31000, armRotateSystem))
                 )
             ),
 
             //Movement and docking (guessed values)
-            new SequentialCommandGroup(
 
                 // new WaitCommand(0.5),
-                new ParallelDeadlineGroup(
-                    new ArmRotate(3000, armRotateSystem),
-                    new DriveDistance(-0.5, driveSystem)),
-                // new TurnDistance(1.2, -1.2, driveSystem),
-                new DriveDistance(-2.0, driveSystem),
-                // new ParallelDeadlineGroup(
-                //         new WaitCommand(4),
-                new DockingCommand(driveSystem)
-                // )
+            new ParallelCommandGroup(
+                new ArmExtend(-12000, armExtendSystem),
+                new SequentialCommandGroup(
+                    new ParallelRaceGroup(
+                        new WaitCommand(2),
+                        new ArmRotateHold(31000, armRotateSystem)),
+                    new ArmRotate(3000, armRotateSystem)),
+                new SequentialCommandGroup(
+                    new WaitCommand(1),
+                    new DriveDistance(-2.5, driveSystem),
+                    new DockingCommand(driveSystem))
+                    )
+            // new TurnDistance(1.2, -1.2, driveSystem),
+            // new ParallelDeadlineGroup(
+            //         new WaitCommand(4),
+            // )
 
-            )
         );
     }
 }

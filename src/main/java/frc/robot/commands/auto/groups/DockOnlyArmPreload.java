@@ -25,7 +25,7 @@ public class DockOnlyArmPreload extends SequentialCommandGroup {
                 new DriveDistance(1.5, driveSystem),
                 new ParallelDeadlineGroup(new WaitCommand(10), new DockingCommand(driveSystem))
             )
-            
+
         );
     }
 }

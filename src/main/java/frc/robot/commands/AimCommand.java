@@ -15,7 +15,7 @@ public class AimCommand extends CommandBase {
     private final Supplier<Double> control;
 
     private final PIDController angle_controller = new PIDController(Constants.Config.Drive.AngleControl.kP,
-            Constants.Config.Drive.AngleControl.kI, Constants.Config.Drive.AngleControl.kD);
+        Constants.Config.Drive.AngleControl.kI, Constants.Config.Drive.AngleControl.kD);
 
     // Init
     public AimCommand(DriveSystem subsystem, Supplier<Double> control) {

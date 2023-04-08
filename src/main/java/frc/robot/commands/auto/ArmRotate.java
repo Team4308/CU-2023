@@ -14,7 +14,8 @@ public class ArmRotate extends CommandBase {
     private final ArmRotateSystem m_subsystem;
     private final double encoderDistance;
 
-    private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AutoAngleControl.kP, Constants.Config.Arm.AutoAngleControl.kI, Constants.Config.Arm.AutoAngleControl.kD);
+    private final PIDController angle_controller = new PIDController(Constants.Config.Arm.AutoAngleControl.kP,
+            Constants.Config.Arm.AutoAngleControl.kI, Constants.Config.Arm.AutoAngleControl.kD);
 
     int withinThresholdLoops;
 
@@ -29,28 +30,30 @@ public class ArmRotate extends CommandBase {
 
     @Override
     public void initialize() {
-        m_subsystem.motor1.setNeutralMode(NeutralMode.Brake);
         angle_controller.setSetpoint(encoderDistance);
-
     }
 
     @Override
     public void execute() {
         double output = DoubleUtils.clamp(angle_controller.calculate(m_subsystem.getArmPosition()), -1.0, 1.0);
 
-        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.6);
-        
-        if(m_subsystem.getArmPosition() < encoderDistance + 500 
-            && m_subsystem.getArmPosition() > encoderDistance - 500)withinThresholdLoops++;
-        else withinThresholdLoops = 0;
+        m_subsystem.setArmOutput(TalonSRXControlMode.PercentOutput, output * 0.7);
+
+        if (m_subsystem.getArmPosition() < encoderDistance + 400
+                && m_subsystem.getArmPosition() > encoderDistance - 400) {
+            withinThresholdLoops++;
+        } else {
+            withinThresholdLoops = 0;
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
+        m_subsystem.stopControllers();
     }
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 1);
     }
 }

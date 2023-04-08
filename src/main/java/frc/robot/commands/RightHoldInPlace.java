@@ -41,7 +41,7 @@ public class RightHoldInPlace extends CommandBase {
         double output = DoubleUtils.clamp(extension_controller.calculate(m_subsystem.masterLeft.getSelectedSensorPosition()), -1.0,
                 1.0);
         m_subsystem.masterRight.set(TalonFXControlMode.PercentOutput, control);
-        
+
     }
 
     @Override

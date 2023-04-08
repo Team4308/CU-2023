@@ -103,9 +103,9 @@ public class TankFollower extends CommandBase {
             double rightDerivError = ((rightError - rightPrevError) / settings.period) - rightGoalVel;
 
             double leftOutput = (settings.leftGains.kP * leftError) + (settings.leftGains.kD * leftDerivError)
-                    + (settings.leftGains.kV * leftGoalVel) + (settings.leftGains.ka * leftGoalAcc);
+                + (settings.leftGains.kV * leftGoalVel) + (settings.leftGains.ka * leftGoalAcc);
             double rightOutput = (settings.rightGains.kP * rightError) + (settings.rightGains.kD * rightDerivError)
-                    + (settings.rightGains.kV * rightGoalVel) + (settings.rightGains.ka * rightGoalAcc);
+                + (settings.rightGains.kV * rightGoalVel) + (settings.rightGains.ka * rightGoalAcc);
 
             // double turnOutput =
             // bbbDoubleUtils.clamp(turnController.calculate(m_subsystem.getAhrs().getAngle(),

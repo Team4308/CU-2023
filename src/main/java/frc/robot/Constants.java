@@ -41,11 +41,13 @@ public final class Constants {
                 public static double kI = 0.0001;
                 public static double kD = 0.0;
             }
+
             public static class AutoAngleControl {
                 public static double kP = 0.0005;
                 public static double kI = 0.000;
                 public static double kD = 0.000;
             }
+
             public static class AutoAngleControlHold {
                 public static double kP = 0.0002;
                 public static double kI = 0.0001;
@@ -74,7 +76,7 @@ public final class Constants {
                 public static double kClosedLoopRamp = 0.0;
 
                 public static StatorCurrentLimitConfiguration kStatorCurrentLimit = new StatorCurrentLimitConfiguration(
-                        true, 50, 60, 100);
+                        true, 80, 80, 100);
             }
 
             public static class AngleControl {
@@ -82,6 +84,13 @@ public final class Constants {
                 public static double kI = 0.0;
                 public static double kD = 0.0;
                 public static double kTolerance = 0.5;
+            }
+
+            public static class GyroTurnControl {
+                public static double kP = 0.00125;
+                public static double kI = 0.0;
+                public static double kD = 0.0001;
+                public static double kTolerance = 3.0;
             }
 
             public static class RangeControl {
@@ -92,11 +101,11 @@ public final class Constants {
             }
 
             public static class PitchControl {
-                //p = 0.004, i = 0.0001, d = 0.0007
-                public static double kP = 0.0065;
+                // p = 0.004, i = 0.0001, d = 0.0007
+                public static double kP = 0.005;
                 public static double kI = 0.000;
-                public static double kD = 0.000;
-                public static double kTolerance = 2.0;
+                public static double kD = 0.002;
+                public static double kTolerance = 3.0;
             }
 
             public static class HoldInPlace {
@@ -110,16 +119,16 @@ public final class Constants {
                 public static int profileSlot = 0;
 
                 public static class Left {
-                    public static double kP = 0.1;
+                    public static double kP = 0.07;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 1.25;
                     public static double kF = 0.0468;
                 }
 
                 public static class Right {
-                    public static double kP = 0.055;
+                    public static double kP = 0.07;
                     public static double kI = 0.0;
-                    public static double kD = 1.45;
+                    public static double kD = 1.25;
                     public static double kF = 0.0468;
                 }
             }
@@ -149,7 +158,7 @@ public final class Constants {
 
     public static class DynConfig {
         public static class Drive {
-            public static double VelocityDriveRPM = 4000;
+            public static double VelocityDriveRPM = 6000;
         }
     }
 }

@@ -14,7 +14,7 @@ public class TankFollowerSettings {
     public final double period;
 
     public TankFollowerSettings(double _kEncoderCountsPerRotation, double _kGearRatio, Gains _leftGains,
-            Gains _rightGains, Gains _turnGains, int _profileSlot, double _period) {
+        Gains _rightGains, Gains _turnGains, int _profileSlot, double _period) {
         kEncoderCountsPerRotation = _kEncoderCountsPerRotation;
         kGearRatio = _kGearRatio;
 

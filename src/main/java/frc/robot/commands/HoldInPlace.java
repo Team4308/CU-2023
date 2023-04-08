@@ -16,9 +16,9 @@ public class HoldInPlace extends CommandBase {
     private final DriveSystem m_subsystem;
     private final Supplier<Vector2> control;
     private final PIDController left_controller = new PIDController(Constants.Config.Drive.HoldInPlace.kP,
-            Constants.Config.Drive.HoldInPlace.kI, Constants.Config.Drive.HoldInPlace.kD);
+        Constants.Config.Drive.HoldInPlace.kI, Constants.Config.Drive.HoldInPlace.kD);
     private final PIDController right_controller = new PIDController(Constants.Config.Drive.HoldInPlace.kP,
-            Constants.Config.Drive.HoldInPlace.kI, Constants.Config.Drive.HoldInPlace.kD);
+        Constants.Config.Drive.HoldInPlace.kI, Constants.Config.Drive.HoldInPlace.kD);
 
     // Init
     public HoldInPlace(DriveSystem subsystem, Supplier<Vector2> control) {
@@ -46,7 +46,7 @@ public class HoldInPlace extends CommandBase {
         double outputRight = DoubleUtils.clamp(right_controller.calculate(m_subsystem.masterRight.getSelectedSensorPosition()), -1.0,
                 1.0);
         m_subsystem.setMotorOutput(TalonFXControlMode.PercentOutput.toControlMode(), outputLeft, outputRight);
-        
+
     }
 
     @Override

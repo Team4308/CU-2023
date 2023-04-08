@@ -20,9 +20,9 @@ import frc.robot.subsystems.ArmRotateSystem;
 
 import frc.robot.subsystems.ClawSystem;
 
-public class PreloadMob extends SequentialCommandGroup {
+public class PreloadMobBump extends SequentialCommandGroup {
 
-    public PreloadMob(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem, Boolean armOut) {
+    public PreloadMobBump(DriveSystem driveSystem, ArmExtendSystem armExtendSystem, ArmRotateSystem armRotateSystem, ClawSystem clawSystem, Boolean armOut) {
         addCommands(
             //places game piece, skips docking, then passes mobility bonus line
 
@@ -53,7 +53,8 @@ public class PreloadMob extends SequentialCommandGroup {
                 new RepeatCommand(new ArmRotateHold(29000, armRotateSystem))
             ),
             new ParallelDeadlineGroup(
-                new DriveDistance(-3, driveSystem)
+                new ArmRotate(2000, armRotateSystem),
+                new DriveDistance(-6, driveSystem)
             )
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );

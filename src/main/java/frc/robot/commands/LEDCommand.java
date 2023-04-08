@@ -28,35 +28,35 @@ public class LEDCommand extends CommandBase {
         int control = this.control.get();
         if (currentControl == control) return; // Prevents unnecessary calls to setRGB
         currentControl = control;
-        switch (control){
-            case 1: // claw is closed
-                m_subsystem.setRGB(0, 0, 255); // blue
-                break;
-            case 2: // brake mode
-                m_subsystem.setRGB(0, 255, 0); // green
-                break;
-            case 3: // cone
-                m_subsystem.setRGB(255, 204, 0); // cyan
-                break;
-            case 4: // cube
-                m_subsystem.setRGB(153, 51, 255); // purple
-                break;
-            case 5: // claw is closed and arm is fully back
-                m_subsystem.setRGB(255, 255, 0); // yellow
-                break;
-            case 6: // claw is open and arm is fully back
-                m_subsystem.setRGB(255, 255, 255); // white
-                break;
-            case 9: // one of the beambreaks detects something
-                m_subsystem.setRGB(255, 128, 0); // orange
-                break;
-            // error/warning states
-            case 7: // battery is low voltage
-                m_subsystem.setRGB(255, 0, 0); // red
-                break;
-            
-            case 8: // default (to save voltage)
-                m_subsystem.setRGB(0,0,0); // black
+        switch (control) {
+        case 1: // claw is closed
+            m_subsystem.setRGB(0, 0, 255); // blue
+            break;
+        case 2: // brake mode
+            m_subsystem.setRGB(0, 255, 0); // green
+            break;
+        case 3: // cone
+            m_subsystem.setRGB(255, 204, 0); // cyan
+            break;
+        case 4: // cube
+            m_subsystem.setRGB(153, 51, 255); // purple
+            break;
+        case 5: // claw is closed and arm is fully back
+            m_subsystem.setRGB(255, 255, 0); // yellow
+            break;
+        case 6: // claw is open and arm is fully back
+            m_subsystem.setRGB(255, 255, 255); // white
+            break;
+        case 9: // one of the beambreaks detects something
+            m_subsystem.setRGB(255, 128, 0); // orange
+            break;
+        // error/warning states
+        case 7: // battery is low voltage
+            m_subsystem.setRGB(255, 0, 0); // red
+            break;
+
+        case 8: // default (to save voltage)
+            m_subsystem.setRGB(0,0,0); // black
 
         }
 

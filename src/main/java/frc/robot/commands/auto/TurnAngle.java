@@ -15,7 +15,7 @@ public class TurnAngle extends CommandBase {
     public TurnAngle(double angle, DriveSystem subsystem) {
         this.angle = angle;
         this.m_subsystem = subsystem;
-        
+
         withinThresholdLoops = 0;
 
         addRequirements(this.m_subsystem);
@@ -30,7 +30,7 @@ public class TurnAngle extends CommandBase {
 
     @Override
     public void execute() {
-        double encoderDistance = (107.0*Math.PI
+        double encoderDistance = (107.0 * Math.PI
                 / Constants.Config.Drive.Kinematics.kEncoderInchesPerCount);
         encoderDistance /= Constants.Config.Drive.Kinematics.kGearRatio;
         encoderDistance *= this.angle / 360;
@@ -56,6 +56,6 @@ public class TurnAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 2);
     }
 }

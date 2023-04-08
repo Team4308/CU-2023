@@ -62,6 +62,6 @@ public class DriveDistance extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (withinThresholdLoops > 5);
+        return (withinThresholdLoops > 2);
     }
 }
