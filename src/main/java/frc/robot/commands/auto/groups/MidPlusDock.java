@@ -61,7 +61,7 @@ public class MidPlusDock extends SequentialCommandGroup {
             // this saves time
             new ParallelDeadlineGroup(
                 new ParallelRaceGroup(
-                    new DriveTillTipped(-12, -0.6, driveSystem),
+                    new DriveTillTipped(12, -0.6, driveSystem),
                     new WaitCommand(3)
                 ),
                 new ArmExtend(-20000, armExtendSystem),

@@ -74,10 +74,12 @@ public class PreloadDockBackwardParallel extends SequentialCommandGroup {
             //Movement and docking (guessed values)
 
                 // new WaitCommand(0.5),
-            new ParallelDeadlineGroup(
+            new ParallelCommandGroup(
                 new ArmExtend(-12000, armExtendSystem),
                 new SequentialCommandGroup(
-                    new WaitCommand(2),
+                    new ParallelRaceGroup(
+                        new WaitCommand(2),
+                        new ArmRotateHold(31000, armRotateSystem)),
                     new ArmRotate(3000, armRotateSystem)),
                 new SequentialCommandGroup(
                     new WaitCommand(1),

@@ -47,7 +47,7 @@ public class PreloadMobHighStart extends SequentialCommandGroup {
                     new InstantCommand(() -> clawSystem.solenoid1.set(Value.kReverse), clawSystem)
 
                 ),
-                new DriveDistance(-4.5, driveSystem)
+                new DriveDistance(-3.0, driveSystem)
             )
 
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))

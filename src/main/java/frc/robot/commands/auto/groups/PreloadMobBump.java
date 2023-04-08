@@ -54,7 +54,7 @@ public class PreloadMobBump extends SequentialCommandGroup {
             ),
             new ParallelDeadlineGroup(
                 new ArmRotate(2000, armRotateSystem),
-                new DriveDistance(-7.5, driveSystem)
+                new DriveDistance(-6, driveSystem)
             )
             // new ParallelDeadlineGroup(new WaitCommand(4), new DriveDistance(5, driveSystem))
         );

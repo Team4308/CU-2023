@@ -88,7 +88,7 @@ public class PreloadDockBackwardMiddle extends SequentialCommandGroup {
 
             
             new SequentialCommandGroup(
-                new DriveDistance(-3.0, driveSystem),
+                new DriveDistance(-2.0, driveSystem),
                 /* new ParallelRaceGroup(
                     new DriveTillTipped(16, -0.6, driveSystem),
                     new WaitCommand(3.5)

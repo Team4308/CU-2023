@@ -50,6 +50,7 @@ import frc.robot.commands.auto.groups.PreloadDockBackward;
 import frc.robot.commands.auto.groups.PreloadDockBackwardMiddle;
 import frc.robot.commands.auto.groups.PreloadDockBackwardParallel;
 import frc.robot.commands.auto.groups.PreloadDockHigh;
+import frc.robot.commands.auto.groups.PreloadHighOnly;
 import frc.robot.commands.auto.groups.PreloadMobDock;
 import frc.robot.commands.auto.groups.PreloadMob;
 import frc.robot.commands.auto.groups.PreloadMobHigh;
@@ -107,6 +108,7 @@ public class RobotContainer {
     private final Basic basic;
     private final DockOnly dockOnly;
     private final PreloadMobHighStart preloadMobHighStart;
+    private final PreloadHighOnly preloadHighOnly;
     private final MidPlusDock midPlusDock;
     public Boolean armOut = false;
 
@@ -152,27 +154,38 @@ public class RobotContainer {
         dockOnly = new DockOnly(m_driveSystem, m_clawSystem);
         preloadMobHighStart = new PreloadMobHighStart(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
                 m_clawSystem);
+        preloadHighOnly = new PreloadHighOnly(m_driveSystem, m_armExtendSystem, m_armRotateSystem,
+        m_clawSystem);
         midPlusDock = new MidPlusDock(m_driveSystem, m_armExtendSystem, m_armRotateSystem, m_clawSystem);
 
-        autoCommandChooser.setDefaultOption("Mid + Dock", midPlusDock);
+        
 
-        autoCommandChooser.addOption("Score Mid & Dock", preloadDock);
-        autoCommandChooser.addOption("Score High & Dock Backwards", preloadDockBackward);
-        autoCommandChooser.addOption("Score Mid & Dock Backwards", preloadDockBackwardMiddle);
-        autoCommandChooser.addOption("Score High & Dock Backwards In Parallel (TESTING)", preloadDockBackwardParallel);
-
-        autoCommandChooser.addOption("Score, Mobility, Dock", preloadMobDock);
-        autoCommandChooser.addOption("Preload + Mobility (mid)", preloadMob);
-
-        autoCommandChooser.addOption("High Pre-Load + dock", preloadDockHigh);
-
-        autoCommandChooser.addOption("TESTING Gyro Turning", basic);
         autoCommandChooser.addOption("Dock Only", dockOnly);
+        autoCommandChooser.addOption("High Only", preloadHighOnly);
+
+        autoCommandChooser.addOption("Mid & Dock", preloadDock);
+        autoCommandChooser.addOption("High + Dock", preloadDockHigh);
+        autoCommandChooser.addOption("BACKWARDS High & Dock", preloadDockBackward);
+        autoCommandChooser.addOption("BACKWARDS Mid & Dock", preloadDockBackwardMiddle);
+        
+
+       
+        autoCommandChooser.addOption("Mid + Mobility", preloadMob);
+        // autoCommandChooser.addOption("Mid + Mobility + Bump", preloadMobBump);
+        autoCommandChooser.addOption("High + Mobility", preloadMobHighStart);
+
+        autoCommandChooser.addOption("[TEST] High & Dock Backwards In Parallel", preloadDockBackwardParallel);
+        autoCommandChooser.addOption("[TEST] Basic", basic);
+        autoCommandChooser.addOption("[TEST] Score, Mobility, Dock", preloadMobDock);
+        autoCommandChooser.setDefaultOption("[TEST] Mid + Dock ", midPlusDock);
+        
+
+        
         //autoCommandChooser.addOption("Dock Only w/ Backwards Preload", dockBumpPreload);
        // autoCommandChooser.addOption("Dock Only w/ Arm Preload", dockOnlyArmPreload);
 
         //autoCommandChooser.addOption("Pre-load + Mobility (High)", preloadMobHigh);
-        autoCommandChooser.addOption("High Preload without Drive Forward", preloadMobHighStart);
+        
 
         SmartDashboard.putData(autoCommandChooser);
 
