@@ -145,8 +145,8 @@ public class DriveSystem extends TankDriveSubsystem {
      */
 
     public void setMotorOutput(ControlMode mode, double left, double right) {
-        masterLeft.set(mode, 0.5*left);
-        masterRight.set(mode, 0.5*right);
+        masterLeft.set(mode, 0.6*left);
+        masterRight.set(mode, 0.6*right);
     }
 
     public void selectProfileSlot(int slot) {
