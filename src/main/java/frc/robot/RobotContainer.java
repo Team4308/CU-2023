@@ -12,15 +12,7 @@ import ca.team4308.absolutelib.math.Vector2;
 import ca.team4308.absolutelib.math.DoubleUtils;
 import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.AimCommand;
-import frc.robot.commands.DockingCommand;
-import frc.robot.commands.RangeCommand;
 import frc.robot.subsystems.DriveSystem;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,11 +41,6 @@ public class RobotContainer {
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
-
-
-
-
-    configureBindings();
   }
 
   /**
@@ -65,14 +52,6 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-    stick.Y.whileTrue(new DockingCommand(m_driveSystem));
-    stick.X.whileTrue(new AimCommand(m_driveSystem, () -> getAimCommand()));
-    stick.A.whileTrue(new RangeCommand(m_driveSystem, () -> getRangeCommand()));
-    stick.B.onTrue(new InstantCommand(() -> m_driveSystem.setLEDoutput(), m_driveSystem));
-
-    stick2.B.whileTrue(new RepeatCommand(new InstantCommand(() -> m_driveSystem.BBAlign(), m_driveSystem)));
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -93,35 +72,4 @@ public class RobotContainer {
     return control;
     }
 
-    public Double getAimCommand() {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
-      double control = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      // System.out.println(control);
-      return control;
-    }
-
-    public Double getRangeCommand() {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
-
-      // angle between limelight and target
-      double targetOffsetAngle_Vertical = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-
-      // angle of elevation of limelight
-      double limeLightAngleDegrees = 0.0;
-
-      // vertical height of limelight from ground
-      double limeLightHeightCentimetres = 34.3;
-
-      // veritcal height of april tag from ground
-      double aprilTagHeightCentimetres = 31.1;
-
-      double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
-      double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
-      double distanceCentimetres = (aprilTagHeightCentimetres - limeLightHeightCentimetres)/Math.tan(angleToAprilTagRadians);
-
-      return Math.abs(distanceCentimetres);
-    }
-  // public Command getAutonomousCommand() {
-
-  //  }
 }

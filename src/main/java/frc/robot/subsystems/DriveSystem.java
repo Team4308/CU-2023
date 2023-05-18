@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.lang.Math;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,24 +12,10 @@ import ca.team4308.absolutelib.wrapper.drive.TankDriveSubsystem;
 import frc.robot.Constants;
 
 import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
-import edu.wpi.first.wpilibj.DigitalOutput;
-
 
 public class DriveSystem extends TankDriveSubsystem {
 
-    public final DigitalOutput ledR;
-    public final DigitalOutput ledG;
-    public final DigitalOutput ledB;
-    public boolean toggle; 
-        // Master Controllers
+// Master Controllers
     
 
     public final TalonSRX masterLeft, masterRight;
@@ -40,26 +25,8 @@ public class DriveSystem extends TankDriveSubsystem {
     // Controllers
     private ArrayList<TalonSRX> controllers = new ArrayList<TalonSRX>();
 
-    // IMU
-    // public static ADIS16470_IMU gyro = new ADIS16470_IMU();
-
-    //Beambreaks
-    public static DigitalInput leftLineBreak;
-    public static DigitalInput rightLineBreak;
-
     // Init
     public DriveSystem() {
-        ledR = new DigitalOutput(1);
-        ledG = new DigitalOutput(2);
-        ledB = new DigitalOutput(0);
-        ledR.setPWMRate(1000);
-        ledG.setPWMRate(1000);
-        ledB.setPWMRate(1000);
-        ledR.enablePWM(0);
-        ledG.enablePWM(0);
-        ledB.enablePWM(0);
-        toggle = false;
-        // gyro.setYawAxis(IMUAxis.kX); // changes the yaw axis; kZ by default
         
         // Setup and Add Controllers
         masterLeft = new TalonSRX(Constants.Mapping.Drive.frontLeft);
@@ -70,9 +37,6 @@ public class DriveSystem extends TankDriveSubsystem {
         controllers.add(slaveLeft);
         slaveRight = new TalonSRX(Constants.Mapping.Drive.backRight);
         controllers.add(slaveRight);
-
-        leftLineBreak = new DigitalInput(4); // DIO 3
-        rightLineBreak = new DigitalInput(5); // DIO 4
 
         // Reset Config for all
         for (TalonSRX talon : controllers) {
@@ -181,22 +145,8 @@ public class DriveSystem extends TankDriveSubsystem {
      */
 
     public void setMotorOutput(ControlMode mode, double left, double right) {
-        masterLeft.set(mode, left);
-        masterRight.set(mode, right);
-    }
-
-    public void setLEDoutput(){
-        if(toggle){
-                ledR.updateDutyCycle(0.5);
-                ledG.updateDutyCycle(0.5);
-                ledB.updateDutyCycle(0.5);
-                toggle = false;
-        }else{
-                ledR.updateDutyCycle(0);
-                ledG.updateDutyCycle(0);
-                ledB.updateDutyCycle(0);
-                toggle = true;
-        }
+        masterLeft.set(mode, 0.5*left);
+        masterRight.set(mode, 0.5*right);
     }
 
     public void selectProfileSlot(int slot) {
@@ -219,63 +169,8 @@ public class DriveSystem extends TankDriveSubsystem {
         masterRight.setSelectedSensorPosition(0);
     }
 
-    public Double getDistance() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        NetworkTableEntry ty = table.getEntry("ty");
-
-        // angle between limelight and target
-        double targetOffsetAngle_Vertical = ty.getDouble(0.0);
-
-        // angle of elevation of limelight
-        double limeLightAngleDegrees = 0.0;
-
-        // vertical height of limelight from ground
-        double limeLightHeightCentimetres = 34.3;
-
-        // veritcal height of april tag from ground
-        double aprilTagHeightCentimetres = 31.1;
-
-        double angleToAprilTagDegrees = targetOffsetAngle_Vertical + limeLightAngleDegrees;
-        double angleToAprilTagRadians = angleToAprilTagDegrees * (Math.PI / 180.0);
-        double distanceCentimetres = (aprilTagHeightCentimetres - limeLightAngleDegrees)/Math.tan(angleToAprilTagRadians);
-
-        return Math.abs(distanceCentimetres);
-    }
-
-    public void BBAlign(){
-        Boolean leftLineBreak = DriveSystem.leftLineBreak.get();
-        Boolean rightLineBreak = DriveSystem.rightLineBreak.get();
-        final double output = 0.2;
-
-        if (!leftLineBreak && rightLineBreak) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), 0.05*output, output);
-        }
-        else if (!rightLineBreak && leftLineBreak) {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, 0.05*output);
-        }
-        else {
-                setMotorOutput(TalonSRXControlMode.PercentOutput.toControlMode(), output, output);
-        }
-    }
-
     @Override
     public Sendable log() { 
-        // IMU 
-        /* 
-        Shuffleboard.getTab("Log").addDouble("AccelX", ()-> gyro.getAccelX());
-        Shuffleboard.getTab("Log").addDouble("AccelY", ()-> gyro.getAccelY());
-        Shuffleboard.getTab("Log").addDouble("AccelZ", ()-> gyro.getAccelZ());
-        Shuffleboard.getTab("Log").addDouble("Rate", ()-> gyro.getRate());
-        Shuffleboard.getTab("Log").addDouble("Angle", ()-> gyro.getAngle());
-        Shuffleboard.getTab("Log").addDouble("Pitch",()-> getPitch());
-        Shuffleboard.getTab("Log").addDouble("Roll",()-> getRoll());
-        Shuffleboard.getTab("Log").addDouble("XFilteredAngle",()-> gyro.getXFilteredAccelAngle());
-        Shuffleboard.getTab("Log").addDouble("YFilteredAngle",()-> gyro.getYFilteredAccelAngle()); */
-        Shuffleboard.getTab("Log").addDouble("Distance",()-> getDistance());
-        Shuffleboard.getTab("Log").addBoolean("LED",()-> toggle);
-        Shuffleboard.getTab("Log").addBoolean("LeftLineBreak", ()-> leftLineBreak.get());
-        Shuffleboard.getTab("Log").addBoolean("RightLineBreak", ()-> rightLineBreak.get());
-
         return this;
     }
 
