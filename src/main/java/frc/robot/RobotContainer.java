@@ -14,6 +14,8 @@ import ca.team4308.absolutelib.wrapper.LogSubsystem;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -41,6 +43,14 @@ public class RobotContainer {
 
     driveCommand = new DriveCommand(m_driveSystem, () -> getDriveControl());
     m_driveSystem.setDefaultCommand(driveCommand);
+
+    configureBindings();
+  }
+
+  private void configureBindings() {
+
+    stick2.A.onTrue(new InstantCommand(() -> m_driveSystem.changeMotorSpeed(), m_driveSystem));
+
   }
 
   /**

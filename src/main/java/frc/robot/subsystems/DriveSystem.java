@@ -15,6 +15,8 @@ import edu.wpi.first.util.sendable.Sendable;
 
 public class DriveSystem extends TankDriveSubsystem {
 
+        Double control = 0.6;
+
 // Master Controllers
     
 
@@ -124,6 +126,15 @@ public class DriveSystem extends TankDriveSubsystem {
     /**
      * Getters And Setters
      */
+
+    public void changeMotorSpeed() {
+        if (control == 0.7) {
+                control = 0.5;
+        } else {
+                control += 0.1;
+        }
+    }
+
     public double getLeftSensorPosition() {
         return masterLeft.getSelectedSensorPosition(0) * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
     }
@@ -145,8 +156,8 @@ public class DriveSystem extends TankDriveSubsystem {
      */
 
     public void setMotorOutput(ControlMode mode, double left, double right) {
-        masterLeft.set(mode, 0.6*left);
-        masterRight.set(mode, 0.6*right);
+        masterLeft.set(mode, left*control);
+        masterRight.set(mode, right*control);
     }
 
     public void selectProfileSlot(int slot) {
