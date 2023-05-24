@@ -13,6 +13,8 @@ import frc.robot.Constants;
 
 import edu.wpi.first.util.sendable.Sendable;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 public class DriveSystem extends TankDriveSubsystem {
 
         Double control = 0.6;
@@ -128,11 +130,15 @@ public class DriveSystem extends TankDriveSubsystem {
      */
 
     public void changeMotorSpeed() {
-        if (control == 0.7) {
-                control = 0.5;
-        } else {
+        if (control >= 0.5 && control < 0.7) {
                 control += 0.1;
+        } else {
+                control = 0.5;
         }
+    }
+
+    public void stopRobot() {
+        control = 0.0;
     }
 
     public double getLeftSensorPosition() {
@@ -182,6 +188,9 @@ public class DriveSystem extends TankDriveSubsystem {
 
     @Override
     public Sendable log() { 
+
+        Shuffleboard.getTab("Log").addDouble("Speed %", () -> control * 100);
+
         return this;
     }
 

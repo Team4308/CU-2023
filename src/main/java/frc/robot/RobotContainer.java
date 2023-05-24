@@ -50,7 +50,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     stick2.A.onTrue(new InstantCommand(() -> m_driveSystem.changeMotorSpeed(), m_driveSystem));
-
+    stick2.X.onTrue(new InstantCommand(() -> m_driveSystem.stopRobot(), m_driveSystem));
   }
 
   /**
