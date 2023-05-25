@@ -129,13 +129,22 @@ public class DriveSystem extends TankDriveSubsystem {
      * Getters And Setters
      */
 
-    public void changeMotorSpeed() {
+    public void increaseMotorSpeed() {
         if (control >= 0.5 && control < 0.7) {
-                control += 0.1;
+                control += 0.05;
         } else {
                 control = 0.5;
         }
     }
+
+    public void decreaseMotorSpeed() {
+        if (control <= 0.5 && control > 0.7) {
+                control = 0.7;
+        } else {
+                control -= 0.05;
+        }
+    }
+    
 
     public void stopRobot() {
         control = 0.0;
