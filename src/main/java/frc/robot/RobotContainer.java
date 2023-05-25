@@ -49,8 +49,10 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    stick2.A.onTrue(new InstantCommand(() -> m_driveSystem.changeMotorSpeed(), m_driveSystem));
-    stick2.X.onTrue(new InstantCommand(() -> m_driveSystem.stopRobot(), m_driveSystem));
+    stick2.Y.onTrue(new InstantCommand(() -> m_driveSystem.setMotorSpeed50(), m_driveSystem));
+    stick2.B.onTrue(new InstantCommand(() -> m_driveSystem.setMotorSpeed60(), m_driveSystem));
+    stick2.A.onTrue(new InstantCommand(() -> m_driveSystem.setMotorSpeed70(), m_driveSystem));
+    stick2.X.onTrue(new InstantCommand(() -> m_driveSystem.stopDrivetrain(), m_driveSystem));
   }
 
   /**

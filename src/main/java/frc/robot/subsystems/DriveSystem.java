@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class DriveSystem extends TankDriveSubsystem {
 
-        Double control = 0.6;
+        Double control;
 
 // Master Controllers
     
@@ -129,27 +129,6 @@ public class DriveSystem extends TankDriveSubsystem {
      * Getters And Setters
      */
 
-    public void increaseMotorSpeed() {
-        if (control >= 0.5 && control < 0.7) {
-                control += 0.05;
-        } else {
-                control = 0.5;
-        }
-    }
-
-    public void decreaseMotorSpeed() {
-        if (control <= 0.5 && control > 0.7) {
-                control = 0.7;
-        } else {
-                control -= 0.05;
-        }
-    }
-    
-
-    public void stopRobot() {
-        control = 0.0;
-    }
-
     public double getLeftSensorPosition() {
         return masterLeft.getSelectedSensorPosition(0) * Constants.Config.Drive.Kinematics.kEncoderInchesPerCount;
     }
@@ -193,6 +172,22 @@ public class DriveSystem extends TankDriveSubsystem {
     public void resetSensors() {
         masterLeft.setSelectedSensorPosition(0);
         masterRight.setSelectedSensorPosition(0);
+    }
+
+    public void setMotorSpeed50() {
+        control = 0.5;
+    }
+
+    public void setMotorSpeed60() {
+        control = 0.6;
+    }
+
+    public void setMotorSpeed70() {
+        control = 0.7;
+    }
+
+    public void stopDrivetrain() {
+        control = 0.0;
     }
 
     @Override
